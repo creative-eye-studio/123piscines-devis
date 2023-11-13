@@ -68,7 +68,6 @@ class PagesService extends AbstractController{
 
             // Page principale
             if ($form->get('main_page')->getData()) {
-                # code...
                 $main_page = $this->pages_repo->findOneBy(['main_page' => 1]);
                 if ($main_page) $main_page->setMainPage(0);
                 $page->setMainPage(1);
