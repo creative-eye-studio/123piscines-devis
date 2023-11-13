@@ -169,8 +169,7 @@ class PagesService extends AbstractController{
     {
         $locales = Locales::getLocales();
         $localesSite = [
-            $locales[280], // FR
-            $locales[96] // EN
+            $locales[281], // FR
         ];
         return $localesSite;
     }
