@@ -2,6 +2,7 @@ input{
     &[type=text],
     &[type=email],
     &[type=number],
+    &[type=tel],
     &[type=password]{
         width: 100%;
         padding: .5rem;
@@ -26,6 +27,7 @@ legend{
 }
 
 label{
+    display: block;
     &.required{
         &::after{
             content: '*';
