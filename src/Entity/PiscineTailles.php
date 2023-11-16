@@ -24,18 +24,6 @@ class PiscineTailles
         return $this->id;
     }
 
-    public function getPiscine(): ?PiscineListe
-    {
-        return $this->piscine;
-    }
-
-    public function setPiscine(?PiscineListe $piscine): static
-    {
-        $this->piscine = $piscine;
-
-        return $this;
-    }
-
     public function getTaille(): ?string
     {
         return $this->taille;
@@ -44,6 +32,18 @@ class PiscineTailles
     public function setTaille(string $taille): static
     {
         $this->taille = $taille;
+
+        return $this;
+    }
+
+    public function getPiscine(): ?PiscineListe
+    {
+        return $this->piscine;
+    }
+
+    public function setPiscine(?PiscineListe $piscine): static
+    {
+        $this->piscine = $piscine;
 
         return $this;
     }

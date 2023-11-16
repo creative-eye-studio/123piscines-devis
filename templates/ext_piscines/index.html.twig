@@ -32,7 +32,7 @@
                         <p>{{ piscine.nom }} - <em>{{ piscine.forme.nom }}</em></p>
                         <ul>
                             <li>Escaliers/Petits bains</li>
-                            <li>Dimensions</li>
+                            <li><a href="{{ path('app_dims', { id: piscine.id }) }}">Dimensions</a></li>
                             <li><a href="{{ path('app_update_piscine', { id: piscine.id }) }}">Modifier</a></li>
                             <li>Supprimer</li>
                         </ul>
