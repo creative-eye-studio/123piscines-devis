@@ -19,6 +19,9 @@ class PiscineEsc
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
+    #[ORM\Column]
+    private ?int $position = null;
+
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
@@ -47,6 +50,18 @@ class PiscineEsc
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): static
+    {
+        $this->position = $position;
 
         return $this;
     }

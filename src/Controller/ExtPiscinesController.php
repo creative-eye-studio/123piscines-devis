@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\PiscineEsc;
 use App\Entity\PiscineForme;
 use App\Entity\PiscineListe;
 use App\Entity\PiscineTailles;
+use App\Form\ExtPiscineEscType;
 use App\Form\ExtPiscineFormeType;
 use App\Form\ExtPiscineTaillesType;
 use App\Form\ExtPiscineType;
@@ -17,7 +19,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ExtPiscinesController extends AbstractController
 {
-    private $request;
     private $em;
 
     function __construct(EntityManagerInterface $em)
@@ -33,17 +34,18 @@ class ExtPiscinesController extends AbstractController
 
         return $this->render('ext_piscines/index.html.twig', [
             'formes' => $formes,
-            'piscines' => $piscines 
+            'piscines' => $piscines
         ]);
     }
 
     #[Route(path: '/admin/piscines/forme', name: 'app_create_form')]
-    public function createForme(Request $request): Response {
+    public function createForme(Request $request): Response
+    {
         $forme = new PiscineForme();
         $form = $this->createForm(ExtPiscineFormeType::class, $forme);
         $form->handleRequest($request);
-        
-        if ($form->isSubmitted() && $form->isValid()) { 
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $image = $form->get('image')->getData();
             if ($image != null) {
                 $imageName = md5(uniqid()) . '.' . $image->guessExtension();
@@ -67,12 +69,13 @@ class ExtPiscinesController extends AbstractController
     }
 
     #[Route(path: '/admin/piscines/forme/{id}', name: 'app_update_form')]
-    public function updateForme(Request $request, int $id): Response {
+    public function updateForme(Request $request, int $id): Response
+    {
         $forme = $this->em->getRepository(PiscineForme::class)->find($id);
         $form = $this->createForm(ExtPiscineFormeType::class, $forme);
         $form->handleRequest($request);
-        
-        if ($form->isSubmitted() && $form->isValid()) { 
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $image = $form->get('image')->getData();
             if ($image != null) {
                 $imageName = md5(uniqid()) . '.' . $image->guessExtension();
@@ -96,12 +99,13 @@ class ExtPiscinesController extends AbstractController
     }
 
     #[Route(path: '/admin/piscines/piscine', name: 'app_create_piscine')]
-    public function createPiscine(Request $request): Response {
+    public function createPiscine(Request $request): Response
+    {
         $piscine = new PiscineListe();
         $form = $this->createForm(ExtPiscineType::class, $piscine);
         $form->handleRequest($request);
-        
-        if ($form->isSubmitted() && $form->isValid()) { 
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($piscine);
             $this->em->flush();
         }
@@ -113,12 +117,13 @@ class ExtPiscinesController extends AbstractController
     }
 
     #[Route(path: '/admin/piscines/piscine/{id}', name: 'app_update_piscine')]
-    public function updatePiscine(Request $request, int $id): Response {
+    public function updatePiscine(Request $request, int $id): Response
+    {
         $piscine = $this->em->getRepository(PiscineListe::class)->find($id);
         $form = $this->createForm(ExtPiscineType::class, $piscine);
         $form->handleRequest($request);
-        
-        if ($form->isSubmitted() && $form->isValid()) { 
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($piscine);
             $this->em->flush();
         }
@@ -130,14 +135,15 @@ class ExtPiscinesController extends AbstractController
     }
 
     #[Route('/admin/piscines/dims/{id}', name: 'app_dims')]
-    public function dimensions(Request $request, int $id) {
+    public function dimensions(Request $request, int $id)
+    {
         $piscine = $this->em->getRepository(PiscineListe::class)->find($id);
         $dims = $this->em->getRepository(PiscineTailles::class)->findBy(['piscine' => $piscine]);
         $taille = new PiscineTailles();
-    
+
         $form = $this->createForm(ExtPiscineTaillesType::class, $taille);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             $taille->setPiscine($piscine);
             $this->em->persist($taille);
@@ -148,11 +154,46 @@ class ExtPiscinesController extends AbstractController
 
             return $response;
         }
-    
+
         return $this->render('ext_piscines/dims-manager.html.twig', [
             'title' => "Dimensions de la piscine : " . $piscine->getNom() . " ",
             'form' => $form->createView(),
             'dims' => $dims,
         ]);
-    }    
+    }
+
+    #[Route('/admin/piscines/esc-bains/{id}', name: 'app_esc_bain')]
+    public function escaliers(Request $request, int $id)
+    {
+        $piscine = $this->em->getRepository(PiscineListe::class)->find($id);
+        $escs = $this->em->getRepository(PiscineEsc::class)->findBy(['piscine' => $piscine]);
+        $esc = new PiscineEsc();
+
+        $form = $this->createForm(ExtPiscineEscType::class, $esc);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('image')->getData();
+            if ($image != null) {
+                $imageName = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('images_escs_dir'),
+                    $imageName
+                );
+            } else {
+                $imageName = $esc->getImage();
+            }
+            $esc->setPiscine($piscine);
+            $esc->setImage($imageName);
+
+            $this->em->persist($esc);
+            $this->em->flush();
+        }
+
+        return $this->render('ext_piscines/esc-manager.html.twig', [
+            'title' => "Escaliers et petits-bains de la piscine : " . $piscine->getNom() . " ",
+            'form' => $form->createView(),
+            'escs' => $escs,
+        ]);
+    }
 }
