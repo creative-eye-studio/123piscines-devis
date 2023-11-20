@@ -185,6 +185,10 @@ class ExtPiscinesController extends AbstractController
 
             $this->em->persist($esc);
             $this->em->flush();
+
+            return $this->redirectToRoute('app_esc_bain', [
+                'id' => $piscine->getId()
+            ]);
         }
 
         return $this->render('ext_piscines/esc-manager.html.twig', [

@@ -5,6 +5,21 @@
 {% block body %}
     <section class="block">
         <h2>{{ title }}</h2>
-        {{ form(form) }}
+        <article>
+            <h3>Formulaire d'ajout</h3>
+            {{ form(form) }}
+        </article>
+    </section>
+    <hr>
+    <section class="block">
+        <h2>Liste des accessoires</h2>
+        <div class="grid">
+        {% for esc in escs %}
+            <article class="block-item">
+                <img src="{{esc_img_dir}}/{{ esc.image }}" alt="{{ esc.nom }}" class="item-image">
+                <p class="item-title">{{ esc.nom }}</p>
+            </article>
+        {% endfor %}
+        </div>
     </section>
 {% endblock %}

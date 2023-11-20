@@ -10,6 +10,7 @@ twig:
         mailjet_public: ''
         mailjet_private: ''
         posts_img_directory: '/uploads/images/posts'
+        esc_img_dir: '/uploads/images/escs'
 
 when@test:
     twig:
