@@ -19,6 +19,9 @@ class PiscineTailles
     #[ORM\Column(length: 255)]
     private ?string $taille = null;
 
+    #[ORM\Column]
+    private ?float $prix = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class PiscineTailles
     public function setPiscine(?PiscineListe $piscine): static
     {
         $this->piscine = $piscine;
+
+        return $this;
+    }
+
+    public function getPrix(): ?float
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(float $prix): static
+    {
+        $this->prix = $prix;
 
         return $this;
     }

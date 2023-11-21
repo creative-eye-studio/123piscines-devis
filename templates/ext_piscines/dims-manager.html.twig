@@ -10,7 +10,10 @@
     <h3>Liste des dimensions</h3>
     {% for dim in dims %}
         <div class="line">
-            <p>{{ dim.taille }}</p>
+            <p>
+                {{ dim.taille }}<br />
+                {{ dim.prix | number_format(2, '.', ',') }} €
+            </p>
             <ul>
                 <li>Supprimer</li>
             </ul>
