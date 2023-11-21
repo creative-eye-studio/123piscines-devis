@@ -8,6 +8,19 @@
     &:not(:last-child){
         border-bottom: .0625rem solid lightgray;
     }
+    .item {
+        display: flex;
+        align-items: center;
+        .thumb {
+            margin: 0 1rem 0 0;
+            img{
+                width: 64px;
+                height: 64px;
+                object-fit: cover;
+                display: block;
+            }
+        }    
+    }
     p{
         margin-bottom: 0;
     }

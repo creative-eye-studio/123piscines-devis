@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\Dropzone\Form\DropzoneType;
 
 class ExtPiscineType extends AbstractType
 {
@@ -25,6 +26,13 @@ class ExtPiscineType extends AbstractType
             ->add('forme', EntityType::class, [
                 'class' => PiscineForme::class,
                 'choice_label' => 'nom',
+                'row_attr' => [
+                    'class' => 'mb'
+                ]
+            ])
+            ->add('image', DropzoneType::class, [
+                'label' => "Image de la piscine",
+                'data_class' => null,
                 'row_attr' => [
                     'class' => 'mb'
                 ]

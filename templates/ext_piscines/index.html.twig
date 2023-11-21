@@ -29,7 +29,12 @@
                 <h3>Liste des piscines</h3>
                 {% for piscine in piscines %}
                     <div class="line">
-                        <p>{{ piscine.nom }} - <em>{{ piscine.forme.nom }}</em></p>
+                        <div class="item">
+                            <figure class="thumb">
+                                <img src="{{piscines_img_dir}}/{{ piscine.image }}" alt="{{ piscine.nom }}">
+                            </figure>
+                            <p>{{ piscine.nom }} - <em>{{ piscine.forme.nom }}</em></p>
+                        </div>
                         <ul>
                             <li><a href="{{ path('app_esc_bain', { id: piscine.id }) }}">Escaliers/Petits bains</a></li>
                             <li><a href="{{ path('app_dims', { id: piscine.id }) }}">Dimensions</a></li>
