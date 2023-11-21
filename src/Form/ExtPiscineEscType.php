@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\PiscineEsc;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,6 +18,13 @@ class ExtPiscineEscType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, [
+                'row_attr' => [
+                    'class' => 'mb'
+                ]
+            ])
+            ->add('prix', NumberType::class, [
+                'label' => "Plus value de l'élément (En €)",
+                'html5' => true,
                 'row_attr' => [
                     'class' => 'mb'
                 ]

@@ -22,7 +22,7 @@ class ExtPiscineTaillesType extends AbstractType
                 ]
             ])
             ->add('prix', NumberType::class, [
-                'label' => "Prix de la dimension",
+                'label' => "Prix de la dimension (En €)",
                 'html5' => true,
                 'row_attr' => [
                     'class' => 'mb'

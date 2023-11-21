@@ -20,6 +20,9 @@ class PiscineEsc
     private ?string $nom = null;
 
     #[ORM\Column]
+    private ?float $prix = null;
+
+    #[ORM\Column]
     private ?int $position = null;
 
     #[ORM\Column(length: 255)]
@@ -50,6 +53,18 @@ class PiscineEsc
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrix(): ?float
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(float $prix): static
+    {
+        $this->prix = $prix;
 
         return $this;
     }

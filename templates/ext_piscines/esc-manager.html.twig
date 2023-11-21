@@ -17,7 +17,10 @@
         {% for esc in escs %}
             <article class="block-item">
                 <img src="{{esc_img_dir}}/{{ esc.image }}" alt="{{ esc.nom }}" class="item-image">
-                <p class="item-title">{{ esc.nom }}</p>
+                <p class="item-title">
+                    {{ esc.nom }}<br />
+                    {{ esc.prix | number_format(2, '.', ',') }} €
+                </p>
             </article>
         {% endfor %}
         </div>
