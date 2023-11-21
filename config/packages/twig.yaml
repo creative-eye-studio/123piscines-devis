@@ -1,7 +1,7 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
     globals:
-        site_name: "CMS Project"
+        site_name: "Aqua Estimate"
         version: "2.8"
         date_update: "29/10/2023"
         google_maps: ""
@@ -10,6 +10,7 @@ twig:
         mailjet_public: ''
         mailjet_private: ''
         posts_img_directory: '/uploads/images/posts'
+        esc_img_dir: '/uploads/images/escs'
 
 when@test:
     twig:

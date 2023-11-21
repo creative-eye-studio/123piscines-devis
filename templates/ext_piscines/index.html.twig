@@ -1,0 +1,45 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Gestion des piscines{% endblock %}
+
+{% block body %}
+<section class="block">
+    <a class="btn-link float-right ml" href="{{ path('app_create_piscine') }}">Ajouter une piscine</a>
+    <a class="btn-link float-right" href="{{ path('app_create_form') }}">Créer une forme</a>
+    <h2>Gestion des piscines</h2>
+    <div class="tab-container">
+        <div class="tabs tabs-btn">
+            <li class="tab active">Formes de piscine</li>
+            <li class="tab">Liste des piscines</li>
+        </div>
+        <div class="tab-panes">
+            <div class="tab-pane active">
+                <h3>Formes de piscines</h3>
+                {% for forme in formes %}
+                    <div class="line">
+                        <p>{{ forme.nom }}</p>
+                        <ul>
+                            <li><a href="{{ path('app_update_form', { id: forme.id }) }}">Modifier</a></li>
+                            <li>Supprimer</li>
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="tab-pane">
+                <h3>Liste des piscines</h3>
+                {% for piscine in piscines %}
+                    <div class="line">
+                        <p>{{ piscine.nom }} - <em>{{ piscine.forme.nom }}</em></p>
+                        <ul>
+                            <li><a href="{{ path('app_esc_bain', { id: piscine.id }) }}">Escaliers/Petits bains</a></li>
+                            <li><a href="{{ path('app_dims', { id: piscine.id }) }}">Dimensions</a></li>
+                            <li><a href="{{ path('app_update_piscine', { id: piscine.id }) }}">Modifier</a></li>
+                            <li>Supprimer</li>
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
