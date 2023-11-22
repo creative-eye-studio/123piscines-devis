@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\PiscineColors;
 use App\Entity\PiscineEsc;
 use App\Entity\PiscineForme;
 use App\Entity\PiscineListe;
 use App\Entity\PiscineTailles;
+use App\Form\ExtPiscineColorsType;
 use App\Form\ExtPiscineEscType;
 use App\Form\ExtPiscineFormeType;
 use App\Form\ExtPiscineTaillesType;
@@ -200,9 +202,44 @@ class ExtPiscinesController extends AbstractController
         }
 
         return $this->render('ext_piscines/esc-manager.html.twig', [
-            'title' => "Escaliers et petits-bains de la piscine : " . $piscine->getNom() . " ",
+            'title' => "Escaliers et petits-bains de la piscine : " . $piscine->getNom(),
             'form' => $form->createView(),
             'escs' => $escs,
+        ]);
+    }
+
+    #[Route('/admin/piscines/colors/{id}', name: 'app_colors')]
+    public function colors(Request $request, int $id) {
+        $piscine = $this->em->getRepository(PiscineListe::class)->find($id);
+        $colors = $this->em->getRepository(PiscineColors::class)->findBy(['piscine' => $piscine]);
+        $color = new PiscineColors();
+
+        $form = $this->createForm(ExtPiscineColorsType::class, $color);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) { 
+            $image = $form->get('color')->getData();
+            $imageName = md5(uniqid()) . '.' . $image->guessExtension();
+            $image->move(
+                $this->getParameter('images_colors_dir'),
+                $imageName
+            );
+            
+            $color->setPiscine($piscine);
+            $color->setColor($imageName);
+
+            $this->em->persist($color);
+            $this->em->flush();
+
+            return $this->redirectToRoute('app_colors', [
+                'id' => $piscine->getId()
+            ]);
+        }
+
+        return $this->render('ext_piscines/color-manager.html.twig', [
+            'title' => "Couleurs de la piscine : " . $piscine->getNom(),
+            'form' => $form->createView(),
+            'colors' => $colors,
         ]);
     }
 }

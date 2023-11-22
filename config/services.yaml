@@ -9,6 +9,7 @@ parameters:
     images_formes_dir: '%kernel.project_dir%/public/uploads/images/formes'
     images_piscines_dir: '%kernel.project_dir%/public/uploads/images/piscines'
     images_escs_dir: '%kernel.project_dir%/public/uploads/images/escs'
+    images_colors_dir: '%kernel.project_dir%/public/uploads/images/colors'
 
 services:
     # default configuration for services in *this* file
