@@ -23,12 +23,45 @@ if (container != null) {
 }
 
 
+/* FILTRATIONS
+--------------------------------------------*/
+function loadFilterDims(value) {
+    var piscineId = value;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/get-tailles/' + piscineId);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var sizes = JSON.parse(xhr.responseText);
+            var sizesSelect = document.getElementById('filtrations_tailles');
+            sizesSelect.innerHTML = '';
+            sizes.forEach(function(size) {
+                var option = document.createElement('option');
+                option.value = size.id;
+                option.text = size.taille;
+                sizesSelect.appendChild(option);
+            })
+        }
+    }
+    xhr.send();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.getElementById('filtrations_piscines') != undefined) {
+        // loadFilterDims(7);
+        document.getElementById('filtrations_piscines').addEventListener('change', function() {
+            loadFilterDims(this.value);
+        })    
+    }
+})
+
+
 /* SORTABLE JS
 --------------------------------------------*/
 const dragDropList = document.querySelector('#drag-drop-list');
-let subItems = dragDropList.querySelectorAll('.subitems');
 
 if (dragDropList) {
+    let subItems = dragDropList.querySelectorAll('.subitems');
     document.addEventListener('DOMContentLoaded', () => {
         // Items racines
         const sortable = new Sortable(dragDropList, {

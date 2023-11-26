@@ -4,16 +4,16 @@
 
 {% block body %}
 <section class="block">
-    <a class="btn-link float-right ml" href="{{ path('app_create_piscine') }}">Ajouter une piscine</a>
-    <a class="btn-link float-right" href="{{ path('app_create_form') }}">Créer une forme</a>
     <h2>Gestion des piscines</h2>
     <div class="tab-container">
         <div class="tabs tabs-btn">
             <li class="tab active">Formes de piscine</li>
             <li class="tab">Liste des piscines</li>
+            <li class="tab">Liste des filtrations</li>
         </div>
         <div class="tab-panes">
-            <div class="tab-pane active">
+            <div id="formes" class="tab-pane active">
+                <a class="btn-link float-right" href="{{ path('app_create_form') }}">Créer une forme</a>
                 <h3>Formes de piscines</h3>
                 {% for forme in formes %}
                     <div class="line">
@@ -25,7 +25,8 @@
                     </div>
                 {% endfor %}
             </div>
-            <div class="tab-pane">
+            <div id="piscines" class="tab-pane">
+                <a class="btn-link float-right ml" href="{{ path('app_create_piscine') }}">Créer une piscine</a>
                 <h3>Liste des piscines</h3>
                 {% for piscine in piscines %}
                     <div class="line">
@@ -44,6 +45,10 @@
                         </ul>
                     </div>
                 {% endfor %}
+            </div>
+            <div id="filtrations" class="tab-pane">
+                <a class="btn-link float-right ml" href="{{ path('app_create_filter') }}">Créer une filtration</a>
+                <h3>Liste des filtrations</h3>
             </div>
         </div>
     </div>

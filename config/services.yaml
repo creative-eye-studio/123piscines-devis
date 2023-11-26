@@ -10,6 +10,7 @@ parameters:
     images_piscines_dir: '%kernel.project_dir%/public/uploads/images/piscines'
     images_escs_dir: '%kernel.project_dir%/public/uploads/images/escs'
     images_colors_dir: '%kernel.project_dir%/public/uploads/images/colors'
+    images_filters_dir: '%kernel.project_dir%/public/uploads/images/filters'
 
 services:
     # default configuration for services in *this* file
