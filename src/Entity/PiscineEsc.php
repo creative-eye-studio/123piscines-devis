@@ -23,6 +23,9 @@ class PiscineEsc
     private ?float $prix = null;
 
     #[ORM\Column]
+    private ?int $type = null;
+
+    #[ORM\Column]
     private ?int $position = null;
 
     #[ORM\Column(length: 255)]
@@ -65,6 +68,18 @@ class PiscineEsc
     public function setPrix(float $prix): static
     {
         $this->prix = $prix;
+
+        return $this;
+    }
+
+    public function getType(): ?int
+    {
+        return $this->type;
+    }
+
+    public function setType(int $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

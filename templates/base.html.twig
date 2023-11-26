@@ -12,19 +12,11 @@
         <link rel="icon" href="">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-            {# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tarteaucitronjs/1.11.0/css/tarteaucitron.min.css" integrity="sha512-An5uG5l2933DG8oK8mICT7TycnhhY2Ti1xVSj2XW/scxb0jRvE1kLUh8ECth38zr+MlE4LH3l5xblJ+Ns0JINg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> #}
+            {# {{ encore_entry_link_tags('app') }} #}
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         {% endblock %}
     </head>
     <body
-        {{ stimulus_controller('symfony/ux-swup/swup', {
-            containers: ['#main', '#nav'],
-            animationSelector: '[class*="transition-"]',
-            theme: 'fade',
-            animateHistoryBrowsing: true,
-            cache: true,
-            debug: false
-        }) }}
         data-damping='{% block damping %}{% endblock %}'
         data-scrollimg='{% block scrollimg %}{% endblock %}'>
 
@@ -39,10 +31,11 @@
         </div>
 
         {% block javascripts %}
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
             {{ encore_entry_script_tags('modernizr') }}
             {{ encore_entry_script_tags('app') }}
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/tarteaucitronjs/1.11.0/tarteaucitron.js" integrity="sha512-bDyrKjNycnlzdeKsBI4TOHhiDmAx9LtNkZo/IfdLZGlzYTREqmAdvgHy876IOBfZ7UUq7mIz4t4ZHoG8w/xTdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-            {{ encore_entry_script_tags('tarteaucitronjs') }}
-         {% endblock %}
+        {% endblock %}
     </body>
 </html>

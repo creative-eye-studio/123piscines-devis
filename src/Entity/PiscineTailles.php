@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PiscineTaillesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PiscineTaillesRepository::class)]
@@ -21,6 +23,14 @@ class PiscineTailles
 
     #[ORM\Column]
     private ?float $prix = null;
+
+    #[ORM\ManyToMany(targetEntity: Filtrations::class, mappedBy: 'tailles')]
+    private Collection $filtrations;
+
+    public function __construct()
+    {
+        $this->filtrations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +69,33 @@ class PiscineTailles
     public function setPrix(float $prix): static
     {
         $this->prix = $prix;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Filtrations>
+     */
+    public function getFiltrations(): Collection
+    {
+        return $this->filtrations;
+    }
+
+    public function addFiltration(Filtrations $filtration): static
+    {
+        if (!$this->filtrations->contains($filtration)) {
+            $this->filtrations->add($filtration);
+            $filtration->addTaille($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFiltration(Filtrations $filtration): static
+    {
+        if ($this->filtrations->removeElement($filtration)) {
+            $filtration->removeTaille($this);
+        }
 
         return $this;
     }

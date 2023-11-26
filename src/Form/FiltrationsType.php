@@ -2,7 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\PiscineEsc;
+use App\Entity\Filtrations;
+use App\Entity\PiscineForme;
+use App\Entity\PiscineListe;
+use App\Entity\PiscineTailles;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -12,54 +17,66 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\Dropzone\Form\DropzoneType;
 
-class ExtPiscineEscType extends AbstractType
+class FiltrationsType extends AbstractType
 {
+    private $em;
+
+    function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
         $builder
             ->add('nom', TextType::class, [
+                'label' => "Nom de la filtration",
                 'row_attr' => [
                     'class' => 'mb'
                 ]
             ])
+
             ->add('prix', NumberType::class, [
-                'label' => "Plus value de l'élément (En €)",
+                'label' => "Plus value de la filtration (En €)",
                 'html5' => true,
                 'row_attr' => [
                     'class' => 'mb'
                 ]
             ])
+
             ->add('type', ChoiceType::class, [
+                'label' => 'Type de filtration',
                 'choices' => [
-                    "Petit bain" => 0,
-                    "Escalier" => 1,
-                    "Échelle" => 2,
+                    "Filtre à sable" => 0,
+                    "Bloc filtrant" => 1,
+                    "Eco Responsable" => 2,
                 ],
-                'row_attr' => [
-                    'class' => 'mb'
-                ],
-                'label' => "Type d'élément",
-            ])
-            ->add('position', ChoiceType::class, [
-                'choices' => [
-                    "Haut - Gauche" => 0,
-                    "Haut - Centre" => 1,
-                    "Haut - Droit" => 2,
-                    "Bas - Gauche" => 3,
-                    "Bas - Centre" => 4,
-                    "Bas - Droit" => 5,
-                ],
-                'row_attr' => [
-                    'class' => 'mb'
-                ],
-                'label' => "Position de l'élément",
-            ])
-            ->add('image', DropzoneType::class, [
-                'data_class' => null,
                 'row_attr' => [
                     'class' => 'mb'
                 ]
             ])
+
+            ->add('tailles', EntityType::class, [
+                'label' => 'Taille',
+                'class' => PiscineTailles::class,
+                'choice_label' => 'taille',
+                'group_by' => 'piscine.nom',
+                'multiple' => true,
+                'mapped' => false,
+                'row_attr' => [
+                    'class' => 'mb'
+                ]
+            ])
+            ->add('image', DropzoneType::class, [
+                'label' => "Image de la filtration",
+                'data_class' => null,
+                'row_attr' => [
+                    'class' => 'mb'
+                ]
+
+            ])
+
             ->add('submit', SubmitType::class, [
                 'label' => "Envoyer"
             ])
@@ -69,7 +86,10 @@ class ExtPiscineEscType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => PiscineEsc::class,
+            'data_class' => Filtrations::class,
+            'attr' => [
+                'id' => 'filter-form'
+            ]
         ]);
     }
 }

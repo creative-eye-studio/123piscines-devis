@@ -1,0 +1,27 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <section class="block">
+        <h2>{{ title }}</h2>
+        <article>
+            <h3>Formulaire d'ajout</h3>
+            {{ form(form) }}
+        </article>
+    </section>
+    <hr>
+    <section class="block">
+        <h2>Liste des coloris</h2>
+        <div class="grid">
+        {% for color in colors %}
+            <article class="block-item">
+                <img src="{{color_img_dir}}/{{ color.color }}" alt="{{ color.title }}" class="item-image">
+                <p class="item-title">
+                    {{ color.title }}
+                </p>
+            </article>
+        {% endfor %}
+        </div>
+    </section>
+{% endblock %}

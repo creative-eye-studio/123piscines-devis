@@ -14,8 +14,8 @@ import './bootstrap';
 import { ScrollWeb } from './smoothScroll';
 import { Parallax } from './parallax';
 import { createApp } from 'vue';
+import DevisForm from './vue/controllers/DevisForm';
 import AOS from 'aos';
-import LastPosts from './vue/controllers/LastPosts';
 
 // Variables
 // -----------------------------------------------
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function(){
     scrollWeb();
     parallax();
     createApp({
-        components: { LastPosts }
+        components: { DevisForm }
     }).mount('#website');
 });
 
