@@ -175,7 +175,7 @@ class ExtPiscinesController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/piscines/esc-bains/{id}', name: 'app_esc_bain')]
+    #[Route('/admin/piscines/accessoires/{id}', name: 'app_esc_bain')]
     public function escaliers(Request $request, int $id)
     {
         $piscine = $this->em->getRepository(PiscineListe::class)->find($id);
@@ -205,7 +205,7 @@ class ExtPiscinesController extends AbstractController
         }
 
         return $this->render('ext_piscines/esc-manager.html.twig', [
-            'title' => "Escaliers et petits-bains de la piscine : " . $piscine->getNom(),
+            'title' => "Accessoires de la piscine : " . $piscine->getNom(),
             'form' => $form->createView(),
             'escs' => $escs,
         ]);

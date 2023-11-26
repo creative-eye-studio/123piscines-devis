@@ -29,6 +29,17 @@ class ExtPiscineEscType extends AbstractType
                     'class' => 'mb'
                 ]
             ])
+            ->add('type', ChoiceType::class, [
+                'choices' => [
+                    "Petit bain" => 0,
+                    "Escalier" => 1,
+                    "Échelle" => 2,
+                ],
+                'row_attr' => [
+                    'class' => 'mb'
+                ],
+                'label' => "Type d'élément",
+            ])
             ->add('position', ChoiceType::class, [
                 'choices' => [
                     "Haut - Gauche" => 0,
