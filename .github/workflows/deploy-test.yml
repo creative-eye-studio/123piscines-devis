@@ -24,7 +24,7 @@ jobs:
       
       - name: Configure Symfony environment
         run: |
-          # Remplacer la valeur de DATABASE_URL dans le fichier .env
+          # Replace the value of DATABASE_URL in the .env file
           grep -v '^DATABASE_URL=' .env > .env.tmp && echo "DATABASE_URL='${DATABASE_URL}'" >> .env.tmp && mv .env.tmp .env
 
       - name: Install Node.js and Yarn
@@ -45,6 +45,12 @@ jobs:
 
       - name: Clear Symfony cache
         run: php bin/console cache:clear --env=prod
+
+      - name: Create Doctrine migration
+        run: php bin/console make:migration
+
+      - name: Apply Doctrine migrations
+        run: php bin/console doctrine:migrations:migrate --no-interaction
 
       - name: Deploy to SFTP
         uses: appleboy/scp-action@v0.1.4
