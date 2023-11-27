@@ -31,10 +31,11 @@ class ExtPiscineEscType extends AbstractType
             ])
             ->add('color', ChoiceType::class, [
                 'choices' => [
-                    "Blanc" => 0,
-                    "Bleu" => 1,
-                    "Vert" => 2,
-                    "Turquoise" => 3,
+                    "Sans couleurs" => 0,
+                    "Blanc" => 1,
+                    "Bleu" => 2,
+                    "Vert" => 3,
+                    "Turquoise" => 4,
                 ],
                 'row_attr' => [
                     'class' => 'mb'
@@ -47,6 +48,9 @@ class ExtPiscineEscType extends AbstractType
                     "Escalier" => 1,
                     "Échelle" => 2,
                     "SPA à débordement" => 3,
+                    "Alarme volumétrique" => 4,
+                    "Couverture de sécurité" => 5,
+                    "Barrière normalisée" => 6,
                 ],
                 'row_attr' => [
                     'class' => 'mb'

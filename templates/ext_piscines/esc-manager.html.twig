@@ -18,12 +18,12 @@
             <article class="block-item">
                 <img src="{{esc_img_dir}}/{{ esc.image }}" alt="{{ esc.nom }}" class="item-image">
                 <p class="item-title">
-                    {% set types = ["Petit bain", "Escalier", "Échelle", "SPA à débordement"] %}
-                    {% set colors = ["Blanc", "Bleu", "Vert", "Turquoise"] %}
+                    {% set types = ["Petit bain", "Escalier", "Échelle", "SPA à débordement", "Alarme volumétrique", "Couverture de sécurité", "Barrière normalisée"] %}
+                    {% set colors = ["", " Blanc", " Bleu", " Vert", " Turquoise"] %}
                     {% set type = types[esc.type] ?? "Type inconnu" %}
-                    {% set color = colors[esc.color] ?? "Couleur inconnue" %}
+                    {% set color = colors[esc.color] ?? " Couleur inconnue" %}
 
-                    {{ type }} {{ color }} - {{ esc.nom }}<br />
+                    {{ type }}{{ color }} - {{ esc.nom }}<br />
                     {{ esc.prix | number_format(2, '.', ',') }} €
                 </p>
             </article>
