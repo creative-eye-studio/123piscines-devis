@@ -51,7 +51,7 @@
                 <h3>Liste des filtrations</h3>
                 {% for filt in filters %}
                     <div class="line">
-                        <p>{{ filt.nom }}</p>
+                        <p>{{ filt.nom.nom }} - {{ filt.tailles.taille }}</p>
                         <ul>
                             <li>Modifier</li>
                             <li>Supprimer</li>

@@ -257,17 +257,14 @@ class ExtPiscinesController extends AbstractController
         $form = $this->createForm(FiltrationsType::class, $filter);
         $form->handleRequest($request);
         
-        if ($form->isSubmitted() && $form->isValid()) { 
-            $data = $request->request->all();
-            $tailles = $data['filtrations']['tailles'];
-            dump($tailles);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Gestion de la piscine
+            // $piscine = $this->em->getRepository(PiscineListe::class)->find($form->get('nom')->getData());
+            // $filter->setNom($piscine);
 
-            // Gestion des tailles
-            foreach ($tailles as $taille) {
-                $piscineTaille = $this->em->getRepository(PiscineTailles::class)->find($taille);
-                $filter->addTaille($piscineTaille);
-                $piscineTaille->addFiltration($filter);
-            }
+            // Gestion de la taille
+            $taille = $this->em->getRepository(PiscineTailles::class)->find($form->get('tailles')->getData());
+            $filter->setTailles($taille);
 
             // Gestion de l'image
             $image = $form->get('image')->getData();

@@ -15,37 +15,32 @@ class Filtrations
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $nom = null;
-
-    #[ORM\Column]
-    private ?int $type = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $image = null;
-
-    #[ORM\ManyToMany(targetEntity: PiscineTailles::class, inversedBy: 'filtrations')]
-    private Collection $tailles;
+    #[ORM\ManyToOne(inversedBy: 'filtrations')]
+    private ?PiscineListe $nom = null;
 
     #[ORM\Column]
     private ?float $prix = null;
 
-    public function __construct()
-    {
-        $this->tailles = new ArrayCollection();
-    }
+    #[ORM\Column]
+    private ?int $type = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?PiscineTailles $tailles = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getNom(): ?PiscineListe
     {
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(?PiscineListe $nom): static
     {
         $this->nom = $nom;
 
@@ -76,30 +71,6 @@ class Filtrations
         return $this;
     }
 
-    /**
-     * @return Collection<int, PiscineTailles>
-     */
-    public function getTailles(): Collection
-    {
-        return $this->tailles;
-    }
-
-    public function addTaille(PiscineTailles $taille): static
-    {
-        if (!$this->tailles->contains($taille)) {
-            $this->tailles->add($taille);
-        }
-
-        return $this;
-    }
-
-    public function removeTaille(PiscineTailles $taille): static
-    {
-        $this->tailles->removeElement($taille);
-
-        return $this;
-    }
-
     public function getPrix(): ?float
     {
         return $this->prix;
@@ -108,6 +79,18 @@ class Filtrations
     public function setPrix(float $prix): static
     {
         $this->prix = $prix;
+
+        return $this;
+    }
+
+    public function getTailles(): ?PiscineTailles
+    {
+        return $this->tailles;
+    }
+
+    public function setTailles(?PiscineTailles $tailles): static
+    {
+        $this->tailles = $tailles;
 
         return $this;
     }

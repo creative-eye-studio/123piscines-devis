@@ -30,15 +30,17 @@ class FiltrationsType extends AbstractType
     {
 
         $builder
-            ->add('nom', TextType::class, [
+            ->add('nom', EntityType::class, [
                 'label' => "Nom de la filtration",
+                'class' => PiscineListe::class,
+                'choice_label' => 'nom',
                 'row_attr' => [
                     'class' => 'mb'
                 ]
             ])
 
             ->add('prix', NumberType::class, [
-                'label' => "Plus value de la filtration (En €)",
+                'label' => "Prix au mètre linéaire (En €)",
                 'html5' => true,
                 'row_attr' => [
                     'class' => 'mb'
@@ -51,6 +53,7 @@ class FiltrationsType extends AbstractType
                     "Filtre à sable" => 0,
                     "Bloc filtrant" => 1,
                     "Eco Responsable" => 2,
+                    "Sans filtration" => 3,
                 ],
                 'row_attr' => [
                     'class' => 'mb'
@@ -62,7 +65,6 @@ class FiltrationsType extends AbstractType
                 'class' => PiscineTailles::class,
                 'choice_label' => 'taille',
                 'group_by' => 'piscine.nom',
-                'multiple' => true,
                 'mapped' => false,
                 'row_attr' => [
                     'class' => 'mb'
