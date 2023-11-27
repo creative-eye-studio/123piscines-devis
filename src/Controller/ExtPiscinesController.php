@@ -36,10 +36,12 @@ class ExtPiscinesController extends AbstractController
     {
         $formes = $this->em->getRepository(PiscineForme::class)->findAll();
         $piscines = $this->em->getRepository(PiscineListe::class)->findAll();
+        $filters = $this->em->getRepository(Filtrations::class)->findAll();
 
         return $this->render('ext_piscines/index.html.twig', [
             'formes' => $formes,
-            'piscines' => $piscines
+            'piscines' => $piscines,
+            'filters' => $filters
         ]);
     }
 

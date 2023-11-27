@@ -49,6 +49,15 @@
             <div id="filtrations" class="tab-pane">
                 <a class="btn-link float-right ml" href="{{ path('app_create_filter') }}">Créer une filtration</a>
                 <h3>Liste des filtrations</h3>
+                {% for filt in filters %}
+                    <div class="line">
+                        <p>{{ filt.nom }}</p>
+                        <ul>
+                            <li>Modifier</li>
+                            <li>Supprimer</li>
+                        </ul>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     </div>
