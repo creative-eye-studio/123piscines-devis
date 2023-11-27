@@ -25,6 +25,9 @@ class PiscineEsc
     #[ORM\Column]
     private ?int $type = null;
 
+    #[ORM\Column]
+    private ?int $color = null;
+
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
@@ -77,6 +80,18 @@ class PiscineEsc
     public function setType(int $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getColor(): ?int
+    {
+        return $this->color;
+    }
+
+    public function setColor(int $color): static
+    {
+        $this->color = $color;
 
         return $this;
     }

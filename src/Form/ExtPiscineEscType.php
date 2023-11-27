@@ -29,6 +29,18 @@ class ExtPiscineEscType extends AbstractType
                     'class' => 'mb'
                 ]
             ])
+            ->add('color', ChoiceType::class, [
+                'choices' => [
+                    "Blanc" => 0,
+                    "Bleu" => 1,
+                    "Vert" => 2,
+                    "Turquoise" => 3,
+                ],
+                'row_attr' => [
+                    'class' => 'mb'
+                ],
+                'label' => "Type d'élément",
+            ])
             ->add('type', ChoiceType::class, [
                 'choices' => [
                     "Petit bain" => 0,
