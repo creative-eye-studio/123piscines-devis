@@ -34,25 +34,12 @@ class ExtPiscineEscType extends AbstractType
                     "Petit bain" => 0,
                     "Escalier" => 1,
                     "Échelle" => 2,
+                    "SPA à débordement" => 3,
                 ],
                 'row_attr' => [
                     'class' => 'mb'
                 ],
                 'label' => "Type d'élément",
-            ])
-            ->add('position', ChoiceType::class, [
-                'choices' => [
-                    "Haut - Gauche" => 0,
-                    "Haut - Centre" => 1,
-                    "Haut - Droit" => 2,
-                    "Bas - Gauche" => 3,
-                    "Bas - Centre" => 4,
-                    "Bas - Droit" => 5,
-                ],
-                'row_attr' => [
-                    'class' => 'mb'
-                ],
-                'label' => "Position de l'élément",
             ])
             ->add('image', DropzoneType::class, [
                 'data_class' => null,

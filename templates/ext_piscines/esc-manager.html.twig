@@ -18,7 +18,10 @@
             <article class="block-item">
                 <img src="{{esc_img_dir}}/{{ esc.image }}" alt="{{ esc.nom }}" class="item-image">
                 <p class="item-title">
-                    {{ esc.nom }}<br />
+                    {% set types = ["Petit bain", "Escalier", "Échelle", "SPA à débordement"] %}
+                    {% set type = types[esc.type] ?? "Type inconnu" %}
+
+                    {{ type }} - {{ esc.nom }}<br />
                     {{ esc.prix | number_format(2, '.', ',') }} €
                 </p>
             </article>

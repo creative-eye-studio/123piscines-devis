@@ -25,9 +25,6 @@ class PiscineEsc
     #[ORM\Column]
     private ?int $type = null;
 
-    #[ORM\Column]
-    private ?int $position = null;
-
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
@@ -80,18 +77,6 @@ class PiscineEsc
     public function setType(int $type): static
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getPosition(): ?int
-    {
-        return $this->position;
-    }
-
-    public function setPosition(int $position): static
-    {
-        $this->position = $position;
 
         return $this;
     }
