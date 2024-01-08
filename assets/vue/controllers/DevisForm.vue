@@ -6,7 +6,7 @@
             <!-- Image et prix -->
             <div class="col-7">
                 <p class="text-end">Prix estimé : <span>0000,00</span> € TTC (Hors livraison et agrégats)</p>
-                <img src="" alt="Présentation de la piscine">
+                <img :src='"./uploads/images/piscines/" + basePoolImg' alt="Présentation de la piscine" class="img-fluid">
             </div>
             <!-- Configurateur -->
             <div class="col-5 accordion" id="list">
@@ -19,22 +19,23 @@
                         <div id="type-body" class="accordion-collapse collapse" data-bs-parent="#list">
                             <div class="row m-3">
                                 <div class="col-4 form-check">
-                                    <input class="form-check-input" type="radio" name="type" id="origin" value="Piscines originales">
+                                    <input class="form-check-input" type="radio" name="type" id="origin" @click="getPiscinesListe('1')">
                                     <label class="form-check-label" for="origin">Piscines originales</label>
                                 </div>
                                 <div class="col-4 form-check">
-                                    <input class="form-check-input" type="radio" name="type" id="classic" value="Piscines classiques">
+                                    <input class="form-check-input" type="radio" name="type" id="classic" @click="getPiscinesListe('2')">
                                     <label class="form-check-label" for="classic">Piscines classiques</label>
                                 </div>
                                 <div class="col-4 form-check">
-                                    <input class="form-check-input" type="radio" name="type" id="creative" value="Piscines créatives">
+                                    <input class="form-check-input" type="radio" name="type" id="creative" @click="getPiscinesListe('3')">
                                     <label class="form-check-label" for="creative">Piscines créatives</label>
-                                </div></div>
+                                </div>
+                            </div>
                             <div class="row m-2">
                                 <div class="col-12">
                                     <label class="form-check-label" for="select-pool">Choisir sa piscine</label>
-                                    <select class="form-select mb-2" id="select-pool">
-                                        <option v-html="pool.name" :value="pool.name" v-for="pool in poolsList" :key="pool.id"></option>
+                                    <select class="form-select mb-2" id="select-pool" @change="this.getPiscinesDatas($event)">
+                                        <option v-for="pool in poolsList" v-html="pool.nom" :value="pool.nom" :data-image="pool.image" :data-id="pool.id" :key="pool.id"></option>
                                     </select>
                                 </div>
                             </div>
@@ -52,7 +53,7 @@
                             <div class="m-3">
                                 <label class="form-check-label" for="pool-dim">Dimensions</label>
                                 <select class="form-select mb-3" id="pool-dim">
-                                    <option v-for="size in sizes" :key="size.id" :value="size.size" v-html="size.size"></option>
+                                    <option v-for="size in sizes" v-html="size.taille" :key="size.id" :value="size.taille" :data-id="size.id" :data-prix="size.prix"></option>
                                 </select>
                                 <p class="form-check">
                                     <input class="form-check-input" type="radio" name="proof" id="fond-plat" @click="handleRadioClick('fond-plat')">
@@ -81,8 +82,8 @@
                     <div id="escalier-body" class="accordion-collapse collapse" data-bs-parent="#list">
                         <div class="row m-3">
                             <div class="col-6 form-check" v-for="item in escaliers" :key="item.id">
-                                <input class="form-check-input" type="radio" name="escalier" :id="this.sanitizeTitle(item.name)" :data-image="item.image">
-                                <label class="form-check-label" :for="this.sanitizeTitle(item.name)" v-html="item.name"></label>
+                                <input class="form-check-input" type="radio" name="escalier" :id="this.sanitizeTitle(item.nom)" :data-image="item.image">
+                                <label class="form-check-label" :for="this.sanitizeTitle(item.nom)" v-html="item.nom"></label>
                             </div>
                             <div class="col-6 form-check">
                                 <input class="form-check-input" type="radio" name="escalier" id="no-escalier" data-image="">
@@ -150,9 +151,9 @@
                     </div>
                     <div id="color-body" class="accordion-collapse collapse" data-bs-parent="#list">
                         <div class="row m-3">
-                            <div class="col-3 form-check" v-for="color in poolsColors" :key="color.id">
-                                <input class="form-check-input" type="radio" name="color" :id="this.sanitizeTitle(color.name)">
-                                <label class="form-check-label" :for="this.sanitizeTitle(color.name)">{{ color.name }}</label>
+                            <div class="col-3 form-check" v-for="color in colors" :key="color.id">
+                                <input class="form-check-input" type="radio" name="color" :id="this.sanitizeTitle(color.nom)">
+                                <label class="form-check-label" :for="this.sanitizeTitle(color.nom)">{{ color.nom }}</label>
                             </div>
                         </div>    
                     </div>
@@ -274,27 +275,95 @@ export default {
     components: { SelectPiscine },
     data() {
         return {
+            basePoolImg: '',
+
+            selectedPool: '',
+            selectedSize: '',
             selectedOption: '',
             disabledCustomProof: false,
             poolsList: [
-                {'name': "Choisir un type de piscine"},
+                {
+                    'id': 0,
+                    'nom': "Choisir un type de piscine",
+                    'image': ''
+                },
             ],
             sizes: [
-                {"size": "5x5x5 (25 m²)"}
+                {
+                    'id': 0,
+                    'taille': "Sélectionnez une piscine",
+                    'prix': 0.00,
+                }
             ],
-            poolsColors: [
-                {'name': "Bleu"}
+            colors: [
+                {'nom': "Bleu"}
             ],
             escaliers: [
                 {
-                    'name': "Haut - Droite",
-                    'image': "image"
+                    'id': 0,
+                    'nom': "Haut - Droite",
+                    'image': "image",
+                    'prix':	6.45
                 }
             ]
             
         };
     },
     methods: {
+        async getPiscinesListe(id) {
+            this.selectedPool = id;
+            try {
+                const response = await fetch('/api/pool/' + this.selectedPool);
+                this.poolsList = await response.json();
+            } catch (error) {
+                console.error('Erreur lors de la récupération des données:', error);
+            }
+        },
+
+        async getPiscinesDatas(e) {
+            const targetId = e.target.options[e.target.options.selectedIndex].dataset;
+            this.basePoolImg = targetId.image;
+            this.getPiscineTailles(e);
+            this.getPiscineEscaliers(e);
+            this.getPiscineColors(e);
+        },
+
+        async getPiscineTailles(e) {
+            if (e.target.options.selectedIndex > -1) {
+                const targetId = e.target.options[e.target.options.selectedIndex].dataset;
+                try {
+                    const response = await fetch('/api/pool-size/' + targetId.id);
+                    this.sizes = await response.json();
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des données:', error);
+                }
+            }
+        },
+
+        async getPiscineEscaliers(e) {
+            if (e.target.options.selectedIndex > -1) {
+                const targetId = e.target.options[e.target.options.selectedIndex].dataset;
+                try {
+                    const response = await fetch('/api/pool-esc/' + targetId.id);
+                    this.escaliers = await response.json();
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des données:', error);
+                }
+            }
+        },
+
+        async getPiscineColors(e) {
+            if (e.target.options.selectedIndex > -1) {
+                const targetId = e.target.options[e.target.options.selectedIndex].dataset;
+                try {
+                    const response = await fetch('/api/pool-colors/' + targetId.id);
+                    this.colors = await response.json();
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des données:', error);
+                }
+            }
+        },
+
         handleRadioClick(value) {
             this.selectedOption = value;
             this.enableCustomProof();
