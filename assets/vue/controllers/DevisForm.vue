@@ -52,7 +52,7 @@
                         <div id="dim-body" class="accordion-collapse collapse" data-bs-parent="#list">
                             <div class="m-3">
                                 <label class="form-check-label" for="pool-dim">Dimensions</label>
-                                <select class="form-select mb-3" id="pool-dim">
+                                <select class="form-select mb-3" id="pool-dim" @change="this.getPiscineFilters($event)">
                                     <option v-for="size in sizes" v-html="size.taille" :key="size.id" :value="size.taille" :data-id="size.id" :data-prix="size.prix"></option>
                                 </select>
                                 <p class="form-check">
@@ -294,7 +294,7 @@ export default {
             ],
 
             basePoolImg: '',
-            basePoolId: '',
+            basePoolId: '0',
 
             selectedPool: '',
             selectedSize: '',
@@ -325,12 +325,14 @@ export default {
                     'prix':	6.45
                 }
             ],
-            filters: [{
-                'id': 11,
-                'type': 1,
-                'prix': 0,
-                'image': "img.jpg"
-            }]
+            filters: [
+                {
+                    'id': 11,
+                    'type': 1,
+                    'prix': 0,
+                    'image': "img.jpg"
+                }
+            ]
             
         };
     },
@@ -360,7 +362,6 @@ export default {
                 try {
                     const response = await fetch('/api/pool-size/' + targetId.id);
                     this.sizes = await response.json();
-                    await this.getPiscineFilters(this.basePoolId, targetId.id)
                 } catch (error) {
                     console.error('Erreur lors de la récupération des données:', error);
                 }
@@ -379,13 +380,17 @@ export default {
             }
         },
 
-        async getPiscineFilters(id, size) {
-            try {
-                const response = await fetch('/api/pool-filters/' + id + '/' + size);
-                this.filters = await response.json();
-                console.log(this.filters);
-            } catch (error) {
-                console.error('Erreur lors de la récupération des données:', error);
+        async getPiscineFilters(e) {
+            if (e.target !== undefined && e.target.options.selectedIndex > -1) { 
+                const targetId = e.target.options[e.target.options.selectedIndex].dataset;
+                console.log(this.basePoolId + " - " + targetId.id);
+                try {
+                    const response = await fetch('/api/pool-filters/' + this.basePoolId + '/' + targetId.id);
+                    this.filters = await response.json();
+                    console.log(this.filters);
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des données:', error);
+                }
             }
         },
 
