@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Filtrations;
 use App\Entity\PiscineColors;
 use App\Entity\PiscineEsc;
 use App\Entity\PiscineForme;
@@ -35,6 +36,7 @@ class ApiController extends AbstractController
                 'id' => $pool->getId(),
                 'nom' => $pool->getNom(),
                 'image' => $pool->getImage(),
+                'prix' => $pool->getPrix(),
             ];
         }, $pools);
 
@@ -89,6 +91,28 @@ class ApiController extends AbstractController
                 'image' => $size->getColor(),
             ];
         }, $sizes);
+
+        return $this->json($list, 200);
+    }
+
+    #[Route(path: '/api/pool-filters/{poolId}/{size}', name: 'pool_filters')]
+    public function poolFilters(int $poolId, int $size): JsonResponse
+    {
+        $pool = $this->em->getRepository(PiscineListe::class)->find($poolId);
+        $size = $this->em->getRepository(PiscineTailles::class)->find($size);
+        $filters = $this->em->getRepository(Filtrations::class)->findBy([
+            'nom' => $pool,
+            'tailles' => $size
+        ]);
+
+        $list = array_map(function($filter) {
+            return [
+                'id' => $filter->getId(),
+                'type' => $filter->getType(),
+                'prix' => $filter->getPrix(),
+                'image' => $filter->getImage(),
+            ];
+        }, $filters);
 
         return $this->json($list, 200);
     }

@@ -16,7 +16,6 @@ use App\Form\ExtPiscineType;
 use App\Form\FiltrationsType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -114,12 +113,14 @@ class ExtPiscinesController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $image = $form->get('image')->getData();
-            $imageName = md5(uniqid()) . '.' . $image->guessExtension();
-            $image->move(
-                $this->getParameter('images_piscines_dir'),
-                $imageName
-            );
-            $piscine->setImage($imageName);
+            if ($image) {
+                $imageName = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('images_piscines_dir'),
+                    $imageName
+                );
+                $piscine->setImage($imageName);
+            }
 
             $this->em->persist($piscine);
             $this->em->flush();
@@ -139,6 +140,16 @@ class ExtPiscinesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('image')->getData();
+            if ($image) {
+                $imageName = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('images_piscines_dir'),
+                    $imageName
+                );
+                $piscine->setImage($imageName);
+            }
+            
             $this->em->persist($piscine);
             $this->em->flush();
         }

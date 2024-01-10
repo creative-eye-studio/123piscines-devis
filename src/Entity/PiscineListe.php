@@ -21,7 +21,7 @@ class PiscineListe
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
     #[ORM\OneToMany(mappedBy: 'piscine', targetEntity: PiscineTailles::class)]
@@ -35,6 +35,9 @@ class PiscineListe
 
     #[ORM\OneToMany(mappedBy: 'nom', targetEntity: Filtrations::class)]
     private Collection $filtrations;
+
+    #[ORM\Column]
+    private ?float $prix = null;
 
     public function __construct()
     {
@@ -201,6 +204,18 @@ class PiscineListe
                 $filtration->setNom(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPrix(): ?float
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(float $prix): static
+    {
+        $this->prix = $prix;
 
         return $this;
     }

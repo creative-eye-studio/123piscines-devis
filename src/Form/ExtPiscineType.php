@@ -6,6 +6,7 @@ use App\Entity\PiscineForme;
 use App\Entity\PiscineListe;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,6 +24,13 @@ class ExtPiscineType extends AbstractType
                     'class' => 'mb'
                 ]
             ])
+            ->add('prix', NumberType::class, [
+                'label' => "Prix de la piscine",
+                'html5' => true,
+                'row_attr' => [
+                    'class' => 'mb'
+                ]
+            ])
             ->add('forme', EntityType::class, [
                 'class' => PiscineForme::class,
                 'choice_label' => 'nom',
@@ -33,6 +41,8 @@ class ExtPiscineType extends AbstractType
             ->add('image', DropzoneType::class, [
                 'label' => "Image de la piscine",
                 'data_class' => null,
+                'mapped' => false,
+                'required' => false,
                 'row_attr' => [
                     'class' => 'mb'
                 ]

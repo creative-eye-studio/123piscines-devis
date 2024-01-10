@@ -3,17 +3,18 @@
 @import './abstracts/mixins';
 
 // BASE
-@import './base/reset';
-@import './base/typography';
+// @import './base/reset';
+// @import './base/typography';
 
 // COMPONENTS
-@import './components/parallax';
-@import './components/grid';
-@import './components/utils';
-@import './components/buttons';
-@import './components/custom-animate';
+// @import './components/parallax';
+// @import './components/grid';
+// @import './components/utils';
+// @import './components/buttons';
+// @import './components/custom-animate';
 
 // LAYOUT
-@import './layouts/header';
-@import './layouts/navigation';
-@import './layouts/footer';
+@import './layouts/tabs';
+// @import './layouts/header';
+// @import './layouts/navigation';
+// @import './layouts/footer';
