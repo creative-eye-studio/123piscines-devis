@@ -1,12 +1,12 @@
 <template>
 <div class="container">
     <!-- Configuration de la piscine -->
-    <form action="">
+    <form @change="this.updatePrice()">
         <div class="row">
             <!-- Image et prix -->
             <div class="col-7">
-                <p class="text-end">Prix estimé : <span>0000,00</span> € TTC (Hors livraison et agrégats)</p>
-                <img :src='"./uploads/images/piscines/" + basePoolImg' alt="Présentation de la piscine" class="img-fluid">
+                <p class="text-end">Prix estimé : <span v-html="this.quotePrice"></span> € TTC (Hors livraison et agrégats)</p>
+                <img v-if="basePoolImg != ''" :src='"./uploads/images/piscines/" + basePoolImg' alt="Présentation de la piscine" class="img-fluid">
             </div>
             <!-- Configurateur -->
             <div class="col-5 accordion" id="list">
@@ -35,7 +35,7 @@
                                 <div class="col-12">
                                     <label class="form-check-label" for="select-pool">Choisir sa piscine</label>
                                     <select class="form-select mb-2" id="select-pool" @change="this.getPiscinesDatas($event)">
-                                        <option v-for="pool in poolsList" v-html="pool.nom" :value="pool.nom" :data-id="pool.id" :data-image="pool.image" :data-prix="pool.prix" :key="pool.id"></option>
+                                        <option v-for="pool in poolsList" v-html="pool.nom" :value="pool.nom" :data-id="pool.id" :data-image="pool.image" :data-prix=pool.prix :key="pool.id"></option>
                                     </select>
                                 </div>
                             </div>
@@ -52,8 +52,8 @@
                         <div id="dim-body" class="accordion-collapse collapse" data-bs-parent="#list">
                             <div class="m-3">
                                 <label class="form-check-label" for="pool-dim">Dimensions</label>
-                                <select class="form-select mb-3" id="pool-dim">
-                                    <option v-for="size in sizes" v-html="size.taille" :key="size.id" :value="size.taille" :data-id="size.id" :data-prix="size.prix"></option>
+                                <select class="form-select mb-3" id="pool-dim" @change="this.getPiscineFilters($event)">
+                                    <option v-for="size in sizes" v-html="size.taille" :key="size.id" :value="size.taille" :data-id="size.id" :data-prix=size.prix></option>
                                 </select>
                                 <p class="form-check">
                                     <input class="form-check-input" type="radio" name="proof" id="fond-plat" @click="handleRadioClick('fond-plat')">
@@ -82,11 +82,11 @@
                     <div id="escalier-body" class="accordion-collapse collapse" data-bs-parent="#list">
                         <div class="row m-3">
                             <div class="col-6 form-check" v-for="item in escaliers" :key="item.id">
-                                <input class="form-check-input" type="radio" name="escalier" :id="this.sanitizeTitle(item.nom)" :data-prix="item.prix" :data-image="item.image">
+                                <input class="form-check-input" type="radio" name="escalier" :id="this.sanitizeTitle(item.nom)" :data-prix=item.prix :data-image="item.image" @click="this.getEscalierPrix($event)">
                                 <label class="form-check-label" :for="this.sanitizeTitle(item.nom)" v-html="item.nom"></label>
                             </div>
                             <div class="col-6 form-check">
-                                <input class="form-check-input" type="radio" name="escalier" id="no-escalier" data-image="">
+                                <input class="form-check-input" type="radio" name="escalier" id="no-escalier" data-image="" data-prix='0' @click="this.getEscalierPrix($event)">
                                 <label class="form-check-label" for="no-escalier" v-html='"Sans escalier"'></label>
                             </div>
                         </div>  
@@ -125,14 +125,20 @@
                                     name="filtration" 
                                     :id="this.sanitizeTitle(filtersList[filter.type].name)"  
                                     :value="filtersList[filter.type].name"
-                                    :data-prix="filter.prix">
+                                    :data-prix=filter.prix
+                                    @click="this.getFilterPrix($event)">
                                 <label 
                                     class="form-check-label" 
                                     v-html="filtersList[filter.type].name"
                                     :for="this.sanitizeTitle(filtersList[filter.type].name)"></label>
                             </div>
 
-                            <div class="col-6 form-check"><input class="form-check-input" type="radio" name="filtration" id="no-filter"><label class="form-check-label" for="no-filter">Sans rien</label></div>
+                            <div class="col-6 form-check">
+                                <input class="form-check-input" type="radio" name="filtration" id="no-filter"
+                                    :data-prix=0
+                                    @click="this.getFilterPrix($event)">
+                                <label class="form-check-label" for="no-filter">Sans rien</label>
+                            </div>
                         </div>    
                     </div>
                 </div>
@@ -286,6 +292,13 @@ export default {
     components: { SelectPiscine },
     data() {
         return {
+            pricePoolForm: null,
+            pricePoolSize: null,
+            priceEscForm: null,
+            priceFilterForm: null,
+            quotePrice: null,
+
+
             filtersList: [
                 {'name': "Filtre à sable"},
                 {'name': "Bloc filtrant"},
@@ -294,7 +307,7 @@ export default {
             ],
 
             basePoolImg: '',
-            basePoolId: '',
+            basePoolId: '0',
 
             selectedPool: '',
             selectedSize: '',
@@ -325,16 +338,32 @@ export default {
                     'prix':	6.45
                 }
             ],
-            filters: [{
-                'id': 11,
-                'type': 1,
-                'prix': 0,
-                'image': "img.jpg"
-            }]
+            filters: [
+                {
+                    'id': 11,
+                    'type': 1,
+                    'prix': 0,
+                    'image': "img.jpg"
+                }
+            ]
             
         };
     },
     methods: {
+        calculateSum(...values) {
+            return values.reduce((acc, value) => acc + value, 0);
+        },
+
+        async updatePrice() {
+            // Piscine
+            const poolPrice = parseFloat(this.pricePoolForm) || 0;
+            const sizePrice = parseFloat(this.priceSizeForm) || 0;
+            const escPrice = parseFloat(this.priceEscForm) || 0;
+            const filterPrice = parseFloat(this.priceFilterForm) || 0;
+            this.quotePrice = poolPrice + sizePrice + escPrice + filterPrice || parseFloat(0.00);
+            console.log(this.quotePrice);
+        },
+
         async getPiscinesListe(id) {
             this.selectedPool = id;
             try {
@@ -346,12 +375,15 @@ export default {
         },
 
         async getPiscinesDatas(e) {
-            const targetId = e.target.options[e.target.options.selectedIndex].dataset;
-            this.basePoolImg = targetId.image;
-            this.basePoolId = targetId.id;
-            this.getPiscineTailles(e);
-            this.getPiscineEscaliers(e);
-            this.getPiscineColors(e);
+            if (e.target.options[e.target.options.selectedIndex].dataset != undefined) {
+                const targetId = e.target.options[e.target.options.selectedIndex].dataset;
+                this.basePoolImg = targetId.image;
+                this.basePoolId = targetId.id;
+                this.pricePoolForm = targetId.prix;
+                this.getPiscineTailles(e);
+                this.getPiscineEscaliers(e);
+                this.getPiscineColors(e);    
+            }
         },
 
         async getPiscineTailles(e) {
@@ -360,7 +392,6 @@ export default {
                 try {
                     const response = await fetch('/api/pool-size/' + targetId.id);
                     this.sizes = await response.json();
-                    await this.getPiscineFilters(this.basePoolId, targetId.id)
                 } catch (error) {
                     console.error('Erreur lors de la récupération des données:', error);
                 }
@@ -379,14 +410,27 @@ export default {
             }
         },
 
-        async getPiscineFilters(id, size) {
-            try {
-                const response = await fetch('/api/pool-filters/' + id + '/' + size);
-                this.filters = await response.json();
-                console.log(this.filters);
-            } catch (error) {
-                console.error('Erreur lors de la récupération des données:', error);
+        async getEscalierPrix(e) {
+            const targetId = e.target.dataset;
+            this.priceEscForm = targetId.prix;
+        },
+
+        async getPiscineFilters(e) {
+            if (e.target !== undefined && e.target.options.selectedIndex > -1) { 
+                const targetId = e.target.options[e.target.options.selectedIndex].dataset;
+                try {
+                    const response = await fetch('/api/pool-filters/' + this.basePoolId + '/' + targetId.id);
+                    this.filters = await response.json();
+                    this.priceSizeForm = targetId.prix;
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des données:', error);
+                }
             }
+        },
+
+        async getFilterPrix(e) {
+            const targetId = e.target.dataset;
+            this.priceFilterForm = targetId.prix;
         },
 
         async getPiscineColors(e) {
