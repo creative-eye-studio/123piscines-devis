@@ -78,3 +78,22 @@ a{
 .mb{
     margin-bottom: 1.75rem;
 }
+
+
+#ext_piscine_securite {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    label {
+        margin: 0 1rem 0 .5rem;
+    }
+}
+
+#securite-prix {
+    display: flex;
+    gap: 2rem;
+    div {
+        flex-grow: 1;
+        flex-basis: 0;
+    }
+}

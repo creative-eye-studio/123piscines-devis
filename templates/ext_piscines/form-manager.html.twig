@@ -5,6 +5,22 @@
 {% block body %}
 <section class="block">
     <h2>{{ title }}</h2>
-    {{ form(form) }}
+    {{ form_start(form) }}
+        {{ form_row(form.nom) }}
+        {{ form_row(form.prix) }}
+
+        <hr />
+        
+        {{ form_row(form.securite) }}
+
+        <div id="securite-prix">
+            {{ form_row(form.alarme_prix) }}
+            {{ form_row(form.couverture_prix) }}
+            {{ form_row(form.barriere_prix) }}
+        </div>
+
+        <hr />
+
+    {{ form_end(form) }}
 </section>
 {% endblock %}

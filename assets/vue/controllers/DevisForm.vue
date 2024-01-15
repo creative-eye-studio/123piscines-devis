@@ -35,6 +35,7 @@
                                 <div class="col-12">
                                     <label class="form-check-label" for="select-pool">Choisir sa piscine</label>
                                     <select class="form-select mb-2" id="select-pool" @change="this.getPiscinesDatas($event)">
+                                        <option value=""></option>
                                         <option v-for="pool in poolsList" v-html="pool.nom" :value="pool.nom" :data-id="pool.id" :data-image="pool.image" :data-prix=pool.prix :key="pool.id"></option>
                                     </select>
                                 </div>
@@ -92,22 +93,6 @@
                         </div>  
                     </div>
                 </div>
-
-                <!-- Petit bain / Échelle -->
-                <!-- <div class="accordion-item">
-                    <div class="accordion-header">
-                       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#perso-body" aria-expanded="true" aria-controls="personnalisation-body">
-                            Petit bain / Échelle
-                        </button>
-                    </div>
-                    <div id="perso-body" class="accordion-collapse collapse" data-bs-parent="#list">
-                        <div class="row m-3">
-                            <div class="col-4 form-check"><input class="form-check-input" type="radio" name="personnalisation" id="petit-bain"><label class="form-check-label" for="petit-bain">Petit-bain</label></div>
-                            <div class="col-4 form-check"><input class="form-check-input" type="radio" name="personnalisation" id="echelle"><label class="form-check-label" for="echelle">Échelle</label></div>
-                            <div class="col-4 form-check"><input class="form-check-input" type="radio" name="personnalisation" id="sans-perso"><label class="form-check-label" for="sans-perso">Sans personnalisation</label></div>
-                        </div>    
-                    </div>
-                </div>  -->
                 
                 <!-- Système de filtration -->
                 <div class="accordion-item">
