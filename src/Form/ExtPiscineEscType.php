@@ -30,43 +30,34 @@ class ExtPiscineEscType extends AbstractType
                     'class' => 'mb'
                 ]
             ])
-            ->add('color', ChoiceType::class, [
-                'choices' => [
-                    "Sans couleurs" => 0,
-                    "Blanc" => 1,
-                    "Bleu" => 2,
-                    "Vert" => 3,
-                    "Turquoise" => 4,
-                ],
-                'row_attr' => [
-                    'class' => 'mb'
-                ],
-                'label' => "Type d'élément",
-            ])
             ->add('type', ChoiceType::class, [
                 'choices' => [
                     "Petit bain" => 0,
                     "Escalier" => 1,
                     "Échelle" => 2,
-                    "SPA à débordement" => 3,
-                    "Alarme volumétrique" => 4,
-                    "Couverture de sécurité" => 5,
-                    "Barrière normalisée" => 6,
+                    // "Filtre à sable" => 3,
+                    // "Bloc filtrant" => 4,
+                    // "Éco responsable" => 5,
+                    "Revètement polymère" => 6,
+                    "SPA à débordement" => 7,
+                    "Alarme volumétrique" => 8,
+                    "Couverture de sécurité" => 9,
+                    "Barrière normalisée" => 10,
                 ],
                 'row_attr' => [
                     'class' => 'mb'
                 ],
                 'label' => "Type d'élément",
             ])
-            ->add('description', TextareaType::class, [
-                'label' => "Description (optionnel)",
-                'required' => false,
+            ->add('image', DropzoneType::class, [
+                'data_class' => null,
                 'row_attr' => [
                     'class' => 'mb'
                 ]
             ])
-            ->add('image', DropzoneType::class, [
-                'data_class' => null,
+            ->add('description', TextareaType::class, [
+                'label' => "Description (optionnel)",
+                'required' => false,
                 'row_attr' => [
                     'class' => 'mb'
                 ]

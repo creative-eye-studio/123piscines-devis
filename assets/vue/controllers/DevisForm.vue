@@ -76,27 +76,27 @@
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#escalier-body" aria-expanded="true" aria-controls="personnalisation-body">
-                            Escalier
+                            Accessoires
                         </button>
                     </div>
                     <div id="escalier-body" class="accordion-collapse collapse" data-bs-parent="#list">
                         <div class="row m-3">
-                            <div class="col-6 form-check" v-for="item in escaliers" :key="item.id">
+                            <div class="col-4 form-check" v-for="item in escaliers" :key="item.id">
                                 <input class="form-check-input" type="radio" name="escalier" :id="this.sanitizeTitle(item.nom)" :data-prix=item.prix :data-image="item.image" @click="this.getEscalierPrix($event)">
-                                <label class="form-check-label" :for="this.sanitizeTitle(item.nom)" v-html="item.nom"></label>
+                                <label class="form-check-label" :for="this.sanitizeTitle(item.nom)" v-html="accessoires[item.type] + ' - (' +  item.nom + ')'"></label>
                             </div>
-                            <div class="col-6 form-check">
+                            <div class="col-4 form-check">
                                 <input class="form-check-input" type="radio" name="escalier" id="no-escalier" data-image="" data-prix='0' @click="this.getEscalierPrix($event)">
-                                <label class="form-check-label" for="no-escalier" v-html='"Sans escalier"'></label>
+                                <label class="form-check-label" for="no-escalier" v-html='"Sans accessoire"'></label>
                             </div>
                         </div>  
                     </div>
                 </div>
 
                 <!-- Petit bain / Échelle -->
-                <div class="accordion-item">
+                <!-- <div class="accordion-item">
                     <div class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#perso-body" aria-expanded="true" aria-controls="personnalisation-body">
+                       <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#perso-body" aria-expanded="true" aria-controls="personnalisation-body">
                             Petit bain / Échelle
                         </button>
                     </div>
@@ -107,7 +107,7 @@
                             <div class="col-4 form-check"><input class="form-check-input" type="radio" name="personnalisation" id="sans-perso"><label class="form-check-label" for="sans-perso">Sans personnalisation</label></div>
                         </div>    
                     </div>
-                </div>
+                </div>  -->
                 
                 <!-- Système de filtration -->
                 <div class="accordion-item">
@@ -243,7 +243,6 @@
                             </div>    
                         </div>
                     </div>
-
                 </div>
 
                 <!-- Contact -->
@@ -297,6 +296,17 @@ export default {
             priceEscForm: null,
             priceFilterForm: null,
             quotePrice: null,
+
+            accessoires: [
+                "Petit bain",
+                "Escalier",
+                "Échelle",
+                "Revètement polymère",
+                "SPA à débordement",
+                "Alarme volumétrique",
+                "Couverture de sécurité",
+                "Barrière normalisée"
+            ],
 
 
             filtersList: [

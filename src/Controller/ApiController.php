@@ -70,6 +70,7 @@ class ApiController extends AbstractController
             return [
                 'id' => $size->getId(),
                 'nom' => $size->getNom(),
+                'type' => $size->getType(),
                 'image' => $size->getImage(),
                 'prix' => $size->getPrix(),
             ];
