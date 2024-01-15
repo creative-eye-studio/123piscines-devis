@@ -15,7 +15,7 @@
                 {{ dim.prix | number_format(2, '.', ',') }} €
             </p>
             <ul>
-                <li>Supprimer</li>
+                <li><a href="{{ path('app_dims_delete', {id: dim.id}) }}">Supprimer</a></li>
             </ul>
         </div>
     {% endfor %}

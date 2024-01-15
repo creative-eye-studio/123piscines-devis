@@ -188,6 +188,27 @@ class ExtPiscinesController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/piscines/delete-dim/{id}', name: 'app_dims_delete')]
+    public function dimensionDelete(Request $request, int $id)
+    {
+        $dim = $this->em->getRepository(PiscineTailles::class)->findOneBy(['id' => $id]);
+
+        // Suppression des filtrations
+        $filters = $this->em->getRepository(Filtrations::class)->findBy(['tailles' => $id]);
+        array_map(function($filter) {
+            $this->em->remove($filter);
+            $this->em->flush();
+        }, $filters);
+
+        $this->em->remove($dim);
+        $this->em->flush();
+
+        $route = $request->headers->get('referer');
+
+        return $this->redirect($route);
+    }
+
+
     #[Route('/admin/piscines/accessoires/{id}', name: 'app_esc_bain')]
     public function escaliers(Request $request, int $id)
     {
