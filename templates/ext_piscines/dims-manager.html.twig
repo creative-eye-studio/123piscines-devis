@@ -32,8 +32,17 @@
     {% for dim in dims %}
         <div class="line">
             <p>
-                {{ dim.taille }}<br />
-                {{ dim.prix | number_format(2, '.', ',') }} €
+                    {{ dim.taille }}<br />
+                    {{ dim.prix | number_format(2, '.', ',') }} €<br />
+                    {% if dim.secualarme %}
+                        <span>- Alarme volumétrique : {{ dim.secualarmeprix }} €</span><br />
+                    {% endif %}
+                    {% if dim.secucover %}
+                        <span>- Couverture de sécurité : {{ dim.secucoverprix }} €</span><br />
+                    {% endif %}
+                    {% if dim.secubarrier %}
+                        <span>- Barrière normalisée : {{ dim.secubarrierprix }} €</span><br />
+                    {% endif %}
             </p>
             <ul>
                 <li><a href="{{ path('app_dims_delete', {id: dim.id}) }}">Supprimer</a></li>
