@@ -31,7 +31,7 @@ class FiltrationsType extends AbstractType
 
         $builder
             ->add('nom', EntityType::class, [
-                'label' => "Nom de la filtration",
+                'label' => "Nom de la piscine",
                 'class' => PiscineListe::class,
                 'choice_label' => 'nom',
                 'row_attr' => [
