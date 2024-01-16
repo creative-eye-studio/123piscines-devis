@@ -183,8 +183,35 @@ class ExtPiscinesController extends AbstractController
 
         return $this->render('ext_piscines/dims-manager.html.twig', [
             'title' => "Dimensions de la piscine : " . $piscine->getNom() . " ",
+            'poolId' => $piscine->getId(),
             'form' => $form->createView(),
             'dims' => $dims,
+        ]);
+    }
+
+    #[Route('/admin/piscines/dim-update/{poolid}/{id}', name: 'app_dims_update')]
+    public function dimUpdate(Request $request, int $poolid, int $id) 
+    {
+        $piscine = $this->em->getRepository(PiscineListe::class)->find($poolid);
+        $taille = $this->em->getRepository(PiscineTailles::class)->find($id);
+
+        $form = $this->createForm(ExtPiscineTaillesType::class, $taille);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $taille->setPiscine($piscine);
+            $this->em->persist($taille);
+            $this->em->flush();
+
+            $referer = $request->headers->get('referer');
+            $response = new RedirectResponse($referer);
+
+            return $this->redirectToRoute('app_dims', ['id' => $piscine->getId()]);
+        }
+
+        return $this->render('ext_piscines/dim-update.html.twig', [
+            'title' => "Modifier une taille de piscine",
+            'form' => $form->createView(),
         ]);
     }
 
