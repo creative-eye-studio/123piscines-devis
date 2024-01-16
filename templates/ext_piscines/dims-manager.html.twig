@@ -5,7 +5,28 @@
 {% block body %}
 <section class="block">
     <h2>{{ title }}</h2>
-    {{ form(form) }}
+    {{ form_start(form) }}
+        {{ form_row(form.taille) }}
+        {{ form_row(form.prix) }}
+
+        {{ form_label(form.secu_alarme) }}
+        <div class="secu-item">
+            {{ form_widget(form.secu_alarme) }}
+            {{ form_widget(form.secu_alarme_prix) }}
+        </div>
+
+        {{ form_label(form.secu_cover) }}
+        <div class="secu-item">
+            {{ form_widget(form.secu_cover) }}
+            {{ form_widget(form.secu_cover_prix) }}
+        </div>
+
+        {{ form_label(form.secu_barrier) }}
+        <div class="secu-item">
+            {{ form_widget(form.secu_barrier) }}
+            {{ form_widget(form.secu_barrier_prix) }}
+        </div>
+    {{ form_end(form) }}
     <hr>
     <h3>Liste des dimensions</h3>
     {% for dim in dims %}

@@ -24,6 +24,24 @@ class PiscineTailles
     #[ORM\Column]
     private ?float $prix = null;
 
+    #[ORM\Column]
+    private ?bool $secu_alarme = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $secu_alarme_prix = null;
+
+    #[ORM\Column]
+    private ?bool $secu_cover = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $secu_cover_prix = null;
+
+    #[ORM\Column]
+    private ?bool $secu_barrier = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $secu_barrier_prix = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,6 +79,78 @@ class PiscineTailles
     public function setPrix(float $prix): static
     {
         $this->prix = $prix;
+
+        return $this;
+    }
+
+    public function isSecuAlarme(): ?bool
+    {
+        return $this->secu_alarme;
+    }
+
+    public function setSecuAlarme(bool $secu_alarme): static
+    {
+        $this->secu_alarme = $secu_alarme;
+
+        return $this;
+    }
+
+    public function getSecuAlarmePrix(): ?float
+    {
+        return $this->secu_alarme_prix;
+    }
+
+    public function setSecuAlarmePrix(?float $secu_alarme_prix): static
+    {
+        $this->secu_alarme_prix = $secu_alarme_prix;
+
+        return $this;
+    }
+
+    public function isSecuCover(): ?bool
+    {
+        return $this->secu_cover;
+    }
+
+    public function setSecuCover(bool $secu_cover): static
+    {
+        $this->secu_cover = $secu_cover;
+
+        return $this;
+    }
+
+    public function getSecuCoverPrix(): ?float
+    {
+        return $this->secu_cover_prix;
+    }
+
+    public function setSecuCoverPrix(?float $secu_cover_prix): static
+    {
+        $this->secu_cover_prix = $secu_cover_prix;
+
+        return $this;
+    }
+
+    public function isSecuBarrier(): ?bool
+    {
+        return $this->secu_barrier;
+    }
+
+    public function setSecuBarrier(bool $secu_barrier): static
+    {
+        $this->secu_barrier = $secu_barrier;
+
+        return $this;
+    }
+
+    public function getSecuBarrierPrix(): ?float
+    {
+        return $this->secu_barrier_prix;
+    }
+
+    public function setSecuBarrierPrix(?float $secu_barrier_prix): static
+    {
+        $this->secu_barrier_prix = $secu_barrier_prix;
 
         return $this;
     }

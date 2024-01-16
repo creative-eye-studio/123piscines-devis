@@ -33,36 +33,6 @@ class ExtPiscineType extends AbstractType
                 ]
             ])
 
-            ->add('securite', ChoiceType::class, [
-                'label' => "Accessoires de sécurité",
-                'expanded' => true,
-                'multiple' => true,
-                'required' => false,
-                'choices' => [
-                    "Alarme volumétrique" => 0,
-                    "Couverture de sécurité" => 1,
-                    "Barrière normalisée" => 2
-                ],
-            ])
-
-            ->add('alarme_prix', NumberType::class, [
-                'label' => "Prix de l'alarme",
-                'html5' => true,
-                'required' => false,
-            ])
-
-            ->add('couverture_prix', NumberType::class, [
-                'label' => "Prix de la couverture",
-                'html5' => true,
-                'required' => false,
-            ])
-
-            ->add('barriere_prix', NumberType::class, [
-                'label' => "Prix de la barrière",
-                'html5' => true,
-                'required' => false,
-            ])
-
             ->add('forme', EntityType::class, [
                 'class' => PiscineForme::class,
                 'choice_label' => 'nom',

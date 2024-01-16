@@ -39,18 +39,6 @@ class PiscineListe
     #[ORM\Column]
     private ?float $prix = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?array $securite = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?float $alarme_prix = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?float $couverture_prix = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?float $barriere_prix = null;
-
     public function __construct()
     {
         $this->piscineTailles = new ArrayCollection();
@@ -228,54 +216,6 @@ class PiscineListe
     public function setPrix(float $prix): static
     {
         $this->prix = $prix;
-
-        return $this;
-    }
-
-    public function getSecurite(): ?array
-    {
-        return $this->securite;
-    }
-
-    public function setSecurite(?array $securite): static
-    {
-        $this->securite = $securite;
-
-        return $this;
-    }
-
-    public function getAlarmePrix(): ?float
-    {
-        return $this->alarme_prix;
-    }
-
-    public function setAlarmePrix(?float $alarme_prix): static
-    {
-        $this->alarme_prix = $alarme_prix;
-
-        return $this;
-    }
-
-    public function getCouverturePrix(): ?float
-    {
-        return $this->couverture_prix;
-    }
-
-    public function setCouverturePrix(?float $couverture_prix): static
-    {
-        $this->couverture_prix = $couverture_prix;
-
-        return $this;
-    }
-
-    public function getBarrierePrix(): ?float
-    {
-        return $this->barriere_prix;
-    }
-
-    public function setBarrierePrix(?float $barriere_prix): static
-    {
-        $this->barriere_prix = $barriere_prix;
 
         return $this;
     }
