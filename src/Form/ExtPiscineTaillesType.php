@@ -10,12 +10,22 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\UX\Dropzone\Form\DropzoneType;
 
 class ExtPiscineTaillesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('image', DropzoneType::class, [
+                'label' => "Image de la dimension",
+                'required' => false,
+                'data_class' => null,
+                'mapped' => false,
+                'row_attr' => [
+                    'class' => 'mb'
+                ]
+            ])
             ->add('taille', TextType::class, [
                 'label' => "Nouvelle dimension",
                 'row_attr' => [

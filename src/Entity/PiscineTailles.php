@@ -42,6 +42,9 @@ class PiscineTailles
     #[ORM\Column(nullable: true)]
     private ?float $secu_barrier_prix = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -151,6 +154,18 @@ class PiscineTailles
     public function setSecuBarrierPrix(?float $secu_barrier_prix): static
     {
         $this->secu_barrier_prix = $secu_barrier_prix;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }

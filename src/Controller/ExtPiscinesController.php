@@ -171,6 +171,16 @@ class ExtPiscinesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('image')->getData();
+            if ($image) {
+                $imageName = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('tailles_img_dir'),
+                    $imageName
+                );
+                $piscine->setImage($imageName);
+            }
+
             $taille->setPiscine($piscine);
             $this->em->persist($taille);
             $this->em->flush();
@@ -199,6 +209,16 @@ class ExtPiscinesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('image')->getData();
+            if ($image) {
+                $imageName = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('tailles_img_dir'),
+                    $imageName
+                );
+                $piscine->setImage($imageName);
+            }
+
             $taille->setPiscine($piscine);
             $this->em->persist($taille);
             $this->em->flush();

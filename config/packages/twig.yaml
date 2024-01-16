@@ -11,6 +11,7 @@ twig:
         mailjet_private: ''
         posts_img_directory: '/uploads/images/posts'
         piscines_img_dir: '/uploads/images/piscines'
+        tailles_img_dir: '/uploads/images/tailles'
         esc_img_dir: '/uploads/images/escs'
         color_img_dir: '/uploads/images/colors'
 
