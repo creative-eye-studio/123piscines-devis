@@ -281,6 +281,19 @@ class ExtPiscinesController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/piscines/delete-color/{id}', name: 'app_color_delete')]
+    public function deleteColor(Request $request, int $id)
+    {
+        $color = $this->em->getRepository(PiscineColors::class)->find($id);
+
+        $this->em->remove($color);
+        $this->em->flush();
+
+        $route = $request->headers->get('referer');
+
+        return $this->redirect($route);
+    }
+
     
     #[Route(path: '/admin/piscines/filtrations', name: 'app_create_filter')]
     public function filters(Request $request): Response
