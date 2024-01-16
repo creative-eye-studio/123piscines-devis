@@ -25,11 +25,10 @@ class ApiController extends AbstractController
         $this->request = $request->getCurrentRequest();
     }
 
-    #[Route('/api/pool/{typeId}', name: 'pool_type')]
-    public function poolType(int $typeId): JsonResponse
+    #[Route('/api/pools', name: 'pool_type')]
+    public function poolType(): JsonResponse
     {
-        $type = $this->em->getRepository(PiscineForme::class)->find($typeId);
-        $pools = $this->em->getRepository(PiscineListe::class)->findBy(['forme' => $type]);
+        $pools = $this->em->getRepository(PiscineListe::class)->findAll();
 
         $list = array_map(function($pool) {
             return [

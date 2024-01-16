@@ -17,20 +17,6 @@
                             Type de piscine
                         </button>
                         <div id="type-body" class="accordion-collapse collapse" data-bs-parent="#list">
-                            <div class="row m-3">
-                                <div class="col-4 form-check">
-                                    <input class="form-check-input" type="radio" name="type" id="origin" @click="getPiscinesListe('1')">
-                                    <label class="form-check-label" for="origin">Piscines originales</label>
-                                </div>
-                                <div class="col-4 form-check">
-                                    <input class="form-check-input" type="radio" name="type" id="classic" @click="getPiscinesListe('2')">
-                                    <label class="form-check-label" for="classic">Piscines classiques</label>
-                                </div>
-                                <div class="col-4 form-check">
-                                    <input class="form-check-input" type="radio" name="type" id="creative" @click="getPiscinesListe('3')">
-                                    <label class="form-check-label" for="creative">Piscines créatives</label>
-                                </div>
-                            </div>
                             <div class="row m-2">
                                 <div class="col-12">
                                     <label class="form-check-label" for="select-pool">Choisir sa piscine</label>
@@ -344,6 +330,9 @@ export default {
             
         };
     },
+    mounted() {
+        this.getPiscinesListe()
+    },
     methods: {
         calculateSum(...values) {
             return values.reduce((acc, value) => acc + value, 0);
@@ -359,10 +348,9 @@ export default {
             console.log(this.quotePrice);
         },
 
-        async getPiscinesListe(id) {
-            this.selectedPool = id;
+        async getPiscinesListe() {
             try {
-                const response = await fetch('/api/pool/' + this.selectedPool);
+                const response = await fetch('/api/pools');
                 this.poolsList = await response.json();
             } catch (error) {
                 console.error('Erreur lors de la récupération des données:', error);
