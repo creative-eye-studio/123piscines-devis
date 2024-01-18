@@ -178,7 +178,7 @@ class ExtPiscinesController extends AbstractController
                     $this->getParameter('tailles_img_dir'),
                     $imageName
                 );
-                $piscine->setImage($imageName);
+                $taille->setImage($imageName);
             }
 
             $taille->setPiscine($piscine);
@@ -216,7 +216,7 @@ class ExtPiscinesController extends AbstractController
                     $this->getParameter('tailles_img_dir'),
                     $imageName
                 );
-                $piscine->setImage($imageName);
+                $taille->setImage($imageName);
             }
 
             $taille->setPiscine($piscine);
