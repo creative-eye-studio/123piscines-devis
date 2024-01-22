@@ -4,9 +4,11 @@
     <form @change="this.updatePrice()">
         <div class="row">
             <!-- Image et prix -->
-            <div class="col-7">
+            <div class="col-7 position-relative">
                 <p class="text-end">Prix estimé : <span v-html="this.quotePrice"></span> € TTC (Hors livraison et agrégats)</p>
-                <img v-if="basePoolImg != ''" :src='"./uploads/images/piscines/" + basePoolImg' alt="Présentation de la piscine" class="img-fluid">
+                <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg' alt="Présentation de la piscine" class="img-fluid position-absolute">
+                <img v-if="basePoolImgFond != '' && this.selectedOption !== '' && this.selectedOption !== 'fond-perso'" :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond" class="img-fluid position-absolute">
+
             </div>
             <!-- Configurateur -->
             <div class="col-5 accordion" id="list">
@@ -28,6 +30,7 @@
                                             :value="pool.nom" 
                                             :data-id="pool.id" 
                                             :data-image="pool.image" 
+                                            :data-fond=pool.fond
                                             :data-prix=pool.prix
                                             :key="pool.id"></option>
                                     </select>
@@ -55,6 +58,7 @@
                                         :value="size.taille" 
                                         :data-id="size.id" 
                                         :data-prix=size.prix
+                                        :data-image=size.image
                                         :data-alarme=size.alarme
                                         :data-cover=size.cover
                                         :data-barrier=size.barrier
@@ -324,6 +328,7 @@ export default {
             ],
 
             basePoolImg: '',
+            basePoolImgFond: '',
             basePoolId: '0',
 
             selectedPool: '',
@@ -397,7 +402,8 @@ export default {
         async getPiscinesDatas(e) {
             if (e.target.options[e.target.options.selectedIndex].dataset != undefined) {
                 const targetId = e.target.options[e.target.options.selectedIndex].dataset;
-                this.basePoolImg = targetId.image;
+                this.basePoolImg = '/piscines/' + targetId.image;
+                this.basePoolImgFond = '/piscines/' + targetId.fond;
                 this.basePoolId = targetId.id;
                 this.pricePoolForm = targetId.prix;
                 this.getPiscineTailles(e);
@@ -426,12 +432,6 @@ export default {
                     return;
                 }
                 this.sizeDatas = await response.json();
-                // this.alarmBool = this.sizeDatas.alarme;
-                // this.coverBool = this.sizeDatas.cover;
-                // this.barrierBool = this.sizeDatas.barrier;
-                // this.alarmPrice = this.sizeDatas.alarmeprix;
-                // this.coverPrice = this.sizeDatas.coverprix;
-                // this.barrierPrice = this.sizeDatas.barrierprix;
 
             } catch (error) {
                 console.error('Erreur lors de la récupération des données:', error);
@@ -459,6 +459,7 @@ export default {
             if (e.target !== undefined && e.target.options.selectedIndex > -1) { 
                 const targetId = e.target.options[e.target.options.selectedIndex].dataset;
                 try {
+                    this.basePoolImg = '/tailles/' + targetId.image;
                     this.priceSizeForm = targetId.prix;
                     this.alarmBool = targetId.alarme;
                     // this.coverBool = targetId.cover;

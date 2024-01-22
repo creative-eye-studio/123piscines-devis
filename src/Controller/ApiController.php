@@ -35,6 +35,7 @@ class ApiController extends AbstractController
                 'id' => $pool->getId(),
                 'nom' => $pool->getNom(),
                 'image' => $pool->getImage(),
+                'fond' => $pool->getImageFond(),
                 'prix' => $pool->getPrix(),
             ];
         }, $pools);
@@ -53,6 +54,7 @@ class ApiController extends AbstractController
                 'id' => $size->getId(),
                 'taille' => $size->getTaille(),
                 'prix' => $size->getPrix(),
+                'image' => $size->getImage(),
                 'alarme' => $size->isSecuAlarme(),
                 'cover' => $size->isSecuCover(),
                 'barrier' => $size->isSecuBarrier(),

@@ -39,6 +39,9 @@ class PiscineListe
     #[ORM\Column]
     private ?float $prix = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageFond = null;
+
     public function __construct()
     {
         $this->piscineTailles = new ArrayCollection();
@@ -216,6 +219,18 @@ class PiscineListe
     public function setPrix(float $prix): static
     {
         $this->prix = $prix;
+
+        return $this;
+    }
+
+    public function getImageFond(): ?string
+    {
+        return $this->imageFond;
+    }
+
+    public function setImageFond(?string $imageFond): static
+    {
+        $this->imageFond = $imageFond;
 
         return $this;
     }
