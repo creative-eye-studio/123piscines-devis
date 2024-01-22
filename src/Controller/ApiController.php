@@ -53,10 +53,33 @@ class ApiController extends AbstractController
                 'id' => $size->getId(),
                 'taille' => $size->getTaille(),
                 'prix' => $size->getPrix(),
+                'alarme' => $size->isSecuAlarme(),
+                'cover' => $size->isSecuCover(),
+                'barrier' => $size->isSecuBarrier(),
+                'alarme_prix' => $size->getSecuAlarmePrix(),
+                'cover_prix' => $size->getSecuCoverPrix(),
+                'barrier_prix' => $size->getSecuBarrierPrix(),
             ];
         }, $sizes);
 
         return $this->json($list, 200);
+    }
+
+    #[Route('/api/pool-size/{poolId}/data', name: 'pool_data')]
+    public function poolSizeData(int $poolId): JsonResponse
+    {
+        $pool = $this->em->getRepository(PiscineListe::class)->find($poolId);
+        $size = $this->em->getRepository(PiscineTailles::class)->findOneBy($poolId);
+        $data =  [
+            'alarme' => $size->isSecuAlarme(),
+            'alarme_prix' => $size->getSecuAlarmePrix(),
+            'cover' => $size->isSecuCover(),
+            'cover_prix' => $size->getSecuCoverPrix(),
+            'barrier' => $size->isSecuBarrier(),
+            'barrier_prix' => $size->getSecuBarrierPrix(),
+        ];
+
+        return $this->json($data, 200);
     }
 
     #[Route(path: '/api/pool-esc/{poolId}', name: 'pool_esc')]

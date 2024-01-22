@@ -14,7 +14,7 @@
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#type-body" aria-expanded="true" aria-controls="collapseOne">
-                            Type de piscine
+                            Piscine
                         </button>
                         <div id="type-body" class="accordion-collapse collapse" data-bs-parent="#list">
                             <div class="row m-2">
@@ -22,7 +22,14 @@
                                     <label class="form-check-label" for="select-pool">Choisir sa piscine</label>
                                     <select class="form-select mb-2" id="select-pool" @change="this.getPiscinesDatas($event)">
                                         <option value=""></option>
-                                        <option v-for="pool in poolsList" v-html="pool.nom" :value="pool.nom" :data-id="pool.id" :data-image="pool.image" :data-prix=pool.prix :key="pool.id"></option>
+                                        <option 
+                                            v-for="pool in poolsList" 
+                                            v-html="pool.nom" 
+                                            :value="pool.nom" 
+                                            :data-id="pool.id" 
+                                            :data-image="pool.image" 
+                                            :data-prix=pool.prix
+                                            :key="pool.id"></option>
                                     </select>
                                 </div>
                             </div>
@@ -40,7 +47,20 @@
                             <div class="m-3">
                                 <label class="form-check-label" for="pool-dim">Dimensions</label>
                                 <select class="form-select mb-3" id="pool-dim" @change="this.getPiscineFilters($event)">
-                                    <option v-for="size in sizes" v-html="size.taille" :key="size.id" :value="size.taille" :data-id="size.id" :data-prix=size.prix></option>
+                                    <option value="" data-prix='0'></option>
+                                    <option 
+                                        v-for="size in sizes" 
+                                        v-html="size.taille" 
+                                        :key="size.id" 
+                                        :value="size.taille" 
+                                        :data-id="size.id" 
+                                        :data-prix=size.prix
+                                        :data-alarme=size.alarme
+                                        :data-cover=size.cover
+                                        :data-barrier=size.barrier
+                                        :data-alarmeprix=size.alarme_prix
+                                        :data-coverprix=size.cover_prix
+                                        :data-barrierprix=size.barrier_prix></option>
                                 </select>
                                 <p class="form-check">
                                     <input class="form-check-input" type="radio" name="proof" id="fond-plat" @click="handleRadioClick('fond-plat')">
@@ -59,11 +79,11 @@
                     </div>
                 </div>
 
-                <!-- Escalier -->
+                <!-- Equipement -->
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#escalier-body" aria-expanded="true" aria-controls="personnalisation-body">
-                            Accessoires
+                            Équipement
                         </button>
                     </div>
                     <div id="escalier-body" class="accordion-collapse collapse" data-bs-parent="#list">
@@ -157,8 +177,10 @@
 
                     <div id="secure-body" class="accordion-collapse collapse" data-bs-parent="#list">
                         <div class="row m-3">
-                            <div class="row mb-2">
-                                <div class="col-1"><input class="form-check-input" type="radio" name="securite" id="alarme"></div>
+                            <div class="row mb-2" v-if="alarmBool">
+                                <div class="col-1">
+                                    <input class="form-check-input" type="radio" name="securite" id="alarme" :value="'Alarme volumétrique | ' + alarmPrice" v-model="selectedSecurityIndex" @change="handleSecurityChange">
+                                </div>
                                 <div class="col-11 form-check">
                                     <label class="form-check-label" for="alarme">
                                         <span>
@@ -171,8 +193,10 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-2">
-                                <div class="col-1"><input class="form-check-input" type="radio" name="securite" id="couverture"></div>
+                            <div class="row mb-2" v-if="coverBool">
+                                <div class="col-1">
+                                    <input class="form-check-input" type="radio" name="securite" id="couverture" :value="'Couverture de sécurité | ' + coverPrice" v-model="selectedSecurityIndex" @change="handleSecurityChange">
+                                </div>
                                 <div class="col-11 form-check">
                                     <label class="form-check-label" for="couverture">
                                         <span>
@@ -185,8 +209,10 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-2">
-                                <div class="col-1"><input class="form-check-input" type="radio" name="securite" id="barriere"></div>
+                            <div class="row mb-2" v-if="barrierBool">
+                                <div class="col-1">
+                                    <input class="form-check-input" type="radio" name="securite" id="barriere" :value="'Barrière normalisée | ' + barrierPrice" v-model="selectedSecurityIndex" @change="handleSecurityChange">
+                                </div>
                                 <div class="col-11 form-check">
                                     <label class="form-check-label" for="barriere">
                                         <span>
@@ -200,7 +226,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-1"><input class="form-check-input" type="radio" name="securite" id="no-secure"></div>
+                                <div class="col-1"><input class="form-check-input" type="radio" name="securite" id="no-secure" value='Sans système de sécurité | 0' v-model="selectedSecurityIndex" @change="handleSecurityChange"></div>
                                 <div class="col-11 form-check">
                                     <label class="form-check-label" for="no-secure">
                                         <span>
@@ -220,7 +246,7 @@
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#contact-body" aria-expanded="true" aria-controls="collapseOne">
-                            Contact
+                            Finalisez votre demande
                         </button>
                     </div>
                     <div id="contact-body" class="accordion-collapse collapse" data-bs-parent="#list">
@@ -266,6 +292,16 @@ export default {
             pricePoolSize: null,
             priceEscForm: null,
             priceFilterForm: null,
+
+            alarmBool: false,
+            alarmPrice: 0,
+            coverBool: false,
+            coverPrice: 0,
+            barrierBool: false,
+            barrierPrice: 0,
+            securityPrice: 0,
+            selectedSecurityIndex: null,
+
             quotePrice: null,
 
             accessoires: [
@@ -344,8 +380,9 @@ export default {
             const sizePrice = parseFloat(this.priceSizeForm) || 0;
             const escPrice = parseFloat(this.priceEscForm) || 0;
             const filterPrice = parseFloat(this.priceFilterForm) || 0;
-            this.quotePrice = poolPrice + sizePrice + escPrice + filterPrice || parseFloat(0.00);
-            console.log(this.quotePrice);
+            const securityPrice = parseFloat(this.securityPrice) || 0;
+            this.quotePrice = sizePrice + escPrice + filterPrice + securityPrice || parseFloat(0.00);
+            console.log(securityPrice);
         },
 
         async getPiscinesListe() {
@@ -375,9 +412,29 @@ export default {
                 try {
                     const response = await fetch('/api/pool-size/' + targetId.id);
                     this.sizes = await response.json();
+                    this.getPiscineTaillesDatas(targetId.id);
                 } catch (error) {
                     console.error('Erreur lors de la récupération des données:', error);
                 }
+            }
+        },
+
+        async getPiscineTaillesDatas(targetId) {
+            try {
+                const response = await fetch('/api/pool-size/' + targetId + '/data');
+                if (!response.ok) {
+                    return;
+                }
+                this.sizeDatas = await response.json();
+                // this.alarmBool = this.sizeDatas.alarme;
+                // this.coverBool = this.sizeDatas.cover;
+                // this.barrierBool = this.sizeDatas.barrier;
+                // this.alarmPrice = this.sizeDatas.alarmeprix;
+                // this.coverPrice = this.sizeDatas.coverprix;
+                // this.barrierPrice = this.sizeDatas.barrierprix;
+
+            } catch (error) {
+                console.error('Erreur lors de la récupération des données:', error);
             }
         },
 
@@ -402,9 +459,18 @@ export default {
             if (e.target !== undefined && e.target.options.selectedIndex > -1) { 
                 const targetId = e.target.options[e.target.options.selectedIndex].dataset;
                 try {
-                    const response = await fetch('/api/pool-filters/' + this.basePoolId + '/' + targetId.id);
-                    this.filters = await response.json();
                     this.priceSizeForm = targetId.prix;
+                    this.alarmBool = targetId.alarme;
+                    // this.coverBool = targetId.cover;
+                    // this.barrierBool = targetId.barrier;
+                    this.alarmPrice = targetId.alarmeprix;
+                    // this.coverPrice = targetId.coverprix;
+                    // this.barrierPrice = targetId.barrierprix;
+                    const response = await fetch('/api/pool-filters/' + this.basePoolId + '/' + targetId.id);
+                    if (!response.ok) {
+                        return;
+                    }
+                    this.filters = await response.json();
                 } catch (error) {
                     console.error('Erreur lors de la récupération des données:', error);
                 }
@@ -426,6 +492,12 @@ export default {
                     console.error('Erreur lors de la récupération des données:', error);
                 }
             }
+        },
+
+        handleSecurityChange() {
+            const [name, price] = this.selectedSecurityIndex.split('|');
+            this.securityPrice = parseFloat(price);
+            console.log(name);
         },
 
         handleRadioClick(value) {
