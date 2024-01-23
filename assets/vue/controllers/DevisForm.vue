@@ -417,6 +417,9 @@ export default {
                 const targetId = e.target.options[e.target.options.selectedIndex].dataset;
                 try {
                     const response = await fetch('/api/pool-size/' + targetId.id);
+                    if (!response.ok) {
+                        return;
+                    }
                     this.sizes = await response.json();
                     this.getPiscineEscaliers(e);
                     this.getPiscineTaillesDatas(targetId.id);

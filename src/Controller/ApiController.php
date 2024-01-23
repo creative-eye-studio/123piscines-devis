@@ -71,7 +71,7 @@ class ApiController extends AbstractController
     public function poolSizeData(int $poolId): JsonResponse
     {
         $pool = $this->em->getRepository(PiscineListe::class)->find($poolId);
-        $size = $this->em->getRepository(PiscineTailles::class)->findOneBy($poolId);
+        $size = $this->em->getRepository(PiscineTailles::class)->findOneBy(['taille' => $pool]);
         $data =  [
             'alarme' => $size->isSecuAlarme(),
             'alarme_prix' => $size->getSecuAlarmePrix(),
