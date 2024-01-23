@@ -265,18 +265,20 @@ class ExtPiscinesController extends AbstractController
         return $this->redirect($route);
     }
 
-
     #[Route('/admin/piscines/accessoires/{id}', name: 'app_esc_bain')]
-    public function escaliers(Request $request, int $id)
+    public function accessoires(Request $request, int $id)
     {
-        $piscine = $this->em->getRepository(PiscineListe::class)->find($id);
-        $escs = $this->em->getRepository(PiscineEsc::class)->findBy(['piscine' => $piscine]);
+        $piscine = $this->em->getRepository(PiscineTailles::class)->find($id);
+        $escs = $this->em->getRepository(PiscineEsc::class)->findBy(['taille' => $piscine]);
         $esc = new PiscineEsc();
+
+        dump($id);
 
         $form = $this->createForm(ExtPiscineEscType::class, $esc);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $piscine = $this->em->getRepository(PiscineTailles::class)->find($id);
             $image = $form->get('image')->getData();
             $imageName = md5(uniqid()) . '.' . $image->guessExtension();
             $image->move(
@@ -284,22 +286,35 @@ class ExtPiscinesController extends AbstractController
                 $imageName
             );
             
-            $esc->setPiscine($piscine);
+            $esc->setTaille($piscine);
             $esc->setImage($imageName);
 
             $this->em->persist($esc);
             $this->em->flush();
 
             return $this->redirectToRoute('app_esc_bain', [
-                'id' => $piscine->getId()
+                'id' => $id
             ]);
         }
 
         return $this->render('ext_piscines/esc-manager.html.twig', [
-            'title' => "Accessoires de la piscine : " . $piscine->getNom(),
+            'title' => "Gestion des accessoires de la piscine",
             'form' => $form->createView(),
             'escs' => $escs,
         ]);
+    }
+
+    #[Route('/admin/piscines/delete-acc/{id}', name: 'app_acc_delete')]
+    public function deleteAcc(Request $request, int $id)
+    {
+        $acc = $this->em->getRepository(PiscineEsc::class)->find($id);
+
+        $this->em->remove($acc);
+        $this->em->flush();
+
+        $route = $request->headers->get('referer');
+
+        return $this->redirect($route);
     }
 
     #[Route('/admin/piscines/colors/{id}', name: 'app_colors')]
@@ -351,7 +366,6 @@ class ExtPiscinesController extends AbstractController
         return $this->redirect($route);
     }
 
-    
     #[Route(path: '/admin/piscines/filtrations', name: 'app_create_filter')]
     public function filters(Request $request): Response
     {

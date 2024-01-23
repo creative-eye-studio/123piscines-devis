@@ -14,9 +14,6 @@ class PiscineEsc
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'piscineEscs')]
-    private ?PiscineListe $piscine = null;
-
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
@@ -26,30 +23,18 @@ class PiscineEsc
     #[ORM\Column]
     private ?int $type = null;
 
-    #[ORM\Column]
-    private ?int $color = null;
-
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\ManyToOne(inversedBy: 'piscineEscs')]
+    private ?PiscineTailles $taille = null;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getPiscine(): ?PiscineListe
-    {
-        return $this->piscine;
-    }
-
-    public function setPiscine(?PiscineListe $piscine): static
-    {
-        $this->piscine = $piscine;
-
-        return $this;
     }
 
     public function getNom(): ?string
@@ -88,18 +73,6 @@ class PiscineEsc
         return $this;
     }
 
-    public function getColor(): ?int
-    {
-        return $this->color;
-    }
-
-    public function setColor(int $color): static
-    {
-        $this->color = $color;
-
-        return $this;
-    }
-
     public function getImage(): ?string
     {
         return $this->image;
@@ -120,6 +93,18 @@ class PiscineEsc
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getTaille(): ?PiscineTailles
+    {
+        return $this->taille;
+    }
+
+    public function setTaille(?PiscineTailles $taille): static
+    {
+        $this->taille = $taille;
 
         return $this;
     }

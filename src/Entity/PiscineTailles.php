@@ -45,6 +45,14 @@ class PiscineTailles
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
+    #[ORM\OneToMany(mappedBy: 'taille', targetEntity: PiscineEsc::class)]
+    private Collection $piscineEscs;
+
+    public function __construct()
+    {
+        $this->piscineEscs = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -166,6 +174,36 @@ class PiscineTailles
     public function setImage(?string $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PiscineEsc>
+     */
+    public function getPiscineEscs(): Collection
+    {
+        return $this->piscineEscs;
+    }
+
+    public function addPiscineEsc(PiscineEsc $piscineEsc): static
+    {
+        if (!$this->piscineEscs->contains($piscineEsc)) {
+            $this->piscineEscs->add($piscineEsc);
+            $piscineEsc->setTaille($this);
+        }
+
+        return $this;
+    }
+
+    public function removePiscineEsc(PiscineEsc $piscineEsc): static
+    {
+        if ($this->piscineEscs->removeElement($piscineEsc)) {
+            // set the owning side to null (unless already changed)
+            if ($piscineEsc->getTaille() === $this) {
+                $piscineEsc->setTaille(null);
+            }
+        }
 
         return $this;
     }

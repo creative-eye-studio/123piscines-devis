@@ -17,16 +17,18 @@
         <div class="grid">
         {% for esc in escs %}
             <article class="block-item">
-                <img src="{{esc_img_dir}}/{{ esc.image }}" alt="{{ esc.nom }}" class="item-image">
-                <p class="item-title">
-                    {% set types = ["Petit bain", "Escalier", "Échelle", "SPA à débordement", "Alarme volumétrique", "Couverture de sécurité", "Barrière normalisée"] %}
-                    {% set colors = ["", " Blanc", " Bleu", " Vert", " Turquoise"] %}
-                    {% set type = types[esc.type] ?? "Type inconnu" %}
-                    {% set color = colors[esc.color] ?? " Couleur inconnue" %}
+                <a href="{{ path('app_acc_delete', { id: esc.id }) }}">
+                    <img src="{{esc_img_dir}}/{{ esc.image }}" alt="{{ esc.nom }}" class="item-image">
+                    <p class="item-title">
+                        {% set types = ["Petit bain", "Escalier", "Échelle", "SPA à débordement", "Alarme volumétrique", "Couverture de sécurité", "Barrière normalisée"] %}
+                        {% set colors = ["", " Blanc", " Bleu", " Vert", " Turquoise"] %}
+                        {% set type = types[esc.type] ?? "Type inconnu" %}
 
-                    {{ type }}{{ color }} - {{ esc.nom }}<br />
-                    {{ esc.prix | number_format(2, '.', ',') }} €
-                </p>
+                        {{ type }} - {{ esc.nom }}<br />
+                        {{ esc.prix | number_format(2, '.', ',') }} €
+                    </p>
+                </a>
+                
             </article>
         {% endfor %}
         </div>

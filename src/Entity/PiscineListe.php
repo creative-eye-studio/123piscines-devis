@@ -27,9 +27,6 @@ class PiscineListe
     #[ORM\OneToMany(mappedBy: 'piscine', targetEntity: PiscineTailles::class)]
     private Collection $piscineTailles;
 
-    #[ORM\OneToMany(mappedBy: 'piscine', targetEntity: PiscineEsc::class)]
-    private Collection $piscineEscs;
-
     #[ORM\OneToMany(mappedBy: 'piscine', targetEntity: PiscineColors::class)]
     private Collection $piscineColors;
 
@@ -45,7 +42,6 @@ class PiscineListe
     public function __construct()
     {
         $this->piscineTailles = new ArrayCollection();
-        $this->piscineEscs = new ArrayCollection();
         $this->piscineColors = new ArrayCollection();
         $this->filtrations = new ArrayCollection();
     }
@@ -115,36 +111,6 @@ class PiscineListe
             // set the owning side to null (unless already changed)
             if ($piscineTaille->getPiscine() === $this) {
                 $piscineTaille->setPiscine(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, PiscineEsc>
-     */
-    public function getPiscineEscs(): Collection
-    {
-        return $this->piscineEscs;
-    }
-
-    public function addPiscineEsc(PiscineEsc $piscineEsc): static
-    {
-        if (!$this->piscineEscs->contains($piscineEsc)) {
-            $this->piscineEscs->add($piscineEsc);
-            $piscineEsc->setPiscine($this);
-        }
-
-        return $this;
-    }
-
-    public function removePiscineEsc(PiscineEsc $piscineEsc): static
-    {
-        if ($this->piscineEscs->removeElement($piscineEsc)) {
-            // set the owning side to null (unless already changed)
-            if ($piscineEsc->getPiscine() === $this) {
-                $piscineEsc->setPiscine(null);
             }
         }
 
