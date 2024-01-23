@@ -421,7 +421,6 @@ export default {
                         return;
                     }
                     this.sizes = await response.json();
-                    this.getPiscineEscaliers(e);
                     this.getPiscineTaillesDatas(targetId.id);
                 } catch (error) {
                     console.error('Erreur lors de la récupération des données:', error);
@@ -442,15 +441,13 @@ export default {
             }
         },
 
-        async getPiscineEscaliers(e) {
-            if (e.target.options.selectedIndex > -1) {
-                const targetId = e.target.options[e.target.options.selectedIndex].dataset;
-                try {
-                    const response = await fetch('/api/pool-esc/' + targetId.id);
-                    this.escaliers = await response.json();
-                } catch (error) {
-                    console.error('Erreur lors de la récupération des données:', error);
-                }
+        async getPiscineEscaliers(id) {
+            console.log(id);
+            try {
+                const response = await fetch('/api/pool-esc/' + id);
+                this.escaliers = await response.json();
+            } catch (error) {
+                console.error('Erreur lors de la récupération des données:', error);
             }
         },
 
@@ -475,6 +472,7 @@ export default {
                     if (!response.ok) {
                         return;
                     }
+                    this.getPiscineEscaliers(targetId.id)
                     this.filters = await response.json();
                 } catch (error) {
                     console.error('Erreur lors de la récupération des données:', error);
