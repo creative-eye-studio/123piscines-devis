@@ -329,6 +329,7 @@ export default {
 
             basePoolImg: '',
             basePoolImgFond: '',
+            basePoolImgColor: '',
             basePoolId: '0',
 
             selectedPool: '',
@@ -407,7 +408,6 @@ export default {
                 this.basePoolId = targetId.id;
                 this.pricePoolForm = targetId.prix;
                 this.getPiscineTailles(e);
-                this.getPiscineEscaliers(e);
                 this.getPiscineColors(e);    
             }
         },
@@ -418,6 +418,7 @@ export default {
                 try {
                     const response = await fetch('/api/pool-size/' + targetId.id);
                     this.sizes = await response.json();
+                    this.getPiscineEscaliers(e);
                     this.getPiscineTaillesDatas(targetId.id);
                 } catch (error) {
                     console.error('Erreur lors de la récupération des données:', error);
@@ -500,6 +501,11 @@ export default {
             this.securityPrice = parseFloat(price);
             console.log(name);
         },
+
+        // handleColorChange() {
+        //     const [name, price] = this.selectedSecurityIndex.split('|');
+        //     this.securityPrice = parseFloat(price);
+        // },
 
         handleRadioClick(value) {
             this.selectedOption = value;

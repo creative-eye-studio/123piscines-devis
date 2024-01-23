@@ -298,7 +298,7 @@ class ExtPiscinesController extends AbstractController
         }
 
         return $this->render('ext_piscines/esc-manager.html.twig', [
-            'title' => "Gestion des accessoires de la piscine",
+            'title' => "Gestion des accessoires",
             'form' => $form->createView(),
             'escs' => $escs,
         ]);

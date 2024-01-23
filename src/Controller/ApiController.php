@@ -87,8 +87,8 @@ class ApiController extends AbstractController
     #[Route(path: '/api/pool-esc/{poolId}', name: 'pool_esc')]
     public function poolEsc(int $poolId): JsonResponse
     {
-        $pool = $this->em->getRepository(PiscineListe::class)->find($poolId);
-        $sizes = $this->em->getRepository(PiscineEsc::class)->findBy(['piscine' => $pool]);
+        $pool = $this->em->getRepository(PiscineTailles::class)->find($poolId);
+        $sizes = $this->em->getRepository(PiscineEsc::class)->findBy(['taille' => $pool]);
 
         $list = array_map(function($size) {
             return [
