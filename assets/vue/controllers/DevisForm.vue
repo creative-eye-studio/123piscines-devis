@@ -8,6 +8,7 @@
                 <p class="text-end">Prix estimé : <span v-html="this.quotePrice"></span> € TTC (Hors livraison et agrégats)</p>
                 <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg' alt="Présentation de la piscine" class="img-fluid position-absolute">
                 <img v-if="basePoolImgFond != '' && this.selectedOption !== '' && this.selectedOption !== 'fond-perso'" :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond" class="img-fluid position-absolute">
+                <img v-if="basePoolImgColor != ''" :src='"./uploads/images/escs/" + basePoolImgColor' alt="Présentation de la couleur de la piscine" class="img-fluid position-absolute">
 
             </div>
             <!-- Configurateur -->
@@ -62,9 +63,13 @@
                                         :data-alarme=size.alarme
                                         :data-cover=size.cover
                                         :data-barrier=size.barrier
+                                        :data-revet=size.revet_poly
+                                        :data-liner=size.liner
                                         :data-alarmeprix=size.alarme_prix
                                         :data-coverprix=size.cover_prix
-                                        :data-barrierprix=size.barrier_prix></option>
+                                        :data-barrierprix=size.barrier_prix
+                                        :data-revetprix=size.revet_poly_prix
+                                        :data-linerprix=size.liner_prix></option>
                                 </select>
                                 <p class="form-check">
                                     <input class="form-check-input" type="radio" name="proof" id="fond-plat" @click="handleRadioClick('fond-plat')">
@@ -93,11 +98,11 @@
                     <div id="escalier-body" class="accordion-collapse collapse" data-bs-parent="#list">
                         <div class="row m-3">
                             <div class="col-4 form-check" v-for="item in escaliers" :key="item.id">
-                                <input class="form-check-input" type="radio" name="escalier" :id="this.sanitizeTitle(item.nom)" :data-prix=item.prix :data-image="item.image" @click="this.getEscalierPrix($event)">
+                                <input class="form-check-input" type="radio" name="escalier" :id="this.sanitizeTitle(item.nom)" :data-prix=item.prix :data-image="item.image" @change="this.getEscalierPrix($event)" v-model="selectedColorIndex" :value="accessoires[item.type] + ' - (' +  item.nom + ') | ' + item.image">
                                 <label class="form-check-label" :for="this.sanitizeTitle(item.nom)" v-html="accessoires[item.type] + ' - (' +  item.nom + ')'"></label>
                             </div>
                             <div class="col-4 form-check">
-                                <input class="form-check-input" type="radio" name="escalier" id="no-escalier" data-image="" data-prix='0' @click="this.getEscalierPrix($event)">
+                                <input class="form-check-input" type="radio" name="escalier" id="no-escalier" data-image="" data-prix='0' @change="this.getEscalierPrix($event)" v-model="selectedColorIndex" value="Sans accessoires | ">
                                 <label class="form-check-label" for="no-escalier" v-html='"Sans accessoire"'></label>
                             </div>
                         </div>  
@@ -147,9 +152,9 @@
                     </div>
                     <div id="revet-body" class="accordion-collapse collapse" data-bs-parent="#list">
                         <div class="row m-3">
-                            <div class="col-4 form-check"><input class="form-check-input" type="radio" name="revet" id="poly"><label class="form-check-label" for="poly">Revêtement polymère</label></div>
-                            <div class="col-4 form-check"><input class="form-check-input" type="radio" name="revet" id="liner"><label class="form-check-label" for="liner">Liner</label></div>
-                            <div class="col-4 form-check"><input class="form-check-input" type="radio" name="revet" id="no-revet"><label class="form-check-label" for="no-revet">Sans revêtement</label></div>
+                            <div class="col-6 form-check" v-if="this.revetPolyBool"><input class="form-check-input" type="radio" name="revet" id="poly"><label class="form-check-label" for="poly">Revêtement polymère</label></div>
+                            <div class="col-6 form-check" v-if="this.linerBool"><input class="form-check-input" type="radio" name="revet" id="liner"><label class="form-check-label" for="liner">Liner</label></div>
+                            <div class="col-6 form-check"><input class="form-check-input" type="radio" name="revet" id="no-revet"><label class="form-check-label" for="no-revet">Sans revêtement</label></div>
                         </div>    
                     </div>
                 </div>
@@ -303,21 +308,18 @@ export default {
             coverPrice: 0,
             barrierBool: false,
             barrierPrice: 0,
+            revetPolyBool: false,
+            revetPolyPrice: 0,
+            linerBool: false,
+            linerPrice: 0,
+
             securityPrice: 0,
             selectedSecurityIndex: null,
+            selectedColorIndex: null,
 
             quotePrice: null,
 
-            accessoires: [
-                "Petit bain",
-                "Escalier",
-                "Échelle",
-                "Revètement polymère",
-                "SPA à débordement",
-                "Alarme volumétrique",
-                "Couverture de sécurité",
-                "Barrière normalisée"
-            ],
+            accessoires: ["Petit bain", "Escalier", "Échelle", "Revètement polymère", "SPA à débordement", "Alarme volumétrique", "Couverture de sécurité", "Barrière normalisée"],
 
 
             filtersList: [
@@ -454,6 +456,7 @@ export default {
         async getEscalierPrix(e) {
             const targetId = e.target.dataset;
             this.priceEscForm = targetId.prix;
+            this.handleColorChange()
         },
 
         async getPiscineFilters(e) {
@@ -463,17 +466,23 @@ export default {
                     this.basePoolImg = '/tailles/' + targetId.image;
                     this.priceSizeForm = targetId.prix;
                     this.alarmBool = targetId.alarme;
-                    // this.coverBool = targetId.cover;
-                    // this.barrierBool = targetId.barrier;
+                    this.coverBool = targetId.cover;
+                    this.barrierBool = targetId.barrier;
+
+                    this.revetPolyBool = targetId.revet;
+                    this.linerBool = targetId.liner;
+
                     this.alarmPrice = targetId.alarmeprix;
-                    // this.coverPrice = targetId.coverprix;
-                    // this.barrierPrice = targetId.barrierprix;
+                    this.revetPolyPrice = targetId.revetprix;
+                    this.linerPrice = targetId.linerprix;
                     const response = await fetch('/api/pool-filters/' + this.basePoolId + '/' + targetId.id);
                     if (!response.ok) {
                         return;
                     }
                     this.getPiscineEscaliers(targetId.id)
                     this.filters = await response.json();
+
+                    console.log(targetId.revet);
                 } catch (error) {
                     console.error('Erreur lors de la récupération des données:', error);
                 }
@@ -500,13 +509,17 @@ export default {
         handleSecurityChange() {
             const [name, price] = this.selectedSecurityIndex.split('|');
             this.securityPrice = parseFloat(price);
-            console.log(name);
         },
 
-        // handleColorChange() {
-        //     const [name, price] = this.selectedSecurityIndex.split('|');
-        //     this.securityPrice = parseFloat(price);
-        // },
+        handleColorChange() {
+            if (this.selectedColorIndex !== null) {
+                const [name, imageFileName] = this.selectedColorIndex.split('|').map(part => part.trim());
+                this.basePoolImgColor = imageFileName;
+            } else {
+                console.warn('Aucune couleur sélectionnée.');
+            }
+            console.log(this.selectedColorIndex);
+        },
 
         handleRadioClick(value) {
             this.selectedOption = value;

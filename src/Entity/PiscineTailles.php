@@ -48,6 +48,18 @@ class PiscineTailles
     #[ORM\OneToMany(mappedBy: 'taille', targetEntity: PiscineEsc::class)]
     private Collection $piscineEscs;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $revet_poly = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $revet_poly_price = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $liner = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $liner_price = null;
+
     public function __construct()
     {
         $this->piscineEscs = new ArrayCollection();
@@ -204,6 +216,54 @@ class PiscineTailles
                 $piscineEsc->setTaille(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isRevetPoly(): ?bool
+    {
+        return $this->revet_poly;
+    }
+
+    public function setRevetPoly(?bool $revet_poly): static
+    {
+        $this->revet_poly = $revet_poly;
+
+        return $this;
+    }
+
+    public function getRevetPolyPrice(): ?float
+    {
+        return $this->revet_poly_price;
+    }
+
+    public function setRevetPolyPrice(?float $revet_poly_price): static
+    {
+        $this->revet_poly_price = $revet_poly_price;
+
+        return $this;
+    }
+
+    public function isLiner(): ?bool
+    {
+        return $this->liner;
+    }
+
+    public function setLiner(?bool $liner): static
+    {
+        $this->liner = $liner;
+
+        return $this;
+    }
+
+    public function getLinerPrice(): ?float
+    {
+        return $this->liner_price;
+    }
+
+    public function setLinerPrice(?float $liner_price): static
+    {
+        $this->liner_price = $liner_price;
 
         return $this;
     }

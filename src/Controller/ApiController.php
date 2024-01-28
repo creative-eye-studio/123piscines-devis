@@ -79,6 +79,10 @@ class ApiController extends AbstractController
             'cover_prix' => $size->getSecuCoverPrix(),
             'barrier' => $size->isSecuBarrier(),
             'barrier_prix' => $size->getSecuBarrierPrix(),
+            'revet_poly' => $size->isRevetPoly(),
+            'revet_poly_prix' => $size->getRevetPolyPrice(),
+            'liner' => $size->isLiner(),
+            'liner_prix' => $size->getLinerPrice(),
         ];
 
         return $this->json($data, 200);

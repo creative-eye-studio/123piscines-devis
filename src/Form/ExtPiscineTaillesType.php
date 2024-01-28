@@ -52,6 +52,14 @@ class ExtPiscineTaillesType extends AbstractType
                 'label' => "Barrière normalisée",
                 'required' => false
             ])
+            ->add('revet_poly', CheckboxType::class, [
+                'label' => "Revêtement polymère",
+                'required' => false
+            ])
+            ->add('liner', CheckboxType::class, [
+                'label' => "Liner",
+                'required' => false
+            ])
 
             ->add('secu_alarme_prix', NumberType::class, [
                 'label' => false,
@@ -75,6 +83,22 @@ class ExtPiscineTaillesType extends AbstractType
                 'attr' => [
                     'placeholder' => "Prix de la barrière",
                     'aria-label' => "Prix de la barrière",
+                ]
+            ])
+            ->add('revet_poly_price', NumberType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => "Prix du revêtement polymère",
+                    'aria-label' => "Prix du revêtement polymère",
+                ]
+            ])
+            ->add('liner_price', NumberType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => "Prix du liner",
+                    'aria-label' => "Prix du liner",
                 ]
             ])
 
