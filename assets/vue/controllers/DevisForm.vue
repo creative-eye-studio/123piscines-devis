@@ -8,7 +8,8 @@
                 <p class="text-end">Prix estimé : <span v-html="this.quotePrice"></span> € TTC (Hors livraison et agrégats)</p>
                 <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg' alt="Présentation de la piscine" class="img-fluid position-absolute">
                 <img v-if="basePoolImgFond != '' && this.selectedOption !== '' && this.selectedOption !== 'fond-perso'" :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond" class="img-fluid position-absolute">
-                <img v-if="basePoolImgColor != ''" :src='"./uploads/images/escs/" + basePoolImgColor' alt="Présentation de la couleur de la piscine" class="img-fluid position-absolute">
+                <img v-if="basePoolImgEsc != ''" :src='"./uploads/images/escs/" + basePoolImgEsc' alt="Présentation de la couleur de la piscine" class="img-fluid position-absolute">
+                <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor' alt="Présentation de la couleur" class="img-fluid position-absolute pool-color">
                 <img v-if="basePoolImgFilter != ''" :src='"./uploads/images/filters/" + basePoolImgFilter' alt="Présentation de la filtration" class="img-fluid position-absolute">
 
             </div>
@@ -99,11 +100,11 @@
                     <div id="escalier-body" class="accordion-collapse collapse" data-bs-parent="#list">
                         <div class="row m-3">
                             <div class="col-4 form-check" v-for="item in escaliers" :key="item.id">
-                                <input class="form-check-input" type="radio" name="escalier" :id="this.sanitizeTitle(item.nom)" :data-prix=item.prix :data-image="item.image" @change="this.getEscalierPrix($event)" v-model="selectedColorIndex" :value="accessoires[item.type] + ' - (' +  item.nom + ') | ' + item.image">
+                                <input class="form-check-input" type="radio" name="escalier" :id="this.sanitizeTitle(item.nom)" :data-prix=item.prix :data-image="item.image" @change="this.getEscalierPrix($event)" v-model="selectedEscIndex" :value="accessoires[item.type] + ' - (' +  item.nom + ') | ' + item.image">
                                 <label class="form-check-label" :for="this.sanitizeTitle(item.nom)" v-html="accessoires[item.type] + ' - (' +  item.nom + ')'"></label>
                             </div>
                             <div class="col-4 form-check">
-                                <input class="form-check-input" type="radio" name="escalier" id="no-escalier" data-image="" data-prix='0' @change="this.getEscalierPrix($event)" v-model="selectedColorIndex" value="Sans accessoires | ">
+                                <input class="form-check-input" type="radio" name="escalier" id="no-escalier" data-image="" data-prix='0' @change="this.getEscalierPrix($event)" v-model="selectedEscIndex" value="Sans accessoires | ">
                                 <label class="form-check-label" for="no-escalier" v-html='"Sans accessoire"'></label>
                             </div>
                         </div>  
@@ -172,7 +173,13 @@
                     <div id="color-body" class="accordion-collapse collapse" data-bs-parent="#list">
                         <div class="row m-3">
                             <div class="col-3 form-check" v-for="color in colors" :key="color.id">
-                                <input class="form-check-input" type="radio" name="color" :id="this.sanitizeTitle(color.nom)">
+                                <input class="form-check-input" type="radio" name="color" 
+                                :value="color.nom + ' | ' + color.image"
+                                :id="this.sanitizeTitle(color.nom)"
+                                :data-color="color.image"
+                                v-model="selectedColorIndex" 
+                                @change="handleColorChange"
+                                >
                                 <label class="form-check-label" :for="this.sanitizeTitle(color.nom)">{{ color.nom }}</label>
                             </div>
                         </div>    
@@ -318,6 +325,7 @@ export default {
 
             securityPrice: 0,
             selectedSecurityIndex: null,
+            selectedEscIndex: null,
             selectedColorIndex: null,
 
             quotePrice: null,
@@ -333,8 +341,9 @@ export default {
 
             basePoolImg: '',
             basePoolImgFond: '',
-            basePoolImgColor: '',
+            basePoolImgEsc: '',
             basePoolImgFilter: '',
+            basePoolImgColor: '',
             basePoolId: '0',
 
             selectedPool: '',
@@ -443,7 +452,7 @@ export default {
         async getEscalierPrix(e) {
             const targetId = e.target.dataset;
             this.priceEscForm = targetId.prix;
-            this.handleColorChange()
+            this.handleEscChange()
         },
 
         async getPiscineFilters(e) {
@@ -504,6 +513,15 @@ export default {
             this.securityPrice = parseFloat(price);
         },
 
+        handleEscChange() {
+            if (this.selectedEscIndex !== null) {
+                const [name, imageFileName] = this.selectedEscIndex.split('|').map(part => part.trim());
+                this.basePoolImgEsc = imageFileName;
+            } else {
+                console.warn('Aucun accessoire sélectionné.');
+            }
+        },
+
         handleColorChange() {
             if (this.selectedColorIndex !== null) {
                 const [name, imageFileName] = this.selectedColorIndex.split('|').map(part => part.trim());
@@ -511,7 +529,6 @@ export default {
             } else {
                 console.warn('Aucune couleur sélectionnée.');
             }
-            console.log(this.selectedColorIndex);
         },
 
         handleRadioClick(value) {
