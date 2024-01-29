@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Filtrations;
 use App\Entity\PiscineColors;
 use App\Entity\PiscineEsc;
-use App\Entity\PiscineForme;
 use App\Entity\PiscineListe;
 use App\Entity\PiscineTailles;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,6 +57,8 @@ class ApiController extends AbstractController
                 'alarme' => $size->isSecuAlarme(),
                 'cover' => $size->isSecuCover(),
                 'barrier' => $size->isSecuBarrier(),
+                'revet_poly' => $size->isRevetPoly(),
+                'liner' => $size->isLiner(),
                 'alarme_prix' => $size->getSecuAlarmePrix(),
                 'cover_prix' => $size->getSecuCoverPrix(),
                 'barrier_prix' => $size->getSecuBarrierPrix(),

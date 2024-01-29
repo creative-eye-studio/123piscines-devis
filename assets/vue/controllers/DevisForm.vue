@@ -186,7 +186,7 @@
 
                     <div id="secure-body" class="accordion-collapse collapse" data-bs-parent="#list">
                         <div class="row m-3">
-                            <div class="row mb-2" v-if="alarmBool">
+                            <div class="row mb-2" v-if="this.alarmBool">
                                 <div class="col-1">
                                     <input class="form-check-input" type="radio" name="securite" id="alarme" :value="'Alarme volumétrique | ' + alarmPrice" v-model="selectedSecurityIndex" @change="handleSecurityChange">
                                 </div>
@@ -202,7 +202,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-2" v-if="coverBool">
+                            <div class="row mb-2" v-if="this.coverBool">
                                 <div class="col-1">
                                     <input class="form-check-input" type="radio" name="securite" id="couverture" :value="'Couverture de sécurité | ' + coverPrice" v-model="selectedSecurityIndex" @change="handleSecurityChange">
                                 </div>
@@ -218,7 +218,7 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-2" v-if="barrierBool">
+                            <div class="row mb-2" v-if="this.barrierBool">
                                 <div class="col-1">
                                     <input class="form-check-input" type="radio" name="securite" id="barriere" :value="'Barrière normalisée | ' + barrierPrice" v-model="selectedSecurityIndex" @change="handleSecurityChange">
                                 </div>
@@ -321,7 +321,6 @@ export default {
 
             accessoires: ["Petit bain", "Escalier", "Échelle", "Revètement polymère", "SPA à débordement", "Alarme volumétrique", "Couverture de sécurité", "Barrière normalisée"],
 
-
             filtersList: [
                 {'name': "Filtre à sable"},
                 {'name': "Bloc filtrant"},
@@ -390,7 +389,6 @@ export default {
             const filterPrice = parseFloat(this.priceFilterForm) || 0;
             const securityPrice = parseFloat(this.securityPrice) || 0;
             this.quotePrice = sizePrice + escPrice + filterPrice + securityPrice || parseFloat(0.00);
-            console.log(securityPrice);
         },
 
         async getPiscinesListe() {
@@ -423,28 +421,26 @@ export default {
                         return;
                     }
                     this.sizes = await response.json();
-                    this.getPiscineTaillesDatas(targetId.id);
                 } catch (error) {
                     console.error('Erreur lors de la récupération des données:', error);
                 }
             }
         },
 
-        async getPiscineTaillesDatas(targetId) {
-            try {
-                const response = await fetch('/api/pool-size/' + targetId + '/data');
-                if (!response.ok) {
-                    return;
-                }
-                this.sizeDatas = await response.json();
+        // async getPiscineTaillesDatas(targetId) {
+        //     try {
+        //         const response = await fetch('/api/pool-size/' + targetId + '/data');
+        //         if (!response.ok) {
+        //             return;
+        //         }
+        //         this.sizeDatas = await response.json();
 
-            } catch (error) {
-                console.error('Erreur lors de la récupération des données:', error);
-            }
-        },
+        //     } catch (error) {
+        //         console.error('Erreur lors de la récupération des données:', error);
+        //     }
+        // },
 
         async getPiscineEscaliers(id) {
-            console.log(id);
             try {
                 const response = await fetch('/api/pool-esc/' + id);
                 this.escaliers = await response.json();
@@ -462,27 +458,32 @@ export default {
         async getPiscineFilters(e) {
             if (e.target !== undefined && e.target.options.selectedIndex > -1) { 
                 const targetId = e.target.options[e.target.options.selectedIndex].dataset;
+                this.basePoolImg = '/tailles/' + targetId.image;
+                this.priceSizeForm = targetId.prix;
+
+                // Revetement
+                this.revetPolyBool = JSON.parse(targetId.revet);
+                this.linerBool = JSON.parse(targetId.liner);
+                this.revetPolyPrice = targetId.revetprix;
+                this.linerPrice = targetId.linerprix;
+
+                // Alarmes
+                this.alarmBool = JSON.parse(targetId.alarme);
+                this.coverBool = JSON.parse(targetId.cover);
+                this.barrierBool = JSON.parse(targetId.barrier);
+                this.alarmPrice = targetId.alarmeprix;
+
+                console.log(targetId);
+
                 try {
-                    this.basePoolImg = '/tailles/' + targetId.image;
-                    this.priceSizeForm = targetId.prix;
-                    this.alarmBool = targetId.alarme;
-                    this.coverBool = targetId.cover;
-                    this.barrierBool = targetId.barrier;
 
-                    this.revetPolyBool = targetId.revet;
-                    this.linerBool = targetId.liner;
-
-                    this.alarmPrice = targetId.alarmeprix;
-                    this.revetPolyPrice = targetId.revetprix;
-                    this.linerPrice = targetId.linerprix;
+                    // Filtres
                     const response = await fetch('/api/pool-filters/' + this.basePoolId + '/' + targetId.id);
                     if (!response.ok) {
                         return;
                     }
                     this.getPiscineEscaliers(targetId.id)
                     this.filters = await response.json();
-
-                    console.log(targetId.revet);
                 } catch (error) {
                     console.error('Erreur lors de la récupération des données:', error);
                 }
