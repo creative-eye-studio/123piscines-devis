@@ -60,9 +60,13 @@ class PiscineTailles
     #[ORM\Column(nullable: true)]
     private ?float $liner_price = null;
 
+    #[ORM\OneToMany(mappedBy: 'tailles', targetEntity: Filtrations::class)]
+    private Collection $filtrations;
+
     public function __construct()
     {
         $this->piscineEscs = new ArrayCollection();
+        $this->filtrations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -264,6 +268,36 @@ class PiscineTailles
     public function setLinerPrice(?float $liner_price): static
     {
         $this->liner_price = $liner_price;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Filtrations>
+     */
+    public function getFiltrations(): Collection
+    {
+        return $this->filtrations;
+    }
+
+    public function addFiltration(Filtrations $filtration): static
+    {
+        if (!$this->filtrations->contains($filtration)) {
+            $this->filtrations->add($filtration);
+            $filtration->setTailles($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFiltration(Filtrations $filtration): static
+    {
+        if ($this->filtrations->removeElement($filtration)) {
+            // set the owning side to null (unless already changed)
+            if ($filtration->getTailles() === $this) {
+                $filtration->setTailles(null);
+            }
+        }
 
         return $this;
     }

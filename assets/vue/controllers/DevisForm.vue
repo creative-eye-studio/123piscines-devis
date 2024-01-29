@@ -9,6 +9,7 @@
                 <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg' alt="Présentation de la piscine" class="img-fluid position-absolute">
                 <img v-if="basePoolImgFond != '' && this.selectedOption !== '' && this.selectedOption !== 'fond-perso'" :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond" class="img-fluid position-absolute">
                 <img v-if="basePoolImgColor != ''" :src='"./uploads/images/escs/" + basePoolImgColor' alt="Présentation de la couleur de la piscine" class="img-fluid position-absolute">
+                <img v-if="basePoolImgFilter != ''" :src='"./uploads/images/filters/" + basePoolImgFilter' alt="Présentation de la filtration" class="img-fluid position-absolute">
 
             </div>
             <!-- Configurateur -->
@@ -126,6 +127,7 @@
                                     :id="this.sanitizeTitle(filtersList[filter.type].name)"  
                                     :value="filtersList[filter.type].name"
                                     :data-prix=filter.prix
+                                    :data-image="filter.image"
                                     @click="this.getFilterPrix($event)">
                                 <label 
                                     class="form-check-label" 
@@ -136,6 +138,7 @@
                             <div class="col-6 form-check">
                                 <input class="form-check-input" type="radio" name="filtration" id="no-filter"
                                     :data-prix=0
+                                    data-image=''
                                     @click="this.getFilterPrix($event)">
                                 <label class="form-check-label" for="no-filter">Sans rien</label>
                             </div>
@@ -331,6 +334,7 @@ export default {
             basePoolImg: '',
             basePoolImgFond: '',
             basePoolImgColor: '',
+            basePoolImgFilter: '',
             basePoolId: '0',
 
             selectedPool: '',
@@ -427,19 +431,6 @@ export default {
             }
         },
 
-        // async getPiscineTaillesDatas(targetId) {
-        //     try {
-        //         const response = await fetch('/api/pool-size/' + targetId + '/data');
-        //         if (!response.ok) {
-        //             return;
-        //         }
-        //         this.sizeDatas = await response.json();
-
-        //     } catch (error) {
-        //         console.error('Erreur lors de la récupération des données:', error);
-        //     }
-        // },
-
         async getPiscineEscaliers(id) {
             try {
                 const response = await fetch('/api/pool-esc/' + id);
@@ -493,6 +484,7 @@ export default {
         async getFilterPrix(e) {
             const targetId = e.target.dataset;
             this.priceFilterForm = targetId.prix;
+            this.basePoolImgFilter = targetId.image;
         },
 
         async getPiscineColors(e) {

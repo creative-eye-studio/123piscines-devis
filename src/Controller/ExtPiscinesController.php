@@ -400,4 +400,17 @@ class ExtPiscinesController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/admin/piscines/delete-filter/{id}', name: 'app_filter_delete')]
+    public function deleteFilter(Request $request, int $id)
+    {
+        $filter = $this->em->getRepository(Filtrations::class)->find($id);
+
+        $this->em->remove($filter);
+        $this->em->flush();
+
+        $route = $request->headers->get('referer');
+
+        return $this->redirect($route);
+    }
 }

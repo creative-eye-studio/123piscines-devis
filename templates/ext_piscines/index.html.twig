@@ -56,7 +56,7 @@
                         <p>{{ filt.nom.nom }} - {{ filt.tailles.taille }}</p>
                         <ul>
                             <li>Modifier</li>
-                            <li>Supprimer</li>
+                            <li><a href="{{ path('app_filter_delete', { id: filt.id }) }}">Supprimer</a></li>
                         </ul>
                     </div>
                 {% endfor %}

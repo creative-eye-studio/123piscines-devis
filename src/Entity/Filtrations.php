@@ -24,11 +24,11 @@ class Filtrations
     #[ORM\Column]
     private ?int $type = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?PiscineTailles $tailles = null;
-
     #[ORM\Column(length: 255)]
     private ?string $image = null;
+
+    #[ORM\ManyToOne(inversedBy: 'filtrations')]
+    private ?PiscineTailles $tailles = null;
 
     public function getId(): ?int
     {
