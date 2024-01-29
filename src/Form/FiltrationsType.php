@@ -73,6 +73,7 @@ class FiltrationsType extends AbstractType
             ->add('image', DropzoneType::class, [
                 'label' => "Image de la filtration",
                 'data_class' => null,
+                'required' => false,
                 'row_attr' => [
                     'class' => 'mb'
                 ]

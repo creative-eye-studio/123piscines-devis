@@ -374,22 +374,20 @@ class ExtPiscinesController extends AbstractController
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-            // Gestion de la piscine
-            // $piscine = $this->em->getRepository(PiscineListe::class)->find($form->get('nom')->getData());
-            // $filter->setNom($piscine);
-
             // Gestion de la taille
             $taille = $this->em->getRepository(PiscineTailles::class)->find($form->get('tailles')->getData());
             $filter->setTailles($taille);
 
             // Gestion de l'image
             $image = $form->get('image')->getData();
-            $imageName = md5(uniqid()) . '.' . $image->guessExtension();
-            $image->move(
-                $this->getParameter('images_filters_dir'),
-                $imageName
-            );
-            $filter->setImage($imageName);
+            if ($image) {
+                $imageName = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('images_filters_dir'),
+                    $imageName
+                );
+                $filter->setImage($imageName);
+            }
 
             $this->em->persist($filter);
             $this->em->flush();
@@ -397,6 +395,41 @@ class ExtPiscinesController extends AbstractController
 
         return $this->render('ext_piscines/filter-manager.html.twig', [
             'title' => 'Créer une nouvelle filtration',
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route(path: '/admin/piscines/filtrations/{id}', name: 'app_filter_update')]
+    public function filtersUpdate(Request $request, int $id): Response
+    {
+        $filter = $this->em->getRepository(Filtrations::class)->find($id);
+        $form = $this->createForm(FiltrationsType::class, $filter);
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Gestion de la taille
+            $taille = $this->em->getRepository(PiscineTailles::class)->find($form->get('tailles')->getData());
+            $filter->setTailles($taille);
+
+            // Gestion de l'image
+            $image = $form->get('image')->getData();
+            if ($image) {
+                $imageName = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('images_filters_dir'),
+                    $imageName
+                );
+                $filter->setImage($imageName);
+            }
+
+            $this->em->persist($filter);
+            $this->em->flush();
+
+            return $this->redirectToRoute('app_piscines');
+        }
+
+        return $this->render('ext_piscines/filter-manager.html.twig', [
+            'title' => 'Modifier une filtration',
             'form' => $form->createView(),
         ]);
     }

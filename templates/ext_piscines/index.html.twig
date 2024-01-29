@@ -55,7 +55,7 @@
                     <div class="line">
                         <p>{{ filt.nom.nom }} - {{ filt.tailles.taille }}</p>
                         <ul>
-                            <li>Modifier</li>
+                            <li><a href="{{ path('app_filter_update', { id: filt.id }) }}">Modifier</a></li>
                             <li><a href="{{ path('app_filter_delete', { id: filt.id }) }}">Supprimer</a></li>
                         </ul>
                     </div>

@@ -24,7 +24,7 @@ class Filtrations
     #[ORM\Column]
     private ?int $type = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
     #[ORM\ManyToOne(inversedBy: 'filtrations')]
@@ -64,7 +64,7 @@ class Filtrations
         return $this->image;
     }
 
-    public function setImage(string $image): static
+    public function setImage(?string $image): static
     {
         $this->image = $image;
 
