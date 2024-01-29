@@ -5,6 +5,12 @@
 {% block body %}
 <section class="block">
     <h2>{{ title }}</h2>
-    {{ form(form) }}
+    {{ form_start(form) }}
+        {{ form_row(form.nom) }}
+        {{ form_row(form.prix) }}
+        {{ form_row(form.type) }}
+        {{ form_row(form.tailles, {value: filter}) }}
+        {{ form_row(form.image) }}
+    {{ form_end(form) }}
 </section>
 {% endblock %}

@@ -396,6 +396,7 @@ class ExtPiscinesController extends AbstractController
         return $this->render('ext_piscines/filter-manager.html.twig', [
             'title' => 'Créer une nouvelle filtration',
             'form' => $form->createView(),
+            'filter' => '',
         ]);
     }
 
@@ -431,6 +432,7 @@ class ExtPiscinesController extends AbstractController
         return $this->render('ext_piscines/filter-manager.html.twig', [
             'title' => 'Modifier une filtration',
             'form' => $form->createView(),
+            'filter' => $filter->getTailles()->getId(),
         ]);
     }
 
