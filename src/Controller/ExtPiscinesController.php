@@ -175,7 +175,7 @@ class ExtPiscinesController extends AbstractController
         }
 
         return $this->render('ext_piscines/form-manager.html.twig', [
-            'title' => "Créer une piscine",
+            'title' => "Mettre à jour une piscine",
             'form' => $form->createView(),
         ]);
     }
