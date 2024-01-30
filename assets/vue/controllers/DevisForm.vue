@@ -7,7 +7,7 @@
             <div class="col-7 position-relative">
                 <p class="text-end">Prix estimé : <span v-html="this.quotePrice"></span> € TTC (Hors livraison et agrégats)</p>
                 <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg' alt="Présentation de la piscine" class="img-fluid position-absolute">
-                <img v-if="basePoolImgFond != '' && this.selectedOption !== '' && this.selectedOption !== 'fond-perso'" :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond" class="img-fluid position-absolute">
+                <img v-if="basePoolImgFond != '' && this.selectedOption !== ''" :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond" class="img-fluid position-absolute">
                 <img v-if="basePoolImgEsc != ''" :src='"./uploads/images/escs/" + basePoolImgEsc' alt="Présentation de la couleur de la piscine" class="img-fluid position-absolute">
                 <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor' alt="Présentation de la couleur" class="img-fluid position-absolute pool-color">
                 <img v-if="basePoolImgFilter != ''" :src='"./uploads/images/filters/" + basePoolImgFilter' alt="Présentation de la filtration" class="img-fluid position-absolute">
