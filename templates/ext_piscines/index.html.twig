@@ -1,3 +1,10 @@
+{% set filterList = {
+    '0' : 'Filtre à sable',
+    '1' : 'Bloc filtrant',
+    '2' : 'Eco responsable',
+    '3' : 'Sans filtration',
+} %}
+
 {% extends 'admin.html.twig' %}
 
 {% block title %}Gestion des piscines{% endblock %}
@@ -53,7 +60,10 @@
                 <h3>Liste des filtrations</h3>
                 {% for filt in filters %}
                     <div class="line">
-                        <p>{{ filt.nom.nom }} - {{ filt.tailles.taille }}</p>
+                        <p>
+                            {{ filt.nom.nom }} - {{ filt.tailles.taille }}<br />
+                            {{ filterList[filt.type] }}
+                        </p>
                         <ul>
                             <li><a href="{{ path('app_filter_update', { id: filt.id }) }}">Modifier</a></li>
                             <li><a href="{{ path('app_filter_delete', { id: filt.id }) }}">Supprimer</a></li>
