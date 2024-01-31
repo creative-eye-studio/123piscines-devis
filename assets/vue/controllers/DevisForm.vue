@@ -7,7 +7,7 @@
             <div class="col-7 position-relative">
                 <p class="text-end">Prix estimé : <span v-html="this.quotePrice"></span> € TTC (Hors livraison et agrégats)</p>
                 <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg' alt="Présentation de la piscine" class="img-fluid position-absolute">
-                <img v-if="basePoolImgFond != '' && this.selectedOption !== ''" :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond" class="img-fluid position-absolute">
+                <img v-if="basePoolImgFond != '' && this.selectedProof !== ''" :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond" class="img-fluid position-absolute">
                 <img v-if="basePoolImgEsc != ''" :src='"./uploads/images/escs/" + basePoolImgEsc' alt="Présentation de la couleur de la piscine" class="img-fluid position-absolute">
                 <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor' alt="Présentation de la couleur" class="img-fluid position-absolute pool-color">
                 <img v-if="basePoolImgFilter != ''" :src='"./uploads/images/filters/" + basePoolImgFilter' alt="Présentation de la filtration" class="img-fluid position-absolute">
@@ -74,11 +74,11 @@
                                         :data-linerprix=size.liner_prix></option>
                                 </select>
                                 <p class="form-check">
-                                    <input class="form-check-input" type="radio" name="proof" id="fond-plat" @click="handleRadioClick('fond-plat')">
+                                    <input class="form-check-input" type="radio" name="proof" id="fond-plat" @click="handleProofClick('fond-plat')">
                                     <label class="form-check-label" for="fond-plat">Fond plat (1,50m de profondeur)</label>
                                 </p>
                                 <p class="form-check">
-                                    <input class="form-check-input" type="radio" name="proof" id="fond-perso" @click="handleRadioClick('fond-perso')">
+                                    <input class="form-check-input" type="radio" name="proof" id="fond-perso" @click="handleProofClick('fond-perso')">
                                     <label class="form-check-label" for="fond-perso">Fond personnalisé</label>
                                 </p>
                                 <p class="col-12 mt-2">
@@ -156,9 +156,18 @@
                     </div>
                     <div id="revet-body" class="accordion-collapse collapse" data-bs-parent="#list">
                         <div class="row m-3">
-                            <div class="col-6 form-check" v-if="this.revetPolyBool"><input class="form-check-input" type="radio" name="revet" id="poly"><label class="form-check-label" for="poly">Revêtement polymère</label></div>
-                            <div class="col-6 form-check" v-if="this.linerBool"><input class="form-check-input" type="radio" name="revet" id="liner"><label class="form-check-label" for="liner">Liner</label></div>
-                            <div class="col-6 form-check"><input class="form-check-input" type="radio" name="revet" id="no-revet"><label class="form-check-label" for="no-revet">Sans revêtement</label></div>
+                            <div class="col-6 form-check" v-if="this.revetPolyBool">
+                                <input class="form-check-input" type="radio" name="revet" v-model="selectedRevetIndex" id="poly" :value="'Revètement polymère | ' + revetPolyPrice" @change="handleRevetChange()">
+                                <label class="form-check-label" for="poly">Revêtement polymère</label>
+                            </div>
+                            <div class="col-6 form-check" v-if="this.linerBool">
+                                <input class="form-check-input" type="radio" name="revet" v-model="selectedRevetIndex" id="liner" :value="'Liner | ' + linerPrice" @change="handleRevetChange()">
+                                <label class="form-check-label" for="liner">Liner</label>
+                            </div>
+                            <div class="col-6 form-check">
+                                <input class="form-check-input" type="radio" name="revet" v-model="selectedRevetIndex" id="no-revet" :value="'Sans revêtement | 0'" @change="handleRevetChange()">
+                                <label class="form-check-label" for="no-revet">Sans revêtement</label>
+                            </div>
                         </div>    
                     </div>
                 </div>
@@ -311,6 +320,7 @@ export default {
             pricePoolSize: null,
             priceEscForm: null,
             priceFilterForm: null,
+            priceRevetForm: null,
 
             alarmBool: false,
             alarmPrice: 0,
@@ -327,6 +337,7 @@ export default {
             selectedSecurityIndex: null,
             selectedEscIndex: null,
             selectedColorIndex: null,
+            selectedRevetIndex: null,
 
             quotePrice: null,
 
@@ -348,7 +359,7 @@ export default {
 
             selectedPool: '',
             selectedSize: '',
-            selectedOption: '',
+            selectedProof: '',
             disabledCustomProof: false,
             poolsList: [
                 {
@@ -396,12 +407,12 @@ export default {
 
         async updatePrice() {
             // Piscine
-            const poolPrice = parseFloat(this.pricePoolForm) || 0;
             const sizePrice = parseFloat(this.priceSizeForm) || 0;
             const escPrice = parseFloat(this.priceEscForm) || 0;
             const filterPrice = parseFloat(this.priceFilterForm) || 0;
             const securityPrice = parseFloat(this.securityPrice) || 0;
-            this.quotePrice = sizePrice + escPrice + filterPrice + securityPrice || parseFloat(0.00);
+            const priceRevet = parseFloat(this.priceRevetForm) || 0;
+            this.quotePrice = parseFloat(sizePrice + escPrice + filterPrice + securityPrice + priceRevet) || parseFloat(0.00);
         },
 
         async getPiscinesListe() {
@@ -531,14 +542,23 @@ export default {
             }
         },
 
-        handleRadioClick(value) {
-            this.selectedOption = value;
+        handleRevetChange() {
+            if (this.selectedRevetIndex !== null) {
+                const [name, price] = this.selectedRevetIndex.split('|').map(part => part.trim());
+                this.priceRevetForm = price;
+            } else {
+                console.warn('Aucune couleur sélectionnée.');
+            }
+        },
+
+        handleProofClick(value) {
+            this.selectedProof = value;
             this.enableCustomProof();
         },
 
         enableCustomProof() {
             const customHole = document.querySelector('#custom-proof');
-            customHole.disabled = this.selectedOption !== "fond-perso";
+            customHole.disabled = this.selectedProof !== "fond-perso";
         },
 
         submitForm() {

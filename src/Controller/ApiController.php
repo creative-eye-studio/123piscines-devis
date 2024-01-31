@@ -62,6 +62,10 @@ class ApiController extends AbstractController
                 'alarme_prix' => $size->getSecuAlarmePrix(),
                 'cover_prix' => $size->getSecuCoverPrix(),
                 'barrier_prix' => $size->getSecuBarrierPrix(),
+                'revet_poly' => $size->isRevetPoly(),
+                'revet_poly_prix' => $size->getRevetPolyPrice(),
+                'liner' => $size->isLiner(),
+                'liner_prix' => $size->getLinerPrice(),
             ];
         }, $sizes);
 
