@@ -483,6 +483,8 @@ export default {
                 this.coverBool = JSON.parse(targetId.cover);
                 this.barrierBool = JSON.parse(targetId.barrier);
                 this.alarmPrice = targetId.alarmeprix;
+                this.coverPrice = targetId.coverprix;
+                this.barrierPrice = targetId.barrierprix;
 
                 console.log(targetId);
 
