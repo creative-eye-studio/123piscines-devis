@@ -20,12 +20,15 @@
 
         {% include "webpages/blocks/header.html.twig" %}
         <div id="content">
-            <div id="website">
+            <div id="website" class="py-5">
                 <main id="main">
+                    <div class="pb-5 px-3">
+                        <h1 class="text-center h3">Aqua Estimate - Demande de devis en ligne</h1>
+                    </div>
                     {% block body %}{% endblock %}
                 </main>
             </div>
-            {# {% include "webpages/blocks/footer.html.twig" %} #}
+            {% include "webpages/blocks/footer.html.twig" %}
         </div>
 
         {% block javascripts %}

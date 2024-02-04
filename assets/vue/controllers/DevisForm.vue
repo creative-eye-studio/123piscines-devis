@@ -2,19 +2,9 @@
 <div class="container">
     <!-- Configuration de la piscine -->
     <form @change="this.updatePrice()">
-        <div class="row">
-            <!-- Image et prix -->
-            <div class="col-7 position-relative">
-                <p class="text-end">Prix estimé : <span v-html="this.quotePrice"></span> € TTC (Hors livraison et agrégats)</p>
-                <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg' alt="Présentation de la piscine" class="img-fluid position-absolute">
-                <img v-if="basePoolImgFond != '' && this.selectedProof !== ''" :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond" class="img-fluid position-absolute">
-                <img v-if="basePoolImgEsc != ''" :src='"./uploads/images/escs/" + basePoolImgEsc' alt="Présentation de la couleur de la piscine" class="img-fluid position-absolute">
-                <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor' alt="Présentation de la couleur" class="img-fluid position-absolute pool-color">
-                <img v-if="basePoolImgFilter != ''" :src='"./uploads/images/filters/" + basePoolImgFilter' alt="Présentation de la filtration" class="img-fluid position-absolute">
-
-            </div>
+        <div class="row flex-md-row-reverse">
             <!-- Configurateur -->
-            <div class="col-5 accordion" id="list">
+            <div class="col-12 col-md-5 accordion" id="list">
                 <!-- Type de piscine -->
                 <div class="accordion-item">
                     <div class="accordion-header">
@@ -278,7 +268,7 @@
                         </button>
                     </div>
                     <div id="contact-body" class="accordion-collapse collapse" data-bs-parent="#list">
-                        <div class="row m-3">
+                        <div class="row m-3 pt-3">
                             <p class="col-12">
                                 <label for="contact-nom" class="form-label">Votre nom</label>
                                 <input class="form-control" type="text" id="contact-nom" name="contact-nom">
@@ -299,10 +289,23 @@
                                 <label for="contact-message" class="form-label">Votre message</label>
                                 <textarea class="form-control" name="contact-message" id="contact-message"></textarea>
                             </p>
-                            <p><input type="submit" value="Envoyer ma demande de devis" @click.prevent="submitForm()"></p>
+                            <p class="mt-3"><input type="submit" value="Envoyer ma demande de devis" @click.prevent="submitForm()" class="btn btn-primary"></p>
                         </div>
                     </div>
                 </div>
+            </div>
+            <!-- Image et prix -->
+            <div class="col-12 col-md-7 position-relative">
+                <p class="text-end">
+                    <strong>Prix estimé : <span v-html="this.quotePrice"></span> € TTC (Hors livraison et agrégats)</strong>
+                </p>
+                <figure class="position-relative mt-3 img-config-container">
+                    <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg' alt="Présentation de la piscine" class="img-fluid position-absolute">
+                    <img v-if="basePoolImgFond != '' && this.selectedProof !== ''" :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond" class="img-fluid position-absolute">
+                    <img v-if="basePoolImgEsc != ''" :src='"./uploads/images/escs/" + basePoolImgEsc' alt="Présentation de la couleur de la piscine" class="img-fluid position-absolute">
+                    <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor' alt="Présentation de la couleur" class="img-fluid position-absolute pool-color">
+                    <img v-if="basePoolImgFilter != ''" :src='"./uploads/images/filters/" + basePoolImgFilter' alt="Présentation de la filtration" class="img-fluid position-absolute">
+                </figure>
             </div>
         </div>
 
@@ -339,7 +342,7 @@ export default {
             selectedColorIndex: null,
             selectedRevetIndex: null,
 
-            quotePrice: null,
+            quotePrice: parseFloat(0),
 
             accessoires: ["Petit bain", "Escalier", "Échelle", "Revètement polymère", "SPA à débordement", "Alarme volumétrique", "Couverture de sécurité", "Barrière normalisée"],
 
