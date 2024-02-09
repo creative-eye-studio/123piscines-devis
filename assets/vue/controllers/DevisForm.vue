@@ -21,6 +21,7 @@
                                             v-for="pool in poolsList" 
                                             v-html="pool.nom" 
                                             :value="pool.nom" 
+                                            :data-nom="pool.nom" 
                                             :data-id="pool.id" 
                                             :data-image="pool.image" 
                                             :data-fond=pool.fond
@@ -49,6 +50,7 @@
                                         v-html="size.taille" 
                                         :key="size.id" 
                                         :value="size.taille" 
+                                        :data-size="size.taille" 
                                         :data-id="size.id" 
                                         :data-prix=size.prix
                                         :data-image=size.image
@@ -73,7 +75,7 @@
                                 </p>
                                 <p class="col-12 mt-2">
                                     <label for="custom-proof" class="form-label">Personnaliser sa profondeur</label>
-                                    <input class="form-control" name="custom-proof" id="custom-proof" type="text" disabled>
+                                    <input class="form-control" name="custom-proof" id="custom-proof" type="text" v-model="customProof" disabled>
                                 </p>
                             </div>
                         </div>
@@ -90,11 +92,11 @@
                     <div id="escalier-body" class="accordion-collapse collapse" data-bs-parent="#list">
                         <div class="row m-3">
                             <div class="col-4 form-check" v-for="item in escaliers" :key="item.id">
-                                <input class="form-check-input" type="radio" name="escalier" :id="this.sanitizeTitle(item.nom)" :data-prix=item.prix :data-image="item.image" @change="this.getEscalierPrix($event)" v-model="selectedEscIndex" :value="accessoires[item.type] + ' - (' +  item.nom + ') | ' + item.image">
+                                <input class="form-check-input" type="radio" name="escalier" :id="this.sanitizeTitle(item.nom)" :data-nom=item.nom :data-prix=item.prix :data-image="item.image" @change="this.getEscalierPrix($event)" v-model="selectedEscIndex" :value="accessoires[item.type] + ' - (' +  item.nom + ') | ' + item.image">
                                 <label class="form-check-label" :for="this.sanitizeTitle(item.nom)" v-html="accessoires[item.type] + ' - (' +  item.nom + ')'"></label>
                             </div>
                             <div class="col-4 form-check">
-                                <input class="form-check-input" type="radio" name="escalier" id="no-escalier" data-image="" data-prix='0' @change="this.getEscalierPrix($event)" v-model="selectedEscIndex" value="Sans accessoires | ">
+                                <input class="form-check-input" type="radio" name="escalier" id="no-escalier" data-nom="Sans accessoire" data-image="" data-prix='0' @change="this.getEscalierPrix($event)" v-model="selectedEscIndex" value="Sans accessoires | ">
                                 <label class="form-check-label" for="no-escalier" v-html='"Sans accessoire"'></label>
                             </div>
                         </div>  
@@ -117,6 +119,7 @@
                                     name="filtration" 
                                     :id="this.sanitizeTitle(filtersList[filter.type].name)"  
                                     :value="filtersList[filter.type].name"
+                                    :data-nom="filtersList[filter.type].name"
                                     :data-prix=filter.prix
                                     :data-image="filter.image"
                                     @click="this.getFilterPrix($event)">
@@ -128,7 +131,8 @@
 
                             <div class="col-6 form-check">
                                 <input class="form-check-input" type="radio" name="filtration" id="no-filter"
-                                    :data-prix=0
+                                    data-nom="Sans rien"
+                                    data-prix=0
                                     data-image=''
                                     @click="this.getFilterPrix($event)">
                                 <label class="form-check-label" for="no-filter">Sans rien</label>
@@ -271,25 +275,27 @@
                         <div class="row m-3 pt-3">
                             <p class="col-12">
                                 <label for="contact-nom" class="form-label">Votre nom</label>
-                                <input class="form-control" type="text" id="contact-nom" name="contact-nom">
+                                <input class="form-control" type="text" id="contact-nom" name="contact-nom" v-model="this.nom">
                             </p>
                             <p class="col-6">
                                 <label for="contact-mail" class="form-label">Votre e-mail</label>
-                                <input class="form-control" type="email" id="contact-mail" name="contact-mail">
+                                <input class="form-control" type="email" id="contact-mail" name="contact-mail" v-model="this.email">
                             </p>
                             <p class="col-6">
                                 <label for="contact-tel" class="form-label">Votre téléphone</label>
-                                <input class="form-control" type="tel" id="contact-tel" name="contact-tel">
+                                <input class="form-control" type="tel" id="contact-tel" name="contact-tel" v-model="this.tel">
                             </p>
                             <p class="col-12">
                                 <label for="contact-sujet" class="form-label">Objet</label>
-                                <input class="form-control" type="text" id="contact-sujet" name="contact-sujet">
+                                <input class="form-control" type="text" id="contact-sujet" name="contact-sujet" v-model="this.objet">
                             </p>
                             <p class="col-12">
                                 <label for="contact-message" class="form-label">Votre message</label>
-                                <textarea class="form-control" name="contact-message" id="contact-message"></textarea>
+                                <textarea class="form-control" name="contact-message" id="contact-message" v-model="this.message"></textarea>
                             </p>
-                            <p class="mt-3"><input type="submit" value="Envoyer ma demande de devis" @click.prevent="submitForm()" class="btn btn-primary"></p>
+                            <p class="mt-3">
+                                <button type="submit" @click="submitForm" class="btn btn-primary">Envoyer ma demande de devis</button>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -360,9 +366,22 @@ export default {
             basePoolImgColor: '',
             basePoolId: '0',
 
-            selectedPool: '',
-            selectedSize: '',
+            poolName: "",
+            poolSize: "",
             selectedProof: '',
+            customProof: "",
+            equip: "",
+            poolFilter: "",
+            poolRevet: "",
+            poolColor: "",
+            poolSecurity: "",
+
+            nom: "",
+            email: "",
+            tel: "",
+            objet: "",
+            message: "",
+
             disabledCustomProof: false,
             poolsList: [
                 {
@@ -430,6 +449,7 @@ export default {
         async getPiscinesDatas(e) {
             if (e.target.options[e.target.options.selectedIndex].dataset != undefined) {
                 const targetId = e.target.options[e.target.options.selectedIndex].dataset;
+                this.poolName = targetId;
                 this.basePoolImg = '/piscines/' + targetId.image;
                 this.basePoolImgFond = '/piscines/' + targetId.fond;
                 this.basePoolId = targetId.id;
@@ -472,6 +492,7 @@ export default {
         async getPiscineFilters(e) {
             if (e.target !== undefined && e.target.options.selectedIndex > -1) { 
                 const targetId = e.target.options[e.target.options.selectedIndex].dataset;
+                this.poolSize = targetId;
                 this.basePoolImg = '/tailles/' + targetId.image;
                 this.priceSizeForm = targetId.prix;
 
@@ -488,8 +509,6 @@ export default {
                 this.alarmPrice = targetId.alarmeprix;
                 this.coverPrice = targetId.coverprix;
                 this.barrierPrice = targetId.barrierprix;
-
-                console.log(targetId);
 
                 try {
 
@@ -508,6 +527,7 @@ export default {
 
         async getFilterPrix(e) {
             const targetId = e.target.dataset;
+            this.poolFilter = targetId.nom;
             this.priceFilterForm = targetId.prix;
             this.basePoolImgFilter = targetId.image;
         },
@@ -527,12 +547,14 @@ export default {
         handleSecurityChange() {
             const [name, price] = this.selectedSecurityIndex.split('|');
             this.securityPrice = parseFloat(price);
+            this.poolSecurity = name;
         },
 
         handleEscChange() {
             if (this.selectedEscIndex !== null) {
                 const [name, imageFileName] = this.selectedEscIndex.split('|').map(part => part.trim());
                 this.basePoolImgEsc = imageFileName;
+                this.equip = name;
             } else {
                 console.warn('Aucun accessoire sélectionné.');
             }
@@ -542,6 +564,7 @@ export default {
             if (this.selectedColorIndex !== null) {
                 const [name, imageFileName] = this.selectedColorIndex.split('|').map(part => part.trim());
                 this.basePoolImgColor = imageFileName;
+                this.poolColor = name;
             } else {
                 console.warn('Aucune couleur sélectionnée.');
             }
@@ -550,6 +573,7 @@ export default {
         handleRevetChange() {
             if (this.selectedRevetIndex !== null) {
                 const [name, price] = this.selectedRevetIndex.split('|').map(part => part.trim());
+                this.poolRevet = name;
                 this.priceRevetForm = price;
             } else {
                 console.warn('Aucune couleur sélectionnée.');
@@ -566,17 +590,60 @@ export default {
             customHole.disabled = this.selectedProof !== "fond-perso";
         },
 
-        submitForm() {
-            var type = document.querySelector('input[name="type"]:checked').value;
-            var pool = document.querySelector('#select-pool').value;
-            var dims = document.querySelector('#pool-dim').value;
-            var proof = document.querySelector('input[name="proof"]:checked').value;
-            var customProof = document.querySelector('#custom-proof').value;
-            var personnalisation = document.querySelector('input[name="personnalisation"]:checked').value;
-            var filtration = document.querySelector('input[name="filtration"]:checked').value;
-            var revet = document.querySelector('input[name="revet"]:checked').value;
-            var color = document.querySelector('input[name="color"]:checked').value;
-            var securite = document.querySelector('input[name="securite"]:checked').value;
+        submitForm(event) {
+            event.preventDefault();
+            let proof = '1.50';
+
+            if (this.customProof != "" & this.selectedProof == 'fond-perso') {
+                proof = this.customProof;
+            }
+
+            const formData = {
+                price: this.quotePrice,
+                pool: this.poolName.nom,
+                size: this.poolSize.size,
+                proof: proof,
+                equip: this.equip,
+                revet: this.poolRevet,
+                filter: this.poolFilter,
+                color: this.poolColor,
+                security: this.poolSecurity,
+                nom: this.nom,
+                email: this.email,
+                tel: this.tel,
+                objet: this.objet,
+                message: this.message
+            };
+
+            console.log(formData);
+
+            // const requestOptions = {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(formData)
+            // }
+
+            // fetch('/api/contact-form', requestOptions)
+            //     .then(fetchResponse => {
+            //         if (!fetchResponse.ok) {
+            //             throw new Error(`La requête a échoué avec le code : ${fetchResponse.status}`);
+            //         }
+            //         return fetchResponse.clone().json(); // Clonez la réponse avant de l'analyser
+            //     })
+            //     .then(data => {
+            //         console.log(data);
+            //         // response.classList.remove('response-danger');
+            //         // response.classList.add('response-success');
+            //         // response.innerHTML = "Votre message a bien été envoyé";
+            //     })
+            //     .catch(error => {
+            //         console.error(error);
+            //         // response.classList.remove('response-success');
+            //         // response.classList.add('response-danger');
+            //         // response.innerHTML = "Votre message n'a pas été envoyé ! Une erreur s'est produite !";
+            //     });
         },
 
         sanitizeTitle: function(title) {

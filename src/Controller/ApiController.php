@@ -7,6 +7,7 @@ use App\Entity\PiscineColors;
 use App\Entity\PiscineEsc;
 use App\Entity\PiscineListe;
 use App\Entity\PiscineTailles;
+use App\Services\FormsService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,11 +18,13 @@ class ApiController extends AbstractController
 {
     private $em;
     private $request;
+    private $formsService;
 
-    function __construct(EntityManagerInterface $em, RequestStack $request)
+    function __construct(EntityManagerInterface $em, RequestStack $request, FormsService $formsService)
     {
         $this->em = $em;
         $this->request = $request->getCurrentRequest();
+        $this->formsService = $formsService;
     }
 
     #[Route('/api/pools', name: 'pool_type')]
@@ -171,6 +174,65 @@ class ApiController extends AbstractController
 
         try {
             return $this->json($dataArray, 200);
+        } catch (\Throwable $th) {
+            return $this->json([
+                'Response' => $th,
+                "data" => $data
+            ], 500);
+        }
+    }
+
+    #[Route('/api/contact-form', name: 'contact_form', methods: ["POST"])]
+    public function sendContactForm() {
+        $data = json_decode($this->request->getContent(), true);
+
+        $nom = $data['nom'];
+        $prenom = $data['prenom'];
+        $tel = $data['tel'];
+        $mail = $data['email'] ?? "example@xyz.fr";
+        $message = $data['message'];
+        $objet = $data['objet'];
+
+        
+        $dataArray = [
+            'nom' => $nom,
+            'prenom' => $prenom,
+            'tel' => $tel,
+            'mail' => $mail,
+            'message' => $message,
+            'objet' => $objet,
+            'type' => '',
+            'pool' => '',
+            'dims' => '',
+            'proof' => '',
+            'customProof' => '',
+            'personnalisation' => '',
+            'filtration' => '',
+            'revet' => '',
+            'color' => '',
+            'securite' => '',
+        ];
+
+        try {
+            // Envoi des e-mails
+            $this->formsService->send($mail, 'contact@lasallecrossfit.fr', $objet, 'form-e-mail', $dataArray);
+            // $this->formService->send('no-reply@gym07.com', $dataArray['email'], "Gym 07 - Récapitulatif de votre demande", '', $dataArray);
+
+            // Enregistrement du contact
+            // $contact = $contactService->createContact();
+            // $contact->setNom($data['nom']);
+            // $contact->setPrenom($data['prenom']);
+            // $contact->setTel($data['tel']);
+            // $contact->setEmail($data['email']);
+            // $contact->setObjet($data['objet']);
+            // $contact->setMessage($data['message']);
+
+            // $em->persist($contact);
+            // $em->flush();
+
+            return new JsonResponse([
+                "Response" => "Votre E-Mail a bien été envoyé"
+            ], 200);
         } catch (\Throwable $th) {
             return $this->json([
                 'Response' => $th,
