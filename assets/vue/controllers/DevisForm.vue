@@ -289,6 +289,7 @@
                                 <label for="contact-message" class="form-label">Votre message</label>
                                 <textarea class="form-control" name="contact-message" id="contact-message" v-model="this.message"></textarea>
                             </p>
+                            <p id="mail-response" class="text-light p-3"></p>
                             <p class="mt-3">
                                 <button type="submit" @click="submitForm" class="btn btn-primary">Envoyer ma demande de devis</button>
                             </p>
@@ -593,6 +594,8 @@ export default {
                 proof = this.customProof;
             }
 
+            var response = document.getElementById('mail-response');
+
             const formData = {
                 price: parseFloat(this.quotePrice) + " €" ,
                 pool: this.poolName.nom,
@@ -608,8 +611,6 @@ export default {
                 tel: this.tel,
                 message: this.message
             };
-
-            console.log(formData);
 
             const requestOptions = {
                 method: 'POST',
@@ -628,15 +629,15 @@ export default {
                 })
                 .then(data => {
                     console.log(data);
-                    // response.classList.remove('response-danger');
-                    // response.classList.add('response-success');
-                    // response.innerHTML = "Votre message a bien été envoyé";
+                    response.classList.remove('bg-danger');
+                    response.classList.add('bg-success');
+                    response.innerHTML = "Votre message a bien été envoyé";
                 })
                 .catch(error => {
                     console.error(error);
-                    // response.classList.remove('response-success');
-                    // response.classList.add('response-danger');
-                    // response.innerHTML = "Votre message n'a pas été envoyé ! Une erreur s'est produite !";
+                    response.classList.remove('bg-success');
+                    response.classList.add('bg-danger');
+                    response.innerHTML = "Votre message n'a pas été envoyé ! Une erreur s'est produite !";
                 });
         },
 
