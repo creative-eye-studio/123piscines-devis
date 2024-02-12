@@ -279,15 +279,11 @@
                             </p>
                             <p class="col-6">
                                 <label for="contact-mail" class="form-label">Votre e-mail</label>
-                                <input class="form-control" type="email" id="contact-mail" name="contact-mail" v-model="this.email">
+                                <input class="form-control" type="email" id="contact-mail" name="contact-mail" v-model="this.mail">
                             </p>
                             <p class="col-6">
                                 <label for="contact-tel" class="form-label">Votre téléphone</label>
                                 <input class="form-control" type="tel" id="contact-tel" name="contact-tel" v-model="this.tel">
-                            </p>
-                            <p class="col-12">
-                                <label for="contact-sujet" class="form-label">Objet</label>
-                                <input class="form-control" type="text" id="contact-sujet" name="contact-sujet" v-model="this.objet">
                             </p>
                             <p class="col-12">
                                 <label for="contact-message" class="form-label">Votre message</label>
@@ -377,9 +373,8 @@ export default {
             poolSecurity: "",
 
             nom: "",
-            email: "",
+            mail: "",
             tel: "",
-            objet: "",
             message: "",
 
             disabledCustomProof: false,
@@ -599,7 +594,7 @@ export default {
             }
 
             const formData = {
-                price: this.quotePrice,
+                price: parseFloat(this.quotePrice) + " €" ,
                 pool: this.poolName.nom,
                 size: this.poolSize.size,
                 proof: proof,
@@ -609,41 +604,40 @@ export default {
                 color: this.poolColor,
                 security: this.poolSecurity,
                 nom: this.nom,
-                email: this.email,
+                mail: this.mail,
                 tel: this.tel,
-                objet: this.objet,
                 message: this.message
             };
 
             console.log(formData);
 
-            // const requestOptions = {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify(formData)
-            // }
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            }
 
-            // fetch('/api/contact-form', requestOptions)
-            //     .then(fetchResponse => {
-            //         if (!fetchResponse.ok) {
-            //             throw new Error(`La requête a échoué avec le code : ${fetchResponse.status}`);
-            //         }
-            //         return fetchResponse.clone().json(); // Clonez la réponse avant de l'analyser
-            //     })
-            //     .then(data => {
-            //         console.log(data);
-            //         // response.classList.remove('response-danger');
-            //         // response.classList.add('response-success');
-            //         // response.innerHTML = "Votre message a bien été envoyé";
-            //     })
-            //     .catch(error => {
-            //         console.error(error);
-            //         // response.classList.remove('response-success');
-            //         // response.classList.add('response-danger');
-            //         // response.innerHTML = "Votre message n'a pas été envoyé ! Une erreur s'est produite !";
-            //     });
+            fetch('/api/contact-form', requestOptions)
+                .then(fetchResponse => {
+                    if (!fetchResponse.ok) {
+                        throw new Error(`La requête a échoué avec le code : ${fetchResponse.status}`);
+                    }
+                    return fetchResponse.clone().json(); // Clonez la réponse avant de l'analyser
+                })
+                .then(data => {
+                    console.log(data);
+                    // response.classList.remove('response-danger');
+                    // response.classList.add('response-success');
+                    // response.innerHTML = "Votre message a bien été envoyé";
+                })
+                .catch(error => {
+                    console.error(error);
+                    // response.classList.remove('response-success');
+                    // response.classList.add('response-danger');
+                    // response.innerHTML = "Votre message n'a pas été envoyé ! Une erreur s'est produite !";
+                });
         },
 
         sanitizeTitle: function(title) {

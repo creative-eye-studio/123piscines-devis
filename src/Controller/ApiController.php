@@ -27,12 +27,13 @@ class ApiController extends AbstractController
         $this->formsService = $formsService;
     }
 
+
     #[Route('/api/pools', name: 'pool_type')]
     public function poolType(): JsonResponse
     {
         $pools = $this->em->getRepository(PiscineListe::class)->findAll();
 
-        $list = array_map(function($pool) {
+        $list = array_map(function ($pool) {
             return [
                 'id' => $pool->getId(),
                 'nom' => $pool->getNom(),
@@ -51,7 +52,7 @@ class ApiController extends AbstractController
         $pool = $this->em->getRepository(PiscineListe::class)->find($poolId);
         $sizes = $this->em->getRepository(PiscineTailles::class)->findBy(['piscine' => $pool]);
 
-        $list = array_map(function($size) {
+        $list = array_map(function ($size) {
             return [
                 'id' => $size->getId(),
                 'taille' => $size->getTaille(),
@@ -102,7 +103,7 @@ class ApiController extends AbstractController
         $pool = $this->em->getRepository(PiscineTailles::class)->find($poolId);
         $sizes = $this->em->getRepository(PiscineEsc::class)->findBy(['taille' => $pool]);
 
-        $list = array_map(function($size) {
+        $list = array_map(function ($size) {
             return [
                 'id' => $size->getId(),
                 'nom' => $size->getNom(),
@@ -121,7 +122,7 @@ class ApiController extends AbstractController
         $pool = $this->em->getRepository(PiscineListe::class)->find($poolId);
         $sizes = $this->em->getRepository(PiscineColors::class)->findBy(['piscine' => $pool]);
 
-        $list = array_map(function($size) {
+        $list = array_map(function ($size) {
             return [
                 'id' => $size->getId(),
                 'nom' => $size->getTitle(),
@@ -142,7 +143,7 @@ class ApiController extends AbstractController
             'tailles' => $size
         ]);
 
-        $list = array_map(function($filter) {
+        $list = array_map(function ($filter) {
             return [
                 'id' => $filter->getId(),
                 'type' => $filter->getType(),
@@ -183,39 +184,34 @@ class ApiController extends AbstractController
     }
 
     #[Route('/api/contact-form', name: 'contact_form', methods: ["POST"])]
-    public function sendContactForm() {
+    public function sendContactForm()
+    {
         $data = json_decode($this->request->getContent(), true);
 
-        $nom = $data['nom'];
-        $prenom = $data['prenom'];
-        $tel = $data['tel'];
-        $mail = $data['email'] ?? "example@xyz.fr";
-        $message = $data['message'];
-        $objet = $data['objet'];
+        $mail = $data['mail'] ?? "test@mymail.com";
 
-        
+        $objet = "Demande de devis en ligne";
+
         $dataArray = [
-            'nom' => $nom,
-            'prenom' => $prenom,
-            'tel' => $tel,
+            'price' => $data['price'] ?? "",
+            'pool' => $data['pool'] ?? "",
+            'size' => $data['size'] ?? "",
+            'proof' => $data['proof'] ?? "",
+            'equip' => $data['equip'] ?? "",
+            'revet' => $data['revet'] ?? "",
+            'filter' => $data['filter'] ?? "",
+            'color' => $data['color'] ?? "",
+            'security' => $data['security'] ?? "",
+            'nom' => $data['nom'] ?? "",
             'mail' => $mail,
-            'message' => $message,
+            'tel' => $data['tel'] ?? "",
             'objet' => $objet,
-            'type' => '',
-            'pool' => '',
-            'dims' => '',
-            'proof' => '',
-            'customProof' => '',
-            'personnalisation' => '',
-            'filtration' => '',
-            'revet' => '',
-            'color' => '',
-            'securite' => '',
+            'message' => $data['message'] ?? "",
         ];
 
         try {
             // Envoi des e-mails
-            $this->formsService->send($mail, 'contact@lasallecrossfit.fr', $objet, 'form-e-mail', $dataArray);
+            $this->formsService->send($mail, 'info@123piscines.fr', $objet, 'form-e-mail', $dataArray);
             // $this->formService->send('no-reply@gym07.com', $dataArray['email'], "Gym 07 - Récapitulatif de votre demande", '', $dataArray);
 
             // Enregistrement du contact
