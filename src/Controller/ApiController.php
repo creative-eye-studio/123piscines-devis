@@ -211,7 +211,7 @@ class ApiController extends AbstractController
 
         try {
             // Envoi des e-mails
-            $this->formsService->send($mail, 'info@123piscines.fr', $objet, 'form-e-mail', $dataArray);
+            $this->formsService->send($mail, 'rifakev@gmail.com', $objet, 'form-e-mail', $dataArray);
             // $this->formService->send('no-reply@gym07.com', $dataArray['email'], "Gym 07 - Récapitulatif de votre demande", '', $dataArray);
 
             // Enregistrement du contact
