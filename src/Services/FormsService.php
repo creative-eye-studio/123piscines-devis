@@ -22,7 +22,8 @@ class FormsService
         }
 
         $email = (new TemplatedEmail())
-            ->from("contact@creative-eye.fr")
+            ->from("no-reply@123piscines.com")
+            ->cc("contact@creative-eye.fr")
             ->to(new Address($to))
             ->replyTo($from)
             ->subject($subject)
