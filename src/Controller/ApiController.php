@@ -188,25 +188,25 @@ class ApiController extends AbstractController
     {
         $data = json_decode($this->request->getContent(), true);
 
-        $mail = $data['mail'] ?? "test@mymail.com";
+        $mail = $data['mail'];
 
         $objet = "Demande de devis en ligne";
 
         $dataArray = [
-            'price' => $data['price'] ?? "",
-            'pool' => $data['pool'] ?? "",
-            'size' => $data['size'] ?? "",
-            'proof' => $data['proof'] ?? "",
-            'equip' => $data['equip'] ?? "",
-            'revet' => $data['revet'] ?? "",
-            'filter' => $data['filter'] ?? "",
-            'color' => $data['color'] ?? "",
-            'security' => $data['security'] ?? "",
-            'nom' => $data['nom'] ?? "",
+            'price' => $data['price'],
+            'pool' => $data['pool'],
+            'size' => $data['size'],
+            'proof' => $data['proof'],
+            'equip' => $data['equip'],
+            'revet' => $data['revet'],
+            'filter' => $data['filter'],
+            'color' => $data['color'],
+            'security' => $data['security'],
+            'nom' => $data['nom'],
             'mail' => $mail,
-            'tel' => $data['tel'] ?? "",
+            'tel' => $data['tel'],
             'objet' => $objet,
-            'message' => $data['message'] ?? "",
+            'message' => $data['message'],
         ];
 
         try {
