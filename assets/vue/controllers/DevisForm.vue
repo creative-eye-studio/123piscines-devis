@@ -24,8 +24,9 @@
                                             :data-nom="pool.nom" 
                                             :data-id="pool.id" 
                                             :data-image="pool.image" 
-                                            :data-fond=pool.fond
-                                            :data-prix=pool.prix
+                                            :data-fond="pool.fond"
+                                            :data-eau="pool.eau"
+                                            :data-prix="pool.prix"
                                             :key="pool.id"></option>
                                     </select>
                                 </div>
@@ -308,6 +309,7 @@
                     <img v-if="basePoolImgEsc != ''" :src='"./uploads/images/escs/" + basePoolImgEsc' alt="Présentation de la couleur de la piscine" class="img-fluid position-absolute">
                     <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor' alt="Présentation de la couleur" class="img-fluid position-absolute pool-color">
                     <img v-if="basePoolImgFilter != ''" :src='"./uploads/images/filters/" + basePoolImgFilter' alt="Présentation de la filtration" class="img-fluid position-absolute">
+                    <img v-if="basePoolImgWater != ''" :src='"./uploads/images" + basePoolImgWater' alt="Présentation de la piscine en eau" class="img-fluid position-absolute pool-water">
                 </figure>
             </div>
         </div>
@@ -358,6 +360,7 @@ export default {
 
             basePoolImg: '',
             basePoolImgFond: '',
+            basePoolImgWater: '',
             basePoolImgEsc: '',
             basePoolImgFilter: '',
             basePoolImgColor: '',
@@ -448,6 +451,7 @@ export default {
                 this.poolName = targetId;
                 this.basePoolImg = '/piscines/' + targetId.image;
                 this.basePoolImgFond = '/piscines/' + targetId.fond;
+                this.basePoolImgWater = '/piscines/' + targetId.eau;
                 this.basePoolId = targetId.id;
                 this.pricePoolForm = targetId.prix;
                 this.getPiscineTailles(e);

@@ -58,6 +58,15 @@ class ExtPiscineType extends AbstractType
                     'class' => 'mb'
                 ]
             ])
+            ->add('image_eau', DropzoneType::class, [
+                'label' => "Image d'eau de la piscine",
+                'data_class' => null,
+                'mapped' => false,
+                'required' => false,
+                'row_attr' => [
+                    'class' => 'mb'
+                ]
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => "Envoyer"
             ])

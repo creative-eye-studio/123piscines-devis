@@ -132,6 +132,16 @@ class ExtPiscinesController extends AbstractController
                 $piscine->setImageFond($imageName);
             }
 
+            $imageEau = $form->get('image_eau')->getData();
+            if ($imageEau) {
+                $imageName = md5(uniqid()) . '.' . $imageEau->guessExtension();
+                $imageEau->move(
+                    $this->getParameter('images_piscines_dir'),
+                    $imageName
+                );
+                $piscine->setImageEau($imageName);
+            }
+
             $this->em->persist($piscine);
             $this->em->flush();
         }
@@ -168,6 +178,16 @@ class ExtPiscinesController extends AbstractController
                     $imageName
                 );
                 $piscine->setImageFond($imageName);
+            }
+
+            $imageEau = $form->get('image_eau')->getData();
+            if ($imageEau) {
+                $imageName = md5(uniqid()) . '.' . $imageEau->guessExtension();
+                $imageEau->move(
+                    $this->getParameter('images_piscines_dir'),
+                    $imageName
+                );
+                $piscine->setImageEau($imageName);
             }
             
             $this->em->persist($piscine);

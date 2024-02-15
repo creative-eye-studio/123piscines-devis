@@ -39,6 +39,9 @@ class PiscineListe
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageFond = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image_eau = null;
+
     public function __construct()
     {
         $this->piscineTailles = new ArrayCollection();
@@ -197,6 +200,18 @@ class PiscineListe
     public function setImageFond(?string $imageFond): static
     {
         $this->imageFond = $imageFond;
+
+        return $this;
+    }
+
+    public function getImageEau(): ?string
+    {
+        return $this->image_eau;
+    }
+
+    public function setImageEau(?string $image_eau): static
+    {
+        $this->image_eau = $image_eau;
 
         return $this;
     }

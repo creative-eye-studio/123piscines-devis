@@ -39,6 +39,7 @@ class ApiController extends AbstractController
                 'nom' => $pool->getNom(),
                 'image' => $pool->getImage(),
                 'fond' => $pool->getImageFond(),
+                'eau' => $pool->getImageEau(),
                 'prix' => $pool->getPrix(),
             ];
         }, $pools);
