@@ -256,7 +256,7 @@
                                             Sans système de sécurité
                                         </span>
                                         <span class="small d-block">
-                                            Texte RAPPEL de la norme.
+                                            <a href="/uploads/loi-piscines.pdf" download>Voir la norme sur la sécurité..</a>
                                         </span>
                                     </label>
                                 </div>
