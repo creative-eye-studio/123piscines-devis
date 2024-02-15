@@ -87,7 +87,7 @@
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#escalier-body" aria-expanded="true" aria-controls="personnalisation-body">
-                            Équipement
+                            Personnalisation
                         </button>
                     </div>
                     <div id="escalier-body" class="accordion-collapse collapse" data-bs-parent="#list">
@@ -97,8 +97,8 @@
                                 <label class="form-check-label" :for="this.sanitizeTitle(item.nom)" v-html="accessoires[item.type] + ' - (' +  item.nom + ')'"></label>
                             </div>
                             <div class="col-4 form-check">
-                                <input class="form-check-input" type="radio" name="escalier" id="no-escalier" data-nom="Sans accessoire" data-image="" data-prix='0' @change="this.getEscalierPrix($event)" v-model="selectedEscIndex" value="Sans accessoires | ">
-                                <label class="form-check-label" for="no-escalier" v-html='"Sans accessoire"'></label>
+                                <input class="form-check-input" type="radio" name="escalier" id="no-escalier" data-nom="Sans personnalisation" data-image="" data-prix='0' @change="this.getEscalierPrix($event)" v-model="selectedEscIndex" value="Sans personnalisation | ">
+                                <label class="form-check-label" for="no-escalier" v-html='"Sans personnalisation"'></label>
                             </div>
                         </div>  
                     </div>
@@ -136,7 +136,7 @@
                                     data-prix=0
                                     data-image=''
                                     @click="this.getFilterPrix($event)">
-                                <label class="form-check-label" for="no-filter">Sans rien</label>
+                                <label class="form-check-label" for="no-filter">Sans système de filtration</label>
                             </div>
                         </div>    
                     </div>
