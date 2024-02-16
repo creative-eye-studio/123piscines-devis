@@ -618,6 +618,7 @@ export default {
                 revet: this.poolRevet,
                 filter: this.poolFilter,
                 color: this.poolColor,
+                water: this.isWater ? "Oui" : "Non",
                 security: this.poolSecurity,
                 nom: this.nom,
                 mail: this.mail,

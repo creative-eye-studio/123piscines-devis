@@ -202,6 +202,7 @@ class ApiController extends AbstractController
             'revet' => $data['revet'],
             'filter' => $data['filter'],
             'color' => $data['color'],
+            'water' => $data['water'],
             'security' => $data['security'],
             'nom' => $data['nom'],
             'mail' => $mail,
