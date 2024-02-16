@@ -167,11 +167,11 @@
                     </div>
                 </div>
 
-                <!-- Couleur -->
+                <!-- Couleur et mise en eau -->
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#color-body" aria-expanded="true" aria-controls="collapseOne">
-                            Couleur
+                            Couleur et mise en eau
                         </button>
                     </div>
                     <div id="color-body" class="accordion-collapse collapse" data-bs-parent="#list">
@@ -185,6 +185,13 @@
                                 @change="handleColorChange"
                                 >
                                 <label class="form-check-label" :for="this.sanitizeTitle(color.nom)">{{ color.nom }}</label>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row m-3">
+                            <div class="col-3 form-check">
+                                <input type="checkbox" name="water" id="water" class="form-check-input" v-model="isWater">
+                                <label for="water" class="form-check-label">Mise en eau</label>
                             </div>
                         </div>    
                     </div>
@@ -309,7 +316,7 @@
                     <img v-if="basePoolImgEsc != ''" :src='"./uploads/images/escs/" + basePoolImgEsc' alt="Présentation de la couleur de la piscine" class="img-fluid position-absolute">
                     <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor' alt="Présentation de la couleur" class="img-fluid position-absolute pool-color">
                     <img v-if="basePoolImgFilter != ''" :src='"./uploads/images/filters/" + basePoolImgFilter' alt="Présentation de la filtration" class="img-fluid position-absolute">
-                    <img v-if="basePoolImgWater != ''" :src='"./uploads/images" + basePoolImgWater' alt="Présentation de la piscine en eau" class="img-fluid position-absolute pool-water">
+                    <img v-if="basePoolImgWater != '' && this.isWater" :src='"./uploads/images" + basePoolImgWater' alt="Présentation de la piscine en eau" class="img-fluid position-absolute pool-water">
                 </figure>
             </div>
         </div>
@@ -375,6 +382,8 @@ export default {
             poolRevet: "",
             poolColor: "",
             poolSecurity: "",
+
+            isWater: false,
 
             nom: "",
             mail: "",
