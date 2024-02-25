@@ -93,8 +93,8 @@
                     <div id="escalier-body" class="accordion-collapse collapse" data-bs-parent="#list">
                         <div class="row m-3">
                             <div class="col-4 form-check" v-for="item in escaliers" :key="item.id">
-                                <input class="form-check-input" type="radio" name="escalier" :id="this.sanitizeTitle(item.nom)" :data-nom=item.nom :data-prix=item.prix :data-image="item.image" @change="this.getEscalierPrix($event)" v-model="selectedEscIndex" :value="accessoires[item.type] + ' - (' +  item.nom + ') | ' + item.image">
-                                <label class="form-check-label" :for="this.sanitizeTitle(item.nom)" v-html="accessoires[item.type] + ' - (' +  item.nom + ')'"></label>
+                                <input class="form-check-input" type="radio" name="escalier" :id="accessoires[item.type] + this.sanitizeTitle(item.nom)" :data-nom=item.nom :data-prix=item.prix :data-image="item.image" @change="this.getEscalierPrix($event)" v-model="selectedEscIndex" :value="accessoires[item.type] + ' - (' +  item.nom + ') | ' + item.image">
+                                <label class="form-check-label" :for="accessoires[item.type] + this.sanitizeTitle(item.nom)" v-html="accessoires[item.type] + ' - (' +  item.nom + ')'"></label>
                             </div>
                             <div class="col-4 form-check">
                                 <input class="form-check-input" type="radio" name="escalier" id="no-escalier" data-nom="Sans personnalisation" data-image="" data-prix='0' @change="this.getEscalierPrix($event)" v-model="selectedEscIndex" value="Sans personnalisation | ">
@@ -455,19 +455,19 @@ export default {
         },
 
         async getPiscinesDatas(e) {
-            if (e.target.options[e.target.options.selectedIndex].dataset != undefined) {
-                const targetId = e.target.options[e.target.options.selectedIndex].dataset;
+            const targetId = e.target.options[e.target.options.selectedIndex].dataset;
+            if (targetId != undefined) {
                 this.poolName = targetId;
-                this.basePoolImg = '/piscines/' + targetId.image;
-                this.basePoolImgFond = '/piscines/' + targetId.fond;
-                this.basePoolImgWater = '/piscines/' + targetId.eau;
+                this.basePoolId = this.poolName.id;
+                this.pricePoolForm = this.poolName.prix;
+                this.basePoolImg = '/piscines/' + this.poolName.image;
+                this.basePoolImgFond = '/piscines/' + this.poolName.fond;
+                this.basePoolImgWater = '/piscines/' + this.poolName.eau;
                 this.basePoolImgColor = ''; 
                 this.basePoolImgEsc = '';
-                this.basePoolId = targetId.id;
-                this.pricePoolForm = targetId.prix;
+                this.basePoolImgFilter = '';
                 this.getPiscineTailles(e);
                 this.getPiscineColors(e);
- 
             }
         },
 
@@ -496,40 +496,38 @@ export default {
         },
 
         async getEscalierPrix(e) {
-            const targetId = e.target.dataset;
-            this.priceEscForm = targetId.prix;
+            this.priceEscForm = e.target.dataset.prix;
             this.handleEscChange()
         },
 
         async getPiscineFilters(e) {
             if (e.target !== undefined && e.target.options.selectedIndex > -1) { 
-                const targetId = e.target.options[e.target.options.selectedIndex].dataset;
-                this.poolSize = targetId;
-                this.basePoolImg = '/tailles/' + targetId.image;
-                this.priceSizeForm = targetId.prix;
+                this.poolSize = e.target.options[e.target.options.selectedIndex].dataset;
+                this.basePoolImg = '/tailles/' + this.poolSize.image;
+                this.priceSizeForm = this.poolSize.prix;
 
                 // Revetement
-                this.revetPolyBool = JSON.parse(targetId.revet);
-                this.linerBool = JSON.parse(targetId.liner);
-                this.revetPolyPrice = targetId.revetprix;
-                this.linerPrice = targetId.linerprix;
+                this.revetPolyBool = JSON.parse(this.poolSize.revet);
+                this.linerBool = JSON.parse(this.poolSize.liner);
+                this.revetPolyPrice = this.poolSize.revetprix;
+                this.linerPrice = this.poolSize.linerprix;
 
                 // Alarmes
-                this.alarmBool = JSON.parse(targetId.alarme);
-                this.coverBool = JSON.parse(targetId.cover);
-                this.barrierBool = JSON.parse(targetId.barrier);
-                this.alarmPrice = targetId.alarmeprix;
-                this.coverPrice = targetId.coverprix;
-                this.barrierPrice = targetId.barrierprix;
+                this.alarmBool = JSON.parse(this.poolSize.alarme);
+                this.coverBool = JSON.parse(this.poolSize.cover);
+                this.barrierBool = JSON.parse(this.poolSize.barrier);
+                this.alarmPrice = this.poolSize.alarmeprix;
+                this.coverPrice = this.poolSize.coverprix;
+                this.barrierPrice = this.poolSize.barrierprix;
 
                 try {
 
                     // Filtres
-                    const response = await fetch('/api/pool-filters/' + this.basePoolId + '/' + targetId.id);
+                    const response = await fetch('/api/pool-filters/' + this.basePoolId + '/' + this.poolSize.id);
                     if (!response.ok) {
                         return;
                     }
-                    this.getPiscineEscaliers(targetId.id)
+                    this.getPiscineEscaliers(this.poolSize.id)
                     this.filters = await response.json();
                 } catch (error) {
                     console.error('Erreur lors de la récupération des données:', error);
@@ -588,7 +586,7 @@ export default {
                 this.poolRevet = name;
                 this.priceRevetForm = price;
             } else {
-                console.warn('Aucune couleur sélectionnée.');
+                console.error('Acun revêtement sélectionné.');
             }
         },
 
@@ -644,8 +642,7 @@ export default {
                     }
                     return fetchResponse.clone().json(); // Clonez la réponse avant de l'analyser
                 })
-                .then(data => {
-                    console.log(data);
+                .then(() => {
                     response.classList.remove('bg-danger');
                     response.classList.add('bg-success');
                     response.innerHTML = "Votre message a bien été envoyé";
