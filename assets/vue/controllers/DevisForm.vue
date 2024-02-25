@@ -461,10 +461,13 @@ export default {
                 this.basePoolImg = '/piscines/' + targetId.image;
                 this.basePoolImgFond = '/piscines/' + targetId.fond;
                 this.basePoolImgWater = '/piscines/' + targetId.eau;
+                this.basePoolImgColor = ''; 
+                this.basePoolImgEsc = '';
                 this.basePoolId = targetId.id;
                 this.pricePoolForm = targetId.prix;
                 this.getPiscineTailles(e);
-                this.getPiscineColors(e);    
+                this.getPiscineColors(e);
+ 
             }
         },
 
