@@ -15,10 +15,9 @@
                             <div id="type-body" class="accordion-collapse collapse" data-bs-parent="#list">
                                 <div class="row m-2">
                                     <div class="col-12">
-                                        <label class="form-check-label" for="select-pool">Choisir sa piscine</label>
-                                        <select class="form-select mb-2" id="select-pool"
+                                        <select class="form-select my-2" id="select-pool" aria-label="Choisir sa piscine"
                                             @change="this.getPiscinesDatas($event)">
-                                            <option value=""></option>
+                                            <option value="">Choisir sa piscine</option>
                                             <option v-for="pool in poolsList" v-html="pool.nom" :value="pool.nom"
                                                 :data-nom="pool.nom" :data-id="pool.id" :data-image="pool.image"
                                                 :data-fond="pool.fond" :data-eau="pool.eau" :data-prix="pool.prix"
@@ -91,14 +90,14 @@
                                         :for="accessoires[item.type] + this.sanitizeTitle(item.nom)"
                                         v-html="accessoires[item.type] + ' - (' + item.nom + ')'"></label>
                                 </div>
-                                <div class="col-4 form-check">
+                                <!-- <div class="col-4 form-check">
                                     <input class="form-check-input" type="radio" name="escalier" id="no-escalier"
                                         data-nom="Sans personnalisation" data-image="" data-prix='0'
                                         @change="this.getEscalierPrix($event)" v-model="selectedEscIndex"
                                         value="Sans personnalisation | ">
                                     <label class="form-check-label" for="no-escalier"
                                         v-html='"Sans personnalisation"'></label>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -317,7 +316,7 @@
                 <!-- Image et prix -->
                 <div class="col-12 col-md-7 position-relative">
                     <p class="text-end">
-                        <strong>Prix estimé : <span v-html="this.quotePrice"></span> € TTC (Hors livraison et
+                        <strong>Prix estimé : <span v-html="this.quotePrice.toFixed(2)"></span> € TTC (Hors livraison et
                             agrégats)</strong>
                     </p>
                     <figure class="position-relative mt-3 img-config-container">
