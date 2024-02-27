@@ -207,9 +207,9 @@
 
                     <div id="secure-body" class="accordion-collapse collapse" data-bs-parent="#list">
                         <div class="row m-3">
-                            <div class="row mb-2" v-if="this.alarmBool">
+                            <div class="row mb-2" v-if="alarmBool">
                                 <div class="col-1">
-                                    <input class="form-check-input" type="radio" name="securite" id="alarme" :value="'Alarme volumétrique | ' + alarmPrice" v-model="selectedSecurityIndex" @change="handleSecurityChange">
+                                    <input class="form-check-input" type="checkbox" name="securite" id="alarme" :value="'Alarme volumétrique | ' + alarmPrice" v-model="selectedSecurityIndex" @change="handleSecurityChange">
                                 </div>
                                 <div class="col-11 form-check">
                                     <label class="form-check-label" for="alarme">
@@ -223,9 +223,9 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-2" v-if="this.coverBool">
+                            <div class="row mb-2" v-if="coverBool">
                                 <div class="col-1">
-                                    <input class="form-check-input" type="radio" name="securite" id="couverture" :value="'Couverture de sécurité | ' + coverPrice" v-model="selectedSecurityIndex" @change="handleSecurityChange">
+                                    <input class="form-check-input" type="checkbox" name="securite" id="couverture" :value="'Couverture de sécurité | ' + coverPrice" v-model="selectedSecurityIndex" @change="handleSecurityChange">
                                 </div>
                                 <div class="col-11 form-check">
                                     <label class="form-check-label" for="couverture">
@@ -239,9 +239,9 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-2" v-if="this.barrierBool">
+                            <div class="row mb-2" v-if="barrierBool">
                                 <div class="col-1">
-                                    <input class="form-check-input" type="radio" name="securite" id="barriere" :value="'Barrière normalisée | ' + barrierPrice" v-model="selectedSecurityIndex" @change="handleSecurityChange">
+                                    <input class="form-check-input" type="checkbox" name="securite" id="barriere" :value="'Barrière normalisée | ' + barrierPrice" v-model="selectedSecurityIndex" @change="handleSecurityChange">
                                 </div>
                                 <div class="col-11 form-check">
                                     <label class="form-check-label" for="barriere">
@@ -312,11 +312,11 @@
                 </p>
                 <figure class="position-relative mt-3 img-config-container">
                     <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg' alt="Présentation de la piscine" class="img-fluid position-absolute">
-                    <img v-if="basePoolImgFond != '' && this.selectedProof !== ''" :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond" class="img-fluid position-absolute">
                     <img v-if="basePoolImgEsc != ''" :src='"./uploads/images/escs/" + basePoolImgEsc' alt="Présentation de la couleur de la piscine" class="img-fluid position-absolute">
                     <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor' alt="Présentation de la couleur" class="img-fluid position-absolute pool-color">
                     <img v-if="basePoolImgFilter != ''" :src='"./uploads/images/filters/" + basePoolImgFilter' alt="Présentation de la filtration" class="img-fluid position-absolute">
                     <img v-if="basePoolImgWater != '' && this.isWater" :src='"./uploads/images" + basePoolImgWater' alt="Présentation de la piscine en eau" class="img-fluid position-absolute pool-water">
+                    <img v-if="basePoolImgFond != '' && this.selectedProof !== ''" :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond" class="img-fluid position-absolute">
                 </figure>
             </div>
         </div>
