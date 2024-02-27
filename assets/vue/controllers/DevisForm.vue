@@ -209,7 +209,7 @@
                         <div class="row m-3">
                             <div class="row mb-2" v-if="alarmBool">
                                 <div class="col-1">
-                                    <input class="form-check-input" type="checkbox" name="securite" id="alarme" :value="'Alarme volumétrique | ' + alarmPrice" v-model="selectedSecurityIndex" @change="handleSecurityChange">
+                                    <input class="form-check-input" type="checkbox" name="securite" id="alarme" :value="'Alarme volumétrique | ' + alarmPrice" v-model="getAlarm" @change="handleSecurityChange(getAlarm)">
                                 </div>
                                 <div class="col-11 form-check">
                                     <label class="form-check-label" for="alarme">
@@ -225,7 +225,7 @@
 
                             <div class="row mb-2" v-if="coverBool">
                                 <div class="col-1">
-                                    <input class="form-check-input" type="checkbox" name="securite" id="couverture" :value="'Couverture de sécurité | ' + coverPrice" v-model="selectedSecurityIndex" @change="handleSecurityChange">
+                                    <input class="form-check-input" type="checkbox" name="securite" id="couverture" :value="'Couverture de sécurité | ' + coverPrice" v-model="getCover" @change="handleSecurityChange(getCover)">
                                 </div>
                                 <div class="col-11 form-check">
                                     <label class="form-check-label" for="couverture">
@@ -240,23 +240,11 @@
                             </div>
 
                             <div class="row mb-2" v-if="barrierBool">
-                                <div class="col-1">
-                                    <input class="form-check-input" type="checkbox" name="securite" id="barriere" :value="'Barrière normalisée | ' + barrierPrice" v-model="selectedSecurityIndex" @change="handleSecurityChange">
-                                </div>
-                                <div class="col-11 form-check">
-                                    <label class="form-check-label" for="barriere">
-                                        <span>
-                                            Barrière normalisée
-                                        </span>
-                                        <span class="small d-block">
-                                            Le liner d'une piscine est un revêtement en PVC souple qui assure l'étanchéité de la piscine.
-                                        </span>
-                                    </label>
-                                </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-1"><input class="form-check-input" type="radio" name="securite" id="no-secure" value='Sans système de sécurité | 0' v-model="selectedSecurityIndex" @change="handleSecurityChange"></div>
+                                <div class="col-1">
+                                    <input class="form-check-input" type="radio" name="securite" id="no-secure" value='Sans système de sécurité | 0' v-model="getCover" @change="handleSecurityChange(getCover)"></div>
                                 <div class="col-11 form-check">
                                     <label class="form-check-label" for="no-secure">
                                         <span>
@@ -337,19 +325,23 @@ export default {
             priceFilterForm: null,
             priceRevetForm: null,
 
+
             alarmBool: false,
             alarmPrice: 0,
+            securityAlarm: false,
+            getAlarm: false,
+
             coverBool: false,
             coverPrice: 0,
-            barrierBool: false,
-            barrierPrice: 0,
+            securityCover: false,
+            getCover: false,
+            
             revetPolyBool: false,
             revetPolyPrice: 0,
             linerBool: false,
             linerPrice: 0,
 
             securityPrice: 0,
-            selectedSecurityIndex: null,
             selectedEscIndex: null,
             selectedColorIndex: null,
             selectedRevetIndex: null,
@@ -424,7 +416,6 @@ export default {
                     'image': "img.jpg"
                 }
             ]
-            
         };
     },
     mounted() {
@@ -440,7 +431,7 @@ export default {
             const sizePrice = parseFloat(this.priceSizeForm) || 0;
             const escPrice = parseFloat(this.priceEscForm) || 0;
             const filterPrice = parseFloat(this.priceFilterForm) || 0;
-            const securityPrice = parseFloat(this.securityPrice) || 0;
+            const securityPrice = parseFloat((this.getAlarm ? (this.alarmPrice * 1) : 0) + (this.getCover ? (this.coverPrice * 1) : 0)) || 0;
             const priceRevet = parseFloat(this.priceRevetForm) || 0;
             this.quotePrice = parseFloat(sizePrice + escPrice + filterPrice + securityPrice + priceRevet) || parseFloat(0.00);
         },
@@ -516,9 +507,12 @@ export default {
                 this.alarmBool = JSON.parse(this.poolSize.alarme);
                 this.coverBool = JSON.parse(this.poolSize.cover);
                 this.barrierBool = JSON.parse(this.poolSize.barrier);
+
                 this.alarmPrice = this.poolSize.alarmeprix;
                 this.coverPrice = this.poolSize.coverprix;
                 this.barrierPrice = this.poolSize.barrierprix;
+
+                console.log(this.alarmPrice);
 
                 try {
 
@@ -554,10 +548,8 @@ export default {
             }
         },
 
-        handleSecurityChange() {
-            const [name, price] = this.selectedSecurityIndex.split('|');
-            this.securityPrice = parseFloat(price);
-            this.poolSecurity = name;
+        handleSecurityChange(securityBool) {
+            securityBool = !securityBool
         },
 
         handleEscChange() {
