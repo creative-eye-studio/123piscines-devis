@@ -1,316 +1,345 @@
 <template>
-<div class="container">
-    <!-- Configuration de la piscine -->
-    <form @change="this.updatePrice()">
-        <div class="row flex-md-row-reverse">
-            <!-- Configurateur -->
-            <div class="col-12 col-md-5 accordion" id="list">
-                <!-- Type de piscine -->
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#type-body" aria-expanded="true" aria-controls="collapseOne">
-                            Piscine
-                        </button>
-                        <div id="type-body" class="accordion-collapse collapse" data-bs-parent="#list">
-                            <div class="row m-2">
-                                <div class="col-12">
-                                    <label class="form-check-label" for="select-pool">Choisir sa piscine</label>
-                                    <select class="form-select mb-2" id="select-pool" @change="this.getPiscinesDatas($event)">
-                                        <option value=""></option>
-                                        <option 
-                                            v-for="pool in poolsList" 
-                                            v-html="pool.nom" 
-                                            :value="pool.nom" 
-                                            :data-nom="pool.nom" 
-                                            :data-id="pool.id" 
-                                            :data-image="pool.image" 
-                                            :data-fond="pool.fond"
-                                            :data-eau="pool.eau"
-                                            :data-prix="pool.prix"
-                                            :key="pool.id"></option>
+    <div class="container">
+        <!-- Configuration de la piscine -->
+        <form @change="this.updatePrice()">
+            <div class="row flex-md-row-reverse">
+                <!-- Configurateur -->
+                <div class="col-12 col-md-5 accordion" id="list">
+                    <!-- Type de piscine -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#type-body" aria-expanded="true" aria-controls="collapseOne">
+                                Piscine
+                            </button>
+                            <div id="type-body" class="accordion-collapse collapse" data-bs-parent="#list">
+                                <div class="row m-2">
+                                    <div class="col-12">
+                                        <label class="form-check-label" for="select-pool">Choisir sa piscine</label>
+                                        <select class="form-select mb-2" id="select-pool"
+                                            @change="this.getPiscinesDatas($event)">
+                                            <option value=""></option>
+                                            <option v-for="pool in poolsList" v-html="pool.nom" :value="pool.nom"
+                                                :data-nom="pool.nom" :data-id="pool.id" :data-image="pool.image"
+                                                :data-fond="pool.fond" :data-eau="pool.eau" :data-prix="pool.prix"
+                                                :key="pool.id"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dimensions et profondeur -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#dim-body" aria-expanded="true" aria-controls="collapseOne">
+                                Dimensions et profondeur
+                            </button>
+                            <div id="dim-body" class="accordion-collapse collapse" data-bs-parent="#list">
+                                <div class="m-3">
+                                    <label class="form-check-label" for="pool-dim">Dimensions</label>
+                                    <select class="form-select mb-3" id="pool-dim" @change="this.getPiscineFilters($event)">
+                                        <option value="" data-prix='0'></option>
+                                        <option v-for="size in sizes" v-html="size.taille" :key="size.id"
+                                            :value="size.taille" :data-size="size.taille" :data-id="size.id"
+                                            :data-prix=size.prix :data-image=size.image :data-alarme=size.alarme
+                                            :data-cover=size.cover :data-barrier=size.barrier :data-revet=size.revet_poly
+                                            :data-liner=size.liner :data-alarmeprix=size.alarme_prix
+                                            :data-coverprix=size.cover_prix :data-barrierprix=size.barrier_prix
+                                            :data-revetprix=size.revet_poly_prix :data-linerprix=size.liner_prix></option>
                                     </select>
+                                    <p class="form-check">
+                                        <input class="form-check-input" type="radio" name="proof" id="fond-plat"
+                                            @click="handleProofClick('fond-plat')">
+                                        <label class="form-check-label" for="fond-plat">Fond plat (1,50m de
+                                            profondeur)</label>
+                                    </p>
+                                    <p class="form-check">
+                                        <input class="form-check-input" type="radio" name="proof" id="fond-perso"
+                                            @click="handleProofClick('fond-perso')">
+                                        <label class="form-check-label" for="fond-perso">Fond personnalisé</label>
+                                    </p>
+                                    <p class="col-12 mt-2">
+                                        <label for="custom-proof" class="form-label">Personnaliser sa profondeur</label>
+                                        <input class="form-control" name="custom-proof" id="custom-proof" type="text"
+                                            v-model="customProof" disabled>
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Dimensions et profondeur -->
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#dim-body" aria-expanded="true" aria-controls="collapseOne">
-                            Dimensions et profondeur
-                        </button>
-                        <div id="dim-body" class="accordion-collapse collapse" data-bs-parent="#list">
-                            <div class="m-3">
-                                <label class="form-check-label" for="pool-dim">Dimensions</label>
-                                <select class="form-select mb-3" id="pool-dim" @change="this.getPiscineFilters($event)">
-                                    <option value="" data-prix='0'></option>
-                                    <option 
-                                        v-for="size in sizes" 
-                                        v-html="size.taille" 
-                                        :key="size.id" 
-                                        :value="size.taille" 
-                                        :data-size="size.taille" 
-                                        :data-id="size.id" 
-                                        :data-prix=size.prix
-                                        :data-image=size.image
-                                        :data-alarme=size.alarme
-                                        :data-cover=size.cover
-                                        :data-barrier=size.barrier
-                                        :data-revet=size.revet_poly
-                                        :data-liner=size.liner
-                                        :data-alarmeprix=size.alarme_prix
-                                        :data-coverprix=size.cover_prix
-                                        :data-barrierprix=size.barrier_prix
-                                        :data-revetprix=size.revet_poly_prix
-                                        :data-linerprix=size.liner_prix></option>
-                                </select>
-                                <p class="form-check">
-                                    <input class="form-check-input" type="radio" name="proof" id="fond-plat" @click="handleProofClick('fond-plat')">
-                                    <label class="form-check-label" for="fond-plat">Fond plat (1,50m de profondeur)</label>
+                    <!-- Equipement -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#escalier-body" aria-expanded="true" aria-controls="personnalisation-body">
+                                Personnalisation
+                            </button>
+                        </div>
+                        <div id="escalier-body" class="accordion-collapse collapse" data-bs-parent="#list">
+                            <div class="row m-3">
+                                <div class="col-4 form-check" v-for="item in escaliers" :key="item.id">
+                                    <input class="form-check-input" type="radio" name="escalier"
+                                        :id="accessoires[item.type] + this.sanitizeTitle(item.nom)" :data-nom=item.nom
+                                        :data-prix=item.prix :data-image="item.image" @change="this.getEscalierPrix($event)"
+                                        v-model="selectedEscIndex"
+                                        :value="accessoires[item.type] + ' - (' + item.nom + ') | ' + item.image">
+                                    <label class="form-check-label"
+                                        :for="accessoires[item.type] + this.sanitizeTitle(item.nom)"
+                                        v-html="accessoires[item.type] + ' - (' + item.nom + ')'"></label>
+                                </div>
+                                <div class="col-4 form-check">
+                                    <input class="form-check-input" type="radio" name="escalier" id="no-escalier"
+                                        data-nom="Sans personnalisation" data-image="" data-prix='0'
+                                        @change="this.getEscalierPrix($event)" v-model="selectedEscIndex"
+                                        value="Sans personnalisation | ">
+                                    <label class="form-check-label" for="no-escalier"
+                                        v-html='"Sans personnalisation"'></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Système de filtration -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#filter-body" aria-expanded="true" aria-controls="filter-body">
+                                Système de filtration
+                            </button>
+                        </div>
+                        <div id="filter-body" class="accordion-collapse collapse" data-bs-parent="#list">
+                            <div class="row m-3">
+                                <div class="col-6 form-check" v-for="filter in filters" :key="index">
+                                    <input class="form-check-input" type="radio" name="filtration"
+                                        :id="this.sanitizeTitle(filtersList[filter.type].name)"
+                                        :value="filtersList[filter.type].name" :data-nom="filtersList[filter.type].name"
+                                        :data-prix=filter.prix :data-image="filter.image"
+                                        @click="this.getFilterPrix($event)">
+                                    <label class="form-check-label" v-html="filtersList[filter.type].name"
+                                        :for="this.sanitizeTitle(filtersList[filter.type].name)"></label>
+                                </div>
+
+                                <div class="col-6 form-check">
+                                    <input class="form-check-input" type="radio" name="filtration" id="no-filter"
+                                        data-nom="Sans rien" data-prix=0 data-image='' @click="this.getFilterPrix($event)">
+                                    <label class="form-check-label" for="no-filter">Sans système de filtration</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Revêtement -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#revet-body" aria-expanded="true" aria-controls="revet-body">
+                                Revêtement
+                            </button>
+                        </div>
+                        <div id="revet-body" class="accordion-collapse collapse" data-bs-parent="#list">
+                            <div class="row m-3">
+                                <div class="col-6 form-check" v-if="this.revetPolyBool">
+                                    <input class="form-check-input" type="radio" name="revet" v-model="selectedRevetIndex"
+                                        id="poly" :value="'Revètement polymère | ' + revetPolyPrice"
+                                        @change="handleRevetChange()">
+                                    <label class="form-check-label" for="poly">Revêtement polymère</label>
+                                </div>
+                                <div class="col-6 form-check" v-if="this.linerBool">
+                                    <input class="form-check-input" type="radio" name="revet" v-model="selectedRevetIndex"
+                                        id="liner" :value="'Liner | ' + linerPrice" @change="handleRevetChange()">
+                                    <label class="form-check-label" for="liner">Liner</label>
+                                </div>
+                                <div class="col-6 form-check">
+                                    <input class="form-check-input" type="radio" name="revet" v-model="selectedRevetIndex"
+                                        id="no-revet" :value="'Sans revêtement | 0'" @change="handleRevetChange()">
+                                    <label class="form-check-label" for="no-revet">Sans revêtement</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Couleur et mise en eau -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#color-body" aria-expanded="true" aria-controls="collapseOne">
+                                Couleur et mise en eau
+                            </button>
+                        </div>
+                        <div id="color-body" class="accordion-collapse collapse" data-bs-parent="#list">
+                            <div class="row m-3">
+                                <div class="col-3 form-check" v-for="color in colors" :key="color.id">
+                                    <input class="form-check-input" type="radio" name="color"
+                                        :value="color.nom + ' | ' + color.image" :id="this.sanitizeTitle(color.nom)"
+                                        :data-color="color.image" v-model="selectedColorIndex" @change="handleColorChange">
+                                    <label class="form-check-label" :for="this.sanitizeTitle(color.nom)">{{ color.nom
+                                    }}</label>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row m-3">
+                                <div class="col-3 form-check">
+                                    <input type="checkbox" name="water" id="water" class="form-check-input"
+                                        v-model="isWater">
+                                    <label for="water" class="form-check-label">Mise en eau</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sécurité -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#secure-body" aria-expanded="true" aria-controls="collapseOne">
+                                Sécurité
+                            </button>
+                        </div>
+
+                        <div id="secure-body" class="accordion-collapse collapse" data-bs-parent="#list">
+                            <div class="row m-3">
+                                <div class="row mb-2" v-if="alarmBool">
+                                    <div class="col-1">
+                                        <input class="form-check-input" type="checkbox" name="securite" id="alarme"
+                                            :value="'Alarme volumétrique | ' + alarmPrice" v-model="getAlarm"
+                                            @change="handleSecurityChange(getAlarm)">
+                                    </div>
+                                    <div class="col-11 form-check">
+                                        <label class="form-check-label" for="alarme">
+                                            <span>
+                                                Alarme volumetrique
+                                            </span>
+                                            <span class="small d-block">
+                                                Imperméable à l'eau. Perméable à la vapeur d'eau: laisse respirer le
+                                                support. Bonne résistance chimique aux produits courants de traitement d'eau
+                                                de piscine (SIKA).
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-2" v-if="coverBool">
+                                    <div class="col-1">
+                                        <input class="form-check-input" type="checkbox" name="securite" id="couverture"
+                                            :value="'Couverture de sécurité | ' + coverPrice" v-model="getCover"
+                                            @change="handleSecurityChange(getCover)">
+                                    </div>
+                                    <div class="col-11 form-check">
+                                        <label class="form-check-label" for="couverture">
+                                            <span>
+                                                Couverture de sécurité
+                                            </span>
+                                            <span class="small d-block">
+                                                Le liner d'une piscine est un revêtement en PVC souple qui assure
+                                                l'étanchéité de la piscine.
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="row mb-2">
+                                    <label for="barrierLength" class="form-label">Barrière normalisée</label>
+                                    <input type="number" name="barrierLength" id="barrierLength" class="form-control" placeholder="En mètre linéaire" v-model="barrierLength">
+                                    <div id="passwordHelpBlock" class="form-text">
+                                        227.00 € le mètre linéaire
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="row">
+                                    <div class="col-1">
+                                        <input class="form-check-input" type="radio" name="securite" id="no-secure"
+                                            value='Sans système de sécurité | 0' v-model="getCover"
+                                            @change="handleSecurityChange(getCover)">
+                                    </div>
+                                    <div class="col-11 form-check">
+                                        <label class="form-check-label" for="no-secure">
+                                            <span>
+                                                Sans système de sécurité
+                                            </span>
+                                            <span class="small d-block">
+                                                <a href="/uploads/loi-piscines.pdf" download>Voir la norme sur la
+                                                    sécurité..</a>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#contact-body" aria-expanded="true" aria-controls="collapseOne">
+                                Finalisez votre demande
+                            </button>
+                        </div>
+                        <div id="contact-body" class="accordion-collapse collapse" data-bs-parent="#list">
+                            <div class="row m-3 pt-3">
+                                <p class="col-12">
+                                    <label for="contact-nom" class="form-label">Votre nom</label>
+                                    <input class="form-control" type="text" id="contact-nom" name="contact-nom"
+                                        v-model="this.nom">
                                 </p>
-                                <p class="form-check">
-                                    <input class="form-check-input" type="radio" name="proof" id="fond-perso" @click="handleProofClick('fond-perso')">
-                                    <label class="form-check-label" for="fond-perso">Fond personnalisé</label>
+                                <p class="col-6">
+                                    <label for="contact-mail" class="form-label">Votre e-mail</label>
+                                    <input class="form-control" type="email" id="contact-mail" name="contact-mail"
+                                        v-model="this.mail">
                                 </p>
-                                <p class="col-12 mt-2">
-                                    <label for="custom-proof" class="form-label">Personnaliser sa profondeur</label>
-                                    <input class="form-control" name="custom-proof" id="custom-proof" type="text" v-model="customProof" disabled>
+                                <p class="col-6">
+                                    <label for="contact-tel" class="form-label">Votre téléphone</label>
+                                    <input class="form-control" type="tel" id="contact-tel" name="contact-tel"
+                                        v-model="this.tel">
+                                </p>
+                                <p class="col-12">
+                                    <label for="contact-message" class="form-label">Votre message</label>
+                                    <textarea class="form-control" name="contact-message" id="contact-message"
+                                        v-model="this.message"></textarea>
+                                </p>
+                                <p id="mail-response" class="text-light p-3"></p>
+                                <p class="mt-3">
+                                    <button type="submit" @click="submitForm" class="btn btn-primary">Envoyer ma demande de
+                                        devis</button>
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Equipement -->
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#escalier-body" aria-expanded="true" aria-controls="personnalisation-body">
-                            Personnalisation
-                        </button>
-                    </div>
-                    <div id="escalier-body" class="accordion-collapse collapse" data-bs-parent="#list">
-                        <div class="row m-3">
-                            <div class="col-4 form-check" v-for="item in escaliers" :key="item.id">
-                                <input class="form-check-input" type="radio" name="escalier" :id="accessoires[item.type] + this.sanitizeTitle(item.nom)" :data-nom=item.nom :data-prix=item.prix :data-image="item.image" @change="this.getEscalierPrix($event)" v-model="selectedEscIndex" :value="accessoires[item.type] + ' - (' +  item.nom + ') | ' + item.image">
-                                <label class="form-check-label" :for="accessoires[item.type] + this.sanitizeTitle(item.nom)" v-html="accessoires[item.type] + ' - (' +  item.nom + ')'"></label>
-                            </div>
-                            <div class="col-4 form-check">
-                                <input class="form-check-input" type="radio" name="escalier" id="no-escalier" data-nom="Sans personnalisation" data-image="" data-prix='0' @change="this.getEscalierPrix($event)" v-model="selectedEscIndex" value="Sans personnalisation | ">
-                                <label class="form-check-label" for="no-escalier" v-html='"Sans personnalisation"'></label>
-                            </div>
-                        </div>  
-                    </div>
-                </div>
-                
-                <!-- Système de filtration -->
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#filter-body" aria-expanded="true" aria-controls="filter-body">
-                            Système de filtration
-                        </button>
-                    </div>
-                    <div id="filter-body" class="accordion-collapse collapse" data-bs-parent="#list">
-                        <div class="row m-3">
-                            <div class="col-6 form-check" v-for="filter in filters" :key="index">
-                                <input 
-                                    class="form-check-input" 
-                                    type="radio" 
-                                    name="filtration" 
-                                    :id="this.sanitizeTitle(filtersList[filter.type].name)"  
-                                    :value="filtersList[filter.type].name"
-                                    :data-nom="filtersList[filter.type].name"
-                                    :data-prix=filter.prix
-                                    :data-image="filter.image"
-                                    @click="this.getFilterPrix($event)">
-                                <label 
-                                    class="form-check-label" 
-                                    v-html="filtersList[filter.type].name"
-                                    :for="this.sanitizeTitle(filtersList[filter.type].name)"></label>
-                            </div>
-
-                            <div class="col-6 form-check">
-                                <input class="form-check-input" type="radio" name="filtration" id="no-filter"
-                                    data-nom="Sans rien"
-                                    data-prix=0
-                                    data-image=''
-                                    @click="this.getFilterPrix($event)">
-                                <label class="form-check-label" for="no-filter">Sans système de filtration</label>
-                            </div>
-                        </div>    
-                    </div>
-                </div>
-
-                <!-- Revêtement -->
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#revet-body" aria-expanded="true" aria-controls="revet-body">
-                            Revêtement
-                        </button>
-                    </div>
-                    <div id="revet-body" class="accordion-collapse collapse" data-bs-parent="#list">
-                        <div class="row m-3">
-                            <div class="col-6 form-check" v-if="this.revetPolyBool">
-                                <input class="form-check-input" type="radio" name="revet" v-model="selectedRevetIndex" id="poly" :value="'Revètement polymère | ' + revetPolyPrice" @change="handleRevetChange()">
-                                <label class="form-check-label" for="poly">Revêtement polymère</label>
-                            </div>
-                            <div class="col-6 form-check" v-if="this.linerBool">
-                                <input class="form-check-input" type="radio" name="revet" v-model="selectedRevetIndex" id="liner" :value="'Liner | ' + linerPrice" @change="handleRevetChange()">
-                                <label class="form-check-label" for="liner">Liner</label>
-                            </div>
-                            <div class="col-6 form-check">
-                                <input class="form-check-input" type="radio" name="revet" v-model="selectedRevetIndex" id="no-revet" :value="'Sans revêtement | 0'" @change="handleRevetChange()">
-                                <label class="form-check-label" for="no-revet">Sans revêtement</label>
-                            </div>
-                        </div>    
-                    </div>
-                </div>
-
-                <!-- Couleur et mise en eau -->
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#color-body" aria-expanded="true" aria-controls="collapseOne">
-                            Couleur et mise en eau
-                        </button>
-                    </div>
-                    <div id="color-body" class="accordion-collapse collapse" data-bs-parent="#list">
-                        <div class="row m-3">
-                            <div class="col-3 form-check" v-for="color in colors" :key="color.id">
-                                <input class="form-check-input" type="radio" name="color" 
-                                :value="color.nom + ' | ' + color.image"
-                                :id="this.sanitizeTitle(color.nom)"
-                                :data-color="color.image"
-                                v-model="selectedColorIndex" 
-                                @change="handleColorChange"
-                                >
-                                <label class="form-check-label" :for="this.sanitizeTitle(color.nom)">{{ color.nom }}</label>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row m-3">
-                            <div class="col-3 form-check">
-                                <input type="checkbox" name="water" id="water" class="form-check-input" v-model="isWater">
-                                <label for="water" class="form-check-label">Mise en eau</label>
-                            </div>
-                        </div>    
-                    </div>
-                </div>
-
-                <!-- Sécurité -->
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#secure-body" aria-expanded="true" aria-controls="collapseOne">
-                            Sécurité
-                        </button>
-                    </div>
-
-                    <div id="secure-body" class="accordion-collapse collapse" data-bs-parent="#list">
-                        <div class="row m-3">
-                            <div class="row mb-2" v-if="alarmBool">
-                                <div class="col-1">
-                                    <input class="form-check-input" type="checkbox" name="securite" id="alarme" :value="'Alarme volumétrique | ' + alarmPrice" v-model="getAlarm" @change="handleSecurityChange(getAlarm)">
-                                </div>
-                                <div class="col-11 form-check">
-                                    <label class="form-check-label" for="alarme">
-                                        <span>
-                                            Alarme volumetrique
-                                        </span>
-                                        <span class="small d-block">
-                                            Imperméable à l'eau. Perméable à la vapeur d'eau: laisse respirer le support. Bonne résistance chimique aux produits courants de traitement d'eau de piscine (SIKA).
-                                        </span> 
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="row mb-2" v-if="coverBool">
-                                <div class="col-1">
-                                    <input class="form-check-input" type="checkbox" name="securite" id="couverture" :value="'Couverture de sécurité | ' + coverPrice" v-model="getCover" @change="handleSecurityChange(getCover)">
-                                </div>
-                                <div class="col-11 form-check">
-                                    <label class="form-check-label" for="couverture">
-                                        <span>
-                                            Couverture de sécurité
-                                        </span>
-                                        <span class="small d-block">
-                                            Le liner d'une piscine est un revêtement en PVC souple qui assure l'étanchéité de la piscine.
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="row mb-2" v-if="barrierBool">
-                            </div>
-
-                            <div class="row">
-                                <div class="col-1">
-                                    <input class="form-check-input" type="radio" name="securite" id="no-secure" value='Sans système de sécurité | 0' v-model="getCover" @change="handleSecurityChange(getCover)"></div>
-                                <div class="col-11 form-check">
-                                    <label class="form-check-label" for="no-secure">
-                                        <span>
-                                            Sans système de sécurité
-                                        </span>
-                                        <span class="small d-block">
-                                            <a href="/uploads/loi-piscines.pdf" download>Voir la norme sur la sécurité..</a>
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>    
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contact -->
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#contact-body" aria-expanded="true" aria-controls="collapseOne">
-                            Finalisez votre demande
-                        </button>
-                    </div>
-                    <div id="contact-body" class="accordion-collapse collapse" data-bs-parent="#list">
-                        <div class="row m-3 pt-3">
-                            <p class="col-12">
-                                <label for="contact-nom" class="form-label">Votre nom</label>
-                                <input class="form-control" type="text" id="contact-nom" name="contact-nom" v-model="this.nom">
-                            </p>
-                            <p class="col-6">
-                                <label for="contact-mail" class="form-label">Votre e-mail</label>
-                                <input class="form-control" type="email" id="contact-mail" name="contact-mail" v-model="this.mail">
-                            </p>
-                            <p class="col-6">
-                                <label for="contact-tel" class="form-label">Votre téléphone</label>
-                                <input class="form-control" type="tel" id="contact-tel" name="contact-tel" v-model="this.tel">
-                            </p>
-                            <p class="col-12">
-                                <label for="contact-message" class="form-label">Votre message</label>
-                                <textarea class="form-control" name="contact-message" id="contact-message" v-model="this.message"></textarea>
-                            </p>
-                            <p id="mail-response" class="text-light p-3"></p>
-                            <p class="mt-3">
-                                <button type="submit" @click="submitForm" class="btn btn-primary">Envoyer ma demande de devis</button>
-                            </p>
-                        </div>
-                    </div>
+                <!-- Image et prix -->
+                <div class="col-12 col-md-7 position-relative">
+                    <p class="text-end">
+                        <strong>Prix estimé : <span v-html="this.quotePrice"></span> € TTC (Hors livraison et
+                            agrégats)</strong>
+                    </p>
+                    <figure class="position-relative mt-3 img-config-container">
+                        <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg'
+                            alt="Présentation de la piscine" class="img-fluid position-absolute">
+                        <img v-if="basePoolImgEsc != ''" :src='"./uploads/images/escs/" + basePoolImgEsc'
+                            alt="Présentation de la couleur de la piscine" class="img-fluid position-absolute">
+                        <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor'
+                            alt="Présentation de la couleur" class="img-fluid position-absolute pool-color">
+                        <img v-if="basePoolImgFilter != ''" :src='"./uploads/images/filters/" + basePoolImgFilter'
+                            alt="Présentation de la filtration" class="img-fluid position-absolute">
+                        <img v-if="basePoolImgWater != '' && this.isWater" :src='"./uploads/images" + basePoolImgWater'
+                            alt="Présentation de la piscine en eau" class="img-fluid position-absolute pool-water">
+                        <img v-if="basePoolImgFond != '' && this.selectedProof !== ''"
+                            :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond"
+                            class="img-fluid position-absolute">
+                    </figure>
                 </div>
             </div>
-            <!-- Image et prix -->
-            <div class="col-12 col-md-7 position-relative">
-                <p class="text-end">
-                    <strong>Prix estimé : <span v-html="this.quotePrice"></span> € TTC (Hors livraison et agrégats)</strong>
-                </p>
-                <figure class="position-relative mt-3 img-config-container">
-                    <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg' alt="Présentation de la piscine" class="img-fluid position-absolute">
-                    <img v-if="basePoolImgEsc != ''" :src='"./uploads/images/escs/" + basePoolImgEsc' alt="Présentation de la couleur de la piscine" class="img-fluid position-absolute">
-                    <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor' alt="Présentation de la couleur" class="img-fluid position-absolute pool-color">
-                    <img v-if="basePoolImgFilter != ''" :src='"./uploads/images/filters/" + basePoolImgFilter' alt="Présentation de la filtration" class="img-fluid position-absolute">
-                    <img v-if="basePoolImgWater != '' && this.isWater" :src='"./uploads/images" + basePoolImgWater' alt="Présentation de la piscine en eau" class="img-fluid position-absolute pool-water">
-                    <img v-if="basePoolImgFond != '' && this.selectedProof !== ''" :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond" class="img-fluid position-absolute">
-                </figure>
-            </div>
-        </div>
 
-    </form>
-</div>
+        </form>
+    </div>
 </template>
 
 <script>
@@ -335,7 +364,9 @@ export default {
             coverPrice: 0,
             securityCover: false,
             getCover: false,
-            
+
+            barrierLength: 0,
+
             revetPolyBool: false,
             revetPolyPrice: 0,
             linerBool: false,
@@ -351,10 +382,10 @@ export default {
             accessoires: ["Petit bain", "Escalier", "Échelle", "Revètement polymère", "SPA à débordement", "Alarme volumétrique", "Couverture de sécurité", "Barrière normalisée"],
 
             filtersList: [
-                {'name': "Filtre à sable"},
-                {'name': "Bloc filtrant"},
-                {'name': "Eco Responsable"},
-                {'name': "Sans filtration"},
+                { 'name': "Filtre à sable" },
+                { 'name': "Bloc filtrant" },
+                { 'name': "Eco Responsable" },
+                { 'name': "Sans filtration" },
             ],
 
             basePoolImg: '',
@@ -398,14 +429,14 @@ export default {
                 }
             ],
             colors: [
-                {'nom': "Bleu"}
+                { 'nom': "Bleu" }
             ],
             escaliers: [
                 {
                     'id': 0,
                     'nom': "Haut - Droite",
                     'image': "image",
-                    'prix':	6.45
+                    'prix': 6.45
                 }
             ],
             filters: [
@@ -432,8 +463,9 @@ export default {
             const escPrice = parseFloat(this.priceEscForm) || 0;
             const filterPrice = parseFloat(this.priceFilterForm) || 0;
             const securityPrice = parseFloat((this.getAlarm ? (this.alarmPrice * 1) : 0) + (this.getCover ? (this.coverPrice * 1) : 0)) || 0;
+            const barrierPrice = parseFloat(this.barrierLength * 227);
             const priceRevet = parseFloat(this.priceRevetForm) || 0;
-            this.quotePrice = parseFloat(sizePrice + escPrice + filterPrice + securityPrice + priceRevet) || parseFloat(0.00);
+            this.quotePrice = parseFloat(sizePrice + escPrice + filterPrice + securityPrice + barrierPrice + priceRevet) || parseFloat(0.00);
         },
 
         async getPiscinesListe() {
@@ -454,7 +486,7 @@ export default {
                 this.basePoolImg = '/piscines/' + this.poolName.image;
                 this.basePoolImgFond = '/piscines/' + this.poolName.fond;
                 this.basePoolImgWater = '/piscines/' + this.poolName.eau;
-                this.basePoolImgColor = ''; 
+                this.basePoolImgColor = '';
                 this.basePoolImgEsc = '';
                 this.basePoolImgFilter = '';
                 this.getPiscineTailles(e);
@@ -492,7 +524,7 @@ export default {
         },
 
         async getPiscineFilters(e) {
-            if (e.target !== undefined && e.target.options.selectedIndex > -1) { 
+            if (e.target !== undefined && e.target.options.selectedIndex > -1) {
                 this.poolSize = e.target.options[e.target.options.selectedIndex].dataset;
                 this.basePoolImg = '/tailles/' + this.poolSize.image;
                 this.priceSizeForm = this.poolSize.prix;
@@ -603,7 +635,7 @@ export default {
             var response = document.getElementById('mail-response');
 
             const formData = {
-                price: parseFloat(this.quotePrice) + " €" ,
+                price: parseFloat(this.quotePrice) + " €",
                 pool: this.poolName.nom,
                 size: this.poolSize.size,
                 proof: proof,
@@ -647,7 +679,7 @@ export default {
                 });
         },
 
-        sanitizeTitle: function(title) {
+        sanitizeTitle: function (title) {
             var slug = "";
             // Change to lower case
             var titleLower = title.toLowerCase();
@@ -665,7 +697,7 @@ export default {
             slug = slug.replace(/\s*$/g, '');
             // Change whitespace to "-"
             slug = slug.replace(/\s+/g, '-');
-            
+
             return slug;
         }
     },
