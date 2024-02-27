@@ -1,4 +1,35 @@
 <template>
+    <div>
+        <div class="bg-body-secondary">
+            <div class="container">
+                <div id="diapo" class="carousel carousel-dark slide mb-5" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active"><img src="uploads/images/slider/diapo-corail.png" alt="Corail" class="d-block w-100"></div>
+                        <div class="carousel-item"><img src="uploads/images/slider/diapo-fidji.png" alt="Fidji" class="d-block w-100"></div>
+                        <div class="carousel-item"><img src="uploads/images/slider/diapo-marquise.png" alt="Marquise" class="d-block w-100"></div>
+                        <div class="carousel-item"><img src="uploads/images/slider/diapo-azur.png" alt="" class="d-block w-100"></div>
+                        <div class="carousel-item"><img src="uploads/images/slider/diapo-lagoon.png" alt="" class="d-block w-100"></div>
+                        <div class="carousel-item"><img src="uploads/images/slider/diapo-ocean.png" alt="" class="d-block w-100"></div>
+                        <div class="carousel-item"><img src="uploads/images/slider/diapo-tuamotu.png" alt="" class="d-block w-100"></div>
+                        <div class="carousel-item"><img src="uploads/images/slider/diapo-sargasse.png" alt="" class="d-block w-100"></div>
+                    </div>
+
+                    <button class="carousel-control-prev" type="button" data-bs-target="#diapo" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+
+                    <button class="carousel-control-next color-dark" type="button" data-bs-target="#diapo" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>    
+        </div>
+        
+        
+    </div>
+
     <div class="container">
         <!-- Configuration de la piscine -->
         <form @change="this.updatePrice()">
