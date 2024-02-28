@@ -277,7 +277,7 @@
                                     <label for="barrierLength" class="form-label">Barrière normalisée</label>
                                     <input type="number" name="barrierLength" id="barrierLength" class="form-control" placeholder="En mètre linéaire" v-model="barrierLength">
                                     <div id="passwordHelpBlock" class="form-text">
-                                        227.00 € le mètre linéaire
+                                        227.00 € le mètre linéaire + 715.00 € pour la pose du portillon
                                     </div>
                                 </div>
 
@@ -493,7 +493,7 @@ export default {
             const escPrice = parseFloat(this.priceEscForm) || 0;
             const filterPrice = parseFloat(this.priceFilterForm) || 0;
             const securityPrice = parseFloat((this.getAlarm ? (this.alarmPrice * 1) : 0) + (this.getCover ? (this.coverPrice * 1) : 0)) || 0;
-            const barrierPrice = parseFloat(this.barrierLength * 227);
+            const barrierPrice = parseFloat((this.barrierLength * 227) + (this.barrierLength > 0 ? 715 : 0));
             const priceRevet = parseFloat(this.priceRevetForm) || 0;
             this.quotePrice = parseFloat(sizePrice + escPrice + filterPrice + securityPrice + barrierPrice + priceRevet) || parseFloat(0.00);
         },
