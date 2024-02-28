@@ -351,6 +351,8 @@
                             agrégats)</strong>
                     </p>
                     <figure class="position-relative mt-3 img-config-container">
+                        <img v-if="basePoolImgWater != '' && this.isWater" :src='"./uploads/images" + basePoolImgWater'
+                            alt="Présentation de la piscine en eau" class="img-fluid position-absolute pool-water">
                         <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg'
                             alt="Présentation de la piscine" class="img-fluid position-absolute">
                         <img v-if="basePoolImgEsc != ''" :src='"./uploads/images/escs/" + basePoolImgEsc'
@@ -359,8 +361,6 @@
                             alt="Présentation de la couleur" class="img-fluid position-absolute pool-color">
                         <img v-if="basePoolImgFilter != ''" :src='"./uploads/images/filters/" + basePoolImgFilter'
                             alt="Présentation de la filtration" class="img-fluid position-absolute">
-                        <img v-if="basePoolImgWater != '' && this.isWater" :src='"./uploads/images" + basePoolImgWater'
-                            alt="Présentation de la piscine en eau" class="img-fluid position-absolute pool-water">
                         <img v-if="basePoolImgFond != '' && this.selectedProof !== ''"
                             :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond"
                             class="img-fluid position-absolute">
