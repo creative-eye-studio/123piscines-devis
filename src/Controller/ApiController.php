@@ -172,6 +172,9 @@ class ApiController extends AbstractController
             'revet' => $data['revet'],
             'color' => $data['color'],
             'securite' => $data['securite'],
+            'adresse' => $data['adresse'],
+            'codepos' => $data['codepos'],
+            'ville' => $data['ville'],
         ];
 
         try {
