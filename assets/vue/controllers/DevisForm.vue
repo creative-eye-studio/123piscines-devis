@@ -320,6 +320,23 @@
                                     <input class="form-control" type="text" id="contact-nom" name="contact-nom"
                                         v-model="this.nom">
                                 </p>
+
+                                <p class="col-12">
+                                    <label for="contact-adresse" class="form-label">Votre adresse postale</label>
+                                    <input class="form-control" type="email" id="contact-adresse" name="contact-adresse"
+                                        v-model="this.adresse">
+                                </p>
+                                <p class="col-6">
+                                    <label for="contact-codepos" class="form-label">Votre code postal</label>
+                                    <input class="form-control" type="tel" id="contact-codepos" name="contact-codepos"
+                                        v-model="this.codepos">
+                                </p>
+                                <p class="col-6">
+                                    <label for="contact-ville" class="form-label">Votre ville</label>
+                                    <input class="form-control" type="tel" id="contact-ville" name="contact-ville"
+                                        v-model="this.ville">
+                                </p>
+
                                 <p class="col-6">
                                     <label for="contact-mail" class="form-label">Votre e-mail</label>
                                     <input class="form-control" type="email" id="contact-mail" name="contact-mail"
@@ -330,6 +347,7 @@
                                     <input class="form-control" type="tel" id="contact-tel" name="contact-tel"
                                         v-model="this.tel">
                                 </p>
+
                                 <p class="col-12">
                                     <label for="contact-message" class="form-label">Votre message</label>
                                     <textarea class="form-control" name="contact-message" id="contact-message"
@@ -439,6 +457,9 @@ export default {
             isWater: false,
 
             nom: "",
+            adresse: "",
+            codepos: "",
+            ville: "",
             mail: "",
             tel: "",
             message: "",
@@ -676,6 +697,9 @@ export default {
                 water: this.isWater ? "Oui" : "Non",
                 security: this.poolSecurity,
                 nom: this.nom,
+                adresse: this.adresse,
+                codepos: this.codepos,
+                ville: this.ville,
                 mail: this.mail,
                 tel: this.tel,
                 message: this.message
