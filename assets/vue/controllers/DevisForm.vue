@@ -373,10 +373,10 @@
                             alt="Présentation de la piscine en eau" class="img-fluid position-absolute pool-water">
                         <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg'
                             alt="Présentation de la piscine" class="img-fluid position-absolute">
-                        <img v-if="basePoolImgEsc != ''" :src='"./uploads/images/escs/" + basePoolImgEsc'
-                            alt="Présentation de la couleur de la piscine" class="img-fluid position-absolute">
                         <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor'
                             alt="Présentation de la couleur" class="img-fluid position-absolute pool-color">
+                        <img v-if="basePoolImgEsc != ''" :src='"./uploads/images/escs/" + basePoolImgEsc'
+                            alt="Présentation des accessoires de la piscine" class="img-fluid position-absolute">
                         <img v-if="basePoolImgFilter != ''" :src='"./uploads/images/filters/" + basePoolImgFilter'
                             alt="Présentation de la filtration" class="img-fluid position-absolute">
                         <img v-if="basePoolImgFond != '' && this.selectedProof !== ''"
@@ -695,7 +695,8 @@ export default {
                 filter: this.poolFilter,
                 color: this.poolColor,
                 water: this.isWater ? "Oui" : "Non",
-                security: this.poolSecurity,
+                alarme: this.getAlarm ? "Avec alarme volumetrique" : "Sans alarme",
+                couverture: this.getCover ? "Avec couverture de sécurité" : "Sans couverture de sécurité",
                 nom: this.nom,
                 adresse: this.adresse,
                 codepos: this.codepos,

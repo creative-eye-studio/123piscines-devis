@@ -162,19 +162,23 @@ class ApiController extends AbstractController
         $data = json_decode($this->request->getContent(), true);
 
         $dataArray = [
-            'type' => $data['type'],
+            'price' => $data['price'],
             'pool' => $data['pool'],
-            'dims' => $data['dims'],
+            'size' => $data['size'],
             'proof' => $data['proof'],
-            'customProof' => $data['customProof'],
-            'personnalisation' => $data['personnalisation'],
-            'filtration' => $data['filtration'],
+            'equip' => $data['equip'],
             'revet' => $data['revet'],
+            'filter' => $data['filter'],
             'color' => $data['color'],
-            'securite' => $data['securite'],
+            'water' => $data['water'],
+            'alarme' => $data['alarme'],
+            'couverture' => $data['couverture'],
+            'nom' => $data['nom'],
             'adresse' => $data['adresse'],
             'codepos' => $data['codepos'],
             'ville' => $data['ville'],
+            'mail' => $data['mail'],
+            'tel' => $data['message'],
         ];
 
         try {
