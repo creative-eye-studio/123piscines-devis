@@ -1,17 +1,17 @@
 <template>
     <div>
-        <div class="bg-body-secondary">
+        <div class="bg-body-secondary" v-show="!activeForm">
             <div class="container">
-                <div id="diapo" class="carousel carousel-dark slide mb-5" data-bs-ride="carousel">
+                <div id="diapo" class="carousel carousel-dark slide mb-5">
                     <div class="carousel-inner">
-                        <div class="carousel-item active"><img src="uploads/images/slider/diapo-corail.png" alt="Corail" class="d-block w-100"></div>
-                        <div class="carousel-item"><img src="uploads/images/slider/diapo-fidji.png" alt="Fidji" class="d-block w-100"></div>
-                        <div class="carousel-item"><img src="uploads/images/slider/diapo-marquise.png" alt="Marquise" class="d-block w-100"></div>
-                        <div class="carousel-item"><img src="uploads/images/slider/diapo-azur.png" alt="" class="d-block w-100"></div>
-                        <div class="carousel-item"><img src="uploads/images/slider/diapo-lagoon.png" alt="" class="d-block w-100"></div>
-                        <div class="carousel-item"><img src="uploads/images/slider/diapo-ocean.png" alt="" class="d-block w-100"></div>
-                        <div class="carousel-item"><img src="uploads/images/slider/diapo-tuamotu.png" alt="" class="d-block w-100"></div>
-                        <div class="carousel-item"><img src="uploads/images/slider/diapo-sargasse.png" alt="" class="d-block w-100"></div>
+                        <div class="carousel-item active"><img @click="showForm('Corail')" src="uploads/images/slider/diapo-corail.png" alt="Corail" class="d-block w-100"></div>
+                        <div class="carousel-item"><img @click="showForm('Fidji')" src="uploads/images/slider/diapo-fidji.png" alt="Fidji" class="d-block w-100"></div>
+                        <div class="carousel-item"><img @click="showForm('Marquise')" src="uploads/images/slider/diapo-marquise.png" alt="Marquise" class="d-block w-100"></div>
+                        <div class="carousel-item"><img @click="showForm('Azur')" src="uploads/images/slider/diapo-azur.png" alt="" class="d-block w-100"></div>
+                        <div class="carousel-item"><img @click="showForm('Lagoon')" src="uploads/images/slider/diapo-lagoon.png" alt="" class="d-block w-100"></div>
+                        <div class="carousel-item"><img @click="showForm('Océan')" src="uploads/images/slider/diapo-ocean.png" alt="" class="d-block w-100"></div>
+                        <div class="carousel-item"><img @click="showForm('Tuamotu')" src="uploads/images/slider/diapo-tuamotu.png" alt="" class="d-block w-100"></div>
+                        <div class="carousel-item"><img @click="showForm('Sargasse')" src="uploads/images/slider/diapo-sargasse.png" alt="" class="d-block w-100"></div>
                     </div>
 
                     <button class="carousel-control-prev" type="button" data-bs-target="#diapo" data-bs-slide="prev">
@@ -26,11 +26,9 @@
                 </div>
             </div>    
         </div>
-        
-        
     </div>
 
-    <div class="container">
+    <div class="container" v-show="activeForm">
         <!-- Configuration de la piscine -->
         <form @change="this.updatePrice()">
             <div class="row flex-md-row-reverse">
@@ -46,8 +44,12 @@
                             <div id="type-body" class="accordion-collapse collapse" data-bs-parent="#list">
                                 <div class="row m-2">
                                     <div class="col-12">
-                                        <select class="form-select my-2" id="select-pool" aria-label="Choisir sa piscine"
-                                            @change="this.getPiscinesDatas($event)">
+                                        <select 
+                                            class="form-select my-2" 
+                                            id="select-pool" 
+                                            aria-label="Choisir sa piscine" 
+                                            v-model="piscineList"
+                                            @change="getPiscinesDatas(piscineList)">
                                             <option value="">Choisir sa piscine</option>
                                             <option v-for="pool in poolsList" v-html="pool.nom" :value="pool.nom"
                                                 :data-nom="pool.nom" :data-id="pool.id" :data-image="pool.image"
@@ -396,12 +398,15 @@ export default {
     components: { SelectPiscine },
     data() {
         return {
+            activeForm: false,
+
+            piscineList: '',
+
             pricePoolForm: null,
             pricePoolSize: null,
             priceEscForm: null,
             priceFilterForm: null,
             priceRevetForm: null,
-
 
             alarmBool: false,
             alarmPrice: 0,
@@ -508,6 +513,12 @@ export default {
             return values.reduce((acc, value) => acc + value, 0);
         },
 
+        async showForm(piscineName) {
+            this.activeForm = !this.activeForm;
+            this.piscineList = piscineName;
+            this.getPiscinesDatas(piscineName);
+        },
+
         async updatePrice() {
             // Piscine
             const sizePrice = parseFloat(this.priceSizeForm) || 0;
@@ -528,35 +539,42 @@ export default {
             }
         },
 
-        async getPiscinesDatas(e) {
-            const targetId = e.target.options[e.target.options.selectedIndex].dataset;
-            if (targetId != undefined) {
-                this.poolName = targetId;
-                this.basePoolId = this.poolName.id;
-                this.pricePoolForm = this.poolName.prix;
-                this.basePoolImg = '/piscines/' + this.poolName.image;
-                this.basePoolImgFond = '/piscines/' + this.poolName.fond;
-                this.basePoolImgWater = '/piscines/' + this.poolName.eau;
-                this.basePoolImgColor = '';
-                this.basePoolImgEsc = '';
-                this.basePoolImgFilter = '';
-                this.getPiscineTailles(e);
-                this.getPiscineColors(e);
+        getPiscinesDatas(piscineName) {
+            const options = document.getElementById('select-pool');
+            console.log(options);
+
+            for (let i = 0; i < options.length; i++) {
+                const option = options[i];
+                if (option.value === piscineName) { // Recherche par nom de piscine
+                    const targetId = option.dataset;
+                    if (targetId) {
+                        this.poolName = targetId;
+                        this.basePoolId = this.poolName.id;
+                        this.pricePoolForm = this.poolName.prix;
+                        this.basePoolImg = '/piscines/' + this.poolName.image;
+                        this.basePoolImgFond = '/piscines/' + this.poolName.fond;
+                        this.basePoolImgWater = '/piscines/' + this.poolName.eau;
+                        this.basePoolImgColor = '';
+                        this.basePoolImgEsc = '';
+                        this.basePoolImgFilter = '';
+                        this.getPiscineTailles(this.basePoolId);
+                        this.getPiscineColors(this.basePoolId);
+                    }
+                    break;
+                }
             }
         },
 
-        async getPiscineTailles(e) {
-            if (e.target.options.selectedIndex > -1) {
-                const targetId = e.target.options[e.target.options.selectedIndex].dataset;
-                try {
-                    const response = await fetch('/api/pool-size/' + targetId.id);
-                    if (!response.ok) {
-                        return;
-                    }
-                    this.sizes = await response.json();
-                } catch (error) {
-                    console.error('Erreur lors de la récupération des données:', error);
+
+        async getPiscineTailles(targetId) {
+            try {
+                const response = await fetch('/api/pool-size/' + targetId);
+                if (!response.ok) {
+                    return;
                 }
+                this.sizes = await response.json();
+            } catch (error) {
+                console.error('Erreur lors de la récupération des données:', error);
             }
         },
 
@@ -619,15 +637,12 @@ export default {
             this.basePoolImgFilter = targetId.image;
         },
 
-        async getPiscineColors(e) {
-            if (e.target.options.selectedIndex > -1) {
-                const targetId = e.target.options[e.target.options.selectedIndex].dataset;
-                try {
-                    const response = await fetch('/api/pool-colors/' + targetId.id);
-                    this.colors = await response.json();
-                } catch (error) {
-                    console.error('Erreur lors de la récupération des données:', error);
-                }
+        async getPiscineColors(targetId) {
+            try {
+                const response = await fetch('/api/pool-colors/' + targetId);
+                this.colors = await response.json();
+            } catch (error) {
+                console.error('Erreur lors de la récupération des données:', error);
             }
         },
 
