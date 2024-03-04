@@ -541,7 +541,6 @@ export default {
 
         getPiscinesDatas(piscineName) {
             const options = document.getElementById('select-pool');
-            console.log(options);
 
             for (let i = 0; i < options.length; i++) {
                 const option = options[i];
@@ -612,8 +611,6 @@ export default {
                 this.alarmPrice = this.poolSize.alarmeprix;
                 this.coverPrice = this.poolSize.coverprix;
                 this.barrierPrice = this.poolSize.barrierprix;
-
-                console.log(this.alarmPrice);
 
                 try {
 
@@ -721,7 +718,6 @@ export default {
                 tel: this.tel,
                 message: this.message
             };
-            console.log(formData);
 
             const requestOptions = {
                 method: 'POST',
