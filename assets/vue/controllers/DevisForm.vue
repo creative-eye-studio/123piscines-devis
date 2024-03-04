@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div class="bg-body-secondary" v-show="!activeForm">
+        <div class="bg-body-secondary pb-1" v-show="!activeForm">
+            <p class="text-center py-4 mb-0 lead">
+                <strong>Veuillez cliquer sur une image dans le diaporama pour ouvrir le formulaire de demande de devis.</strong>
+            </p>
             <div class="container">
                 <div id="diapo" class="carousel carousel-dark slide mb-5">
                     <div class="carousel-inner">
