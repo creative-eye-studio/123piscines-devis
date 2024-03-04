@@ -350,11 +350,11 @@
                                         v-model="this.tel">
                                 </p>
 
-                                <p class="col-12">
+                                <!-- <p class="col-12">
                                     <label for="contact-message" class="form-label">Votre message</label>
                                     <textarea class="form-control" name="contact-message" id="contact-message"
                                         v-model="this.message"></textarea>
-                                </p>
+                                </p> -->
                                 <p id="mail-response" class="text-light p-3"></p>
                                 <p class="mt-3">
                                     <button type="submit" @click="submitForm" class="btn btn-primary">Envoyer ma demande de
@@ -712,6 +712,7 @@ export default {
                 water: this.isWater ? "Oui" : "Non",
                 alarme: this.getAlarm ? "Avec alarme volumetrique" : "Sans alarme",
                 couverture: this.getCover ? "Avec couverture de sécurité" : "Sans couverture de sécurité",
+                barriere: this.barrierLength ? this.barrierLength : 0,
                 nom: this.nom,
                 adresse: this.adresse,
                 codepos: this.codepos,
@@ -720,6 +721,7 @@ export default {
                 tel: this.tel,
                 message: this.message
             };
+            console.log(formData);
 
             const requestOptions = {
                 method: 'POST',

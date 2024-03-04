@@ -47,8 +47,18 @@
 															</tr>
 															<tr>
 																<td style="border: 1px solid black; padding: 10px;">Sécurité</td>
-																<td style="border: 1px solid black; padding: 10px;">{{ security }}</td>
+																<td style="border: 1px solid black; padding: 10px;">
+																	{{ alarme }}
+																	<br>{{ couverture }}
+																</td>
 															</tr>
+															<tr>
+																<td style="border: 1px solid black; padding: 10px;">Barrière</td>
+																<td style="border: 1px solid black; padding: 10px;">
+																	{{ barriere }} m
+																</td>
+															</tr>
+
 															<tr>
 																<td style="border: 1px solid black; padding: 10px;">
 																	<b>PRIX TOTAL</b>
@@ -100,9 +110,9 @@
 																	<a href="tel:{{ tel }}">{{ tel }}</a>
 																</td>
 															</tr>
-															<tr>
+															{# <tr>
 																<td style="border: 1px solid black; padding: 10px;" colspan='2'>{{ message }}</td>
-															</tr>
+															</tr> #}
 														</tbody>
 													</table>
 												</td>

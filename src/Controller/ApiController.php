@@ -157,12 +157,15 @@ class ApiController extends AbstractController
     }
 
     #[Route('/api/contact-form', name: 'contact_form', methods: ["POST"])]
-    public function contactForm(): JsonResponse
+    public function sendContactForm()
     {
         $data = json_decode($this->request->getContent(), true);
 
+        $mail = $data['mail'];
+
+        $objet = "Demande de devis en ligne";
+
         $dataArray = [
-            'price' => $data['price'],
             'pool' => $data['pool'],
             'size' => $data['size'],
             'proof' => $data['proof'],
@@ -173,49 +176,14 @@ class ApiController extends AbstractController
             'water' => $data['water'],
             'alarme' => $data['alarme'],
             'couverture' => $data['couverture'],
+            'barriere' => $data['barriere'],
             'nom' => $data['nom'],
             'adresse' => $data['adresse'],
             'codepos' => $data['codepos'],
             'ville' => $data['ville'],
             'mail' => $data['mail'],
-            'tel' => $data['message'],
-        ];
-
-        try {
-            return $this->json($dataArray, 200);
-        } catch (\Throwable $th) {
-            return $this->json([
-                'Response' => $th,
-                "data" => $data
-            ], 500);
-        }
-    }
-
-    #[Route('/api/contact-form', name: 'contact_form', methods: ["POST"])]
-    public function sendContactForm()
-    {
-        $data = json_decode($this->request->getContent(), true);
-
-        $mail = $data['mail'];
-
-        $objet = "Demande de devis en ligne";
-
-        $dataArray = [
-            'price' => $data['price'],
-            'pool' => $data['pool'],
-            'size' => $data['size'],
-            'proof' => $data['proof'],
-            'equip' => $data['equip'],
-            'revet' => $data['revet'],
-            'filter' => $data['filter'],
-            'color' => $data['color'],
-            'water' => $data['water'],
-            'security' => $data['security'],
-            'nom' => $data['nom'],
-            'mail' => $mail,
             'tel' => $data['tel'],
-            'objet' => $objet,
-            'message' => $data['message'],
+            'price' => $data['price'],
         ];
 
         try {
