@@ -36,6 +36,7 @@ security:
         - { path: '^/admin/users', roles: [IS_AUTHENTICATED_FULLY, ROLE_EDITOR] }
         - { path: '^/admin/register', roles: [IS_AUTHENTICATED_FULLY, ROLE_EDITOR] }
         - { path: '^/admin/settings', roles: [IS_AUTHENTICATED_FULLY, ROLE_ADMIN] }
+        - { path: '^/', roles: PUBLIC_ACCESS, requires_channel: https }
     role_hierarchy:
         ROLE_CONTRIBUTOR: ROLE_USER
         ROLE_EDITOR: ROLE_CONTRIBUTOR
