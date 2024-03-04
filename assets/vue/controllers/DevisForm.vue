@@ -393,14 +393,14 @@
                             class="img-fluid position-absolute pool-color" 
                             alt="Présentation de la couleur">
 
-                        <img v-if="basePoolImgEsc != ''" 
-                            :src='"./uploads/images/escs/" + basePoolImgEsc'
-                            alt="Présentation des accessoires de la piscine" 
-                            class="img-fluid position-absolute">
-
                         <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg'
                             class="img-fluid position-absolute" 
                             alt="Présentation de la piscine">
+
+                        <img v-if="basePoolImgEsc != ''" 
+                            :src='"./uploads/images/escs/" + basePoolImgEsc'
+                            class="img-fluid position-absolute"
+                            alt="Présentation des accessoires de la piscine" >
 
                     </figure>
                 </div>
