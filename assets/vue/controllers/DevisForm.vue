@@ -376,11 +376,6 @@
                             alt="Présentation de la filtration" 
                             class="img-fluid position-absolute">
 
-                        <img v-if="basePoolImgEsc != ''" 
-                            :src='"./uploads/images/escs/" + basePoolImgEsc'
-                            alt="Présentation des accessoires de la piscine" 
-                            class="img-fluid position-absolute">
-
                         <img v-if="basePoolImgFond != '' && this.selectedProof !== ''"
                             :src='"./uploads/images" + basePoolImgFond' 
                             class="img-fluid position-absolute" 
@@ -394,6 +389,11 @@
                         <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor'
                             class="img-fluid position-absolute pool-color" 
                             alt="Présentation de la couleur">
+
+                        <img v-if="basePoolImgEsc != ''" 
+                            :src='"./uploads/images/escs/" + basePoolImgEsc'
+                            alt="Présentation des accessoires de la piscine" 
+                            class="img-fluid position-absolute">
 
                         <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg'
                             class="img-fluid position-absolute" 
