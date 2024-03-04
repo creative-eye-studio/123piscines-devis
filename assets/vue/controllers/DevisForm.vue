@@ -71,9 +71,8 @@
                             </button>
                             <div id="dim-body" class="accordion-collapse collapse" data-bs-parent="#list">
                                 <div class="m-3">
-                                    <label class="form-check-label" for="pool-dim">Dimensions</label>
-                                    <select class="form-select mb-3" id="pool-dim" @change="this.getPiscineFilters($event)">
-                                        <option value="" data-prix='0'></option>
+                                    <select class="form-select mb-3" id="pool-dim" @change="this.getPiscineFilters($event)" aria-label="Choisir sa dimension">
+                                        <option value="" data-prix='0'>Choisir sa dimension</option>
                                         <option v-for="size in sizes" v-html="size.taille" :key="size.id"
                                             :value="size.taille" :data-size="size.taille" :data-id="size.id"
                                             :data-prix=size.prix :data-image=size.image :data-alarme=size.alarme
@@ -371,19 +370,35 @@
                             agrégats)</strong>
                     </p>
                     <figure class="position-relative mt-3 img-config-container">
-                        <img v-if="basePoolImgWater != '' && this.isWater" :src='"./uploads/images" + basePoolImgWater'
-                            alt="Présentation de la piscine en eau" class="img-fluid position-absolute pool-water">
-                        <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg'
-                            alt="Présentation de la piscine" class="img-fluid position-absolute">
-                        <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor'
-                            alt="Présentation de la couleur" class="img-fluid position-absolute pool-color">
-                        <img v-if="basePoolImgEsc != ''" :src='"./uploads/images/escs/" + basePoolImgEsc'
-                            alt="Présentation des accessoires de la piscine" class="img-fluid position-absolute">
-                        <img v-if="basePoolImgFilter != ''" :src='"./uploads/images/filters/" + basePoolImgFilter'
-                            alt="Présentation de la filtration" class="img-fluid position-absolute">
-                        <img v-if="basePoolImgFond != '' && this.selectedProof !== ''"
-                            :src='"./uploads/images" + basePoolImgFond' alt="Présentation de la piscine en fond"
+
+                        <img v-if="basePoolImgFilter != ''" 
+                            :src='"./uploads/images/filters/" + basePoolImgFilter'
+                            alt="Présentation de la filtration" 
                             class="img-fluid position-absolute">
+
+                        <img v-if="basePoolImgEsc != ''" 
+                            :src='"./uploads/images/escs/" + basePoolImgEsc'
+                            alt="Présentation des accessoires de la piscine" 
+                            class="img-fluid position-absolute">
+
+                        <img v-if="basePoolImgFond != '' && this.selectedProof !== ''"
+                            :src='"./uploads/images" + basePoolImgFond' 
+                            class="img-fluid position-absolute" 
+                            alt="Présentation de la piscine en fond">
+
+                        <img v-if="basePoolImgWater != '' && this.isWater" 
+                            :src='"./uploads/images" + basePoolImgWater'
+                            class="img-fluid position-absolute pool-water" 
+                            alt="Présentation de la piscine en eau">
+
+                        <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor'
+                            class="img-fluid position-absolute pool-color" 
+                            alt="Présentation de la couleur">
+
+                        <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg'
+                            class="img-fluid position-absolute" 
+                            alt="Présentation de la piscine">
+
                     </figure>
                 </div>
             </div>
