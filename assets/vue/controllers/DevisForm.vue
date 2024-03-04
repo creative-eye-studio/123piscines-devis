@@ -280,9 +280,9 @@
                                 <div class="row mb-2">
                                     <label for="barrierLength" class="form-label">Barrière normalisée</label>
                                     <input type="number" name="barrierLength" id="barrierLength" class="form-control" placeholder="En mètre linéaire" v-model="barrierLength">
-                                    <div id="passwordHelpBlock" class="form-text">
+                                    <!-- <div id="passwordHelpBlock" class="form-text">
                                         227.00 € le mètre linéaire + 715.00 € pour la pose du portillon
-                                    </div>
+                                    </div> -->
                                 </div>
 
                                 <hr>
