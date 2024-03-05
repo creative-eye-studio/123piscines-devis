@@ -277,12 +277,17 @@
 
                                 <hr>
 
-                                <div class="row mb-2">
+                                <div class="mb-2">
                                     <label for="barrierLength" class="form-label">Barrière normalisée</label>
                                     <input type="number" name="barrierLength" id="barrierLength" class="form-control" placeholder="En mètre linéaire" v-model="barrierLength">
                                     <!-- <div id="passwordHelpBlock" class="form-text">
                                         227.00 € le mètre linéaire + 715.00 € pour la pose du portillon
                                     </div> -->
+                                </div>
+
+                                <div class="mb-2">
+                                    <label for="" class="form-label">Nombre de portails</label>
+                                    <input type="number" name="portailLength" id="portailLength" class="form-control" v-model="portailLength">
                                 </div>
 
                                 <hr>
@@ -438,6 +443,7 @@ export default {
             getCover: false,
 
             barrierLength: 0,
+            portailLength: 0,
 
             revetPolyBool: false,
             revetPolyPrice: 0,
@@ -544,7 +550,7 @@ export default {
             const escPrice = parseFloat(this.priceEscForm) || 0;
             const filterPrice = parseFloat(this.priceFilterForm) || 0;
             const securityPrice = parseFloat((this.getAlarm ? (this.alarmPrice * 1) : 0) + (this.getCover ? (this.coverPrice * 1) : 0)) || 0;
-            const barrierPrice = parseFloat((this.barrierLength * 227) + (this.barrierLength > 0 ? 715 : 0));
+            const barrierPrice = parseFloat((this.barrierLength * 227) + (this.portailLength * 715));
             const priceRevet = parseFloat(this.priceRevetForm) || 0;
             this.quotePrice = parseFloat(sizePrice + escPrice + filterPrice + securityPrice + barrierPrice + priceRevet) || parseFloat(0.00);
         },
@@ -730,6 +736,7 @@ export default {
                 alarme: this.getAlarm ? "Avec alarme volumetrique" : "Sans alarme",
                 couverture: this.getCover ? "Avec couverture de sécurité" : "Sans couverture de sécurité",
                 barriere: this.barrierLength ? this.barrierLength : 0,
+                portail: this.portailLength ? this.portailLength : 0,
                 nom: this.nom,
                 adresse: this.adresse,
                 codepos: this.codepos,

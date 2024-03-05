@@ -177,6 +177,7 @@ class ApiController extends AbstractController
             'alarme' => $data['alarme'],
             'couverture' => $data['couverture'],
             'barriere' => $data['barriere'],
+            'portail' => $data['portail'],
             'nom' => $data['nom'],
             'adresse' => $data['adresse'],
             'codepos' => $data['codepos'],
