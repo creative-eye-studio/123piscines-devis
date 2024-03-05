@@ -367,42 +367,43 @@
                     </div>
                 </div>
                 <!-- Image et prix -->
-                <div class="col-12 col-md-7 position-relative">
-                    <p class="text-end">
-                        <strong>Prix estimé : <span v-html="this.quotePrice.toFixed(2)"></span> € TTC (Hors livraison et
-                            agrégats)</strong>
-                    </p>
-                    <figure class="position-relative mt-3 img-config-container">
+                <div class="col-12 col-md-7">
+                    <div class="position-sticky top-0 start-0 w-100">
+                        <p class="text-end">
+                            <strong>Prix estimé : <span v-html="this.quotePrice.toFixed(2)"></span> € TTC (Hors livraison et
+                                agrégats)</strong>
+                        </p>
+                        <figure class="position-relative mt-3 img-config-container">
 
-                        <img v-if="basePoolImgFilter != ''" 
-                            :src='"./uploads/images/filters/" + basePoolImgFilter'
-                            alt="Présentation de la filtration" 
-                            class="img-fluid position-absolute">
+                            <img v-if="basePoolImgFilter != ''" 
+                                :src='"./uploads/images/filters/" + basePoolImgFilter'
+                                alt="Présentation de la filtration" 
+                                class="img-fluid position-absolute">
 
-                        <img v-if="basePoolImgFond != '' && this.selectedProof !== ''"
-                            :src='"./uploads/images" + basePoolImgFond' 
-                            class="img-fluid position-absolute" 
-                            alt="Présentation de la piscine en fond">
+                            <img v-if="basePoolImgFond != '' && this.selectedProof !== ''"
+                                :src='"./uploads/images" + basePoolImgFond' 
+                                class="img-fluid position-absolute" 
+                                alt="Présentation de la piscine en fond">
 
-                        <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor'
-                            class="img-fluid position-absolute pool-color" 
-                            alt="Présentation de la couleur">
+                            <img v-if="basePoolImgColor != ''" :src='"./uploads/images/colors/" + basePoolImgColor'
+                                class="img-fluid position-absolute pool-color" 
+                                alt="Présentation de la couleur">
 
-                        <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg'
-                            class="img-fluid position-absolute" 
-                            alt="Présentation de la piscine">
+                            <img v-if="basePoolImg != ''" :src='"./uploads/images" + basePoolImg'
+                                class="img-fluid position-absolute" 
+                                alt="Présentation de la piscine">
 
-                        <img v-if="basePoolImgEsc != ''" 
-                            :src='"./uploads/images/escs/" + basePoolImgEsc'
-                            class="img-fluid position-absolute"
-                            alt="Présentation des accessoires de la piscine" >
+                            <img v-if="basePoolImgEsc != ''" 
+                                :src='"./uploads/images/escs/" + basePoolImgEsc'
+                                class="img-fluid position-absolute"
+                                alt="Présentation des accessoires de la piscine" >
 
-                        <img v-if="basePoolImgWater != '' && this.isWater" 
-                            :src='"./uploads/images" + basePoolImgWater'
-                            class="img-fluid position-absolute pool-water" 
-                            alt="Présentation de la piscine en eau">
-
-                    </figure>
+                            <img v-if="basePoolImgWater != '' && this.isWater" 
+                                :src='"./uploads/images" + basePoolImgWater'
+                                class="img-fluid position-absolute pool-water" 
+                                alt="Présentation de la piscine en eau">
+                        </figure>    
+                    </div>
                 </div>
             </div>
 
@@ -574,6 +575,7 @@ export default {
                         this.basePoolImgColor = '';
                         this.basePoolImgEsc = '';
                         this.basePoolImgFilter = '';
+                        this.escaliers = [];
                         this.getPiscineTailles(this.basePoolId);
                         this.getPiscineColors(this.basePoolId);
                     }

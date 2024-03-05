@@ -29,7 +29,7 @@ const values = {
 // -----------------------------------------------
 document.addEventListener('DOMContentLoaded', function(){
     AOS.init();
-    scrollWeb();
+    // scrollWeb();
     parallax();
     createApp({
         components: { DevisForm }
