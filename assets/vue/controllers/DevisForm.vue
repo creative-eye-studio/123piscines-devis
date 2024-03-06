@@ -550,7 +550,7 @@ export default {
             const escPrice = parseFloat(this.priceEscForm) || 0;
             const filterPrice = parseFloat(this.priceFilterForm) || 0;
             const securityPrice = parseFloat((this.getAlarm ? (this.alarmPrice * 1) : 0) + (this.getCover ? (this.coverPrice * 1) : 0)) || 0;
-            const barrierPrice = parseFloat((this.barrierLength * 225) + (this.portailLength * 715));
+            const barrierPrice = parseFloat((this.barrierLength * 227) + (this.portailLength * 715));
             const priceRevet = parseFloat(this.priceRevetForm) || 0;
             this.quotePrice = sizePrice + escPrice + filterPrice + securityPrice + barrierPrice + priceRevet || parseFloat(0.00);
         },
