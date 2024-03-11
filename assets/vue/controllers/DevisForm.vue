@@ -5,7 +5,7 @@
                 <strong>Veuillez cliquer sur une image dans le diaporama pour ouvrir le formulaire de demande de devis.</strong>
             </p> -->
             <div class="container">
-                <div id="diapo" class="carousel carousel-dark slide">
+                <div id="diapo" class="carousel carousel-dark slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active"><img @click="showForm('Corail')" src="uploads/images/slider/diapo-corail.png" alt="Corail" class="d-block w-100"></div>
                         <div class="carousel-item"><img @click="showForm('Fidji')" src="uploads/images/slider/diapo-fidji.png" alt="Fidji" class="d-block w-100"></div>
